@@ -38,11 +38,13 @@ class TopbarProfile extends PureComponent {
         <button className="topbar__avatar" type="button" onClick={this.toggle}>
           <img
             className="topbar__avatar-img"
-            src={(auth0.user && auth0.user.picture) || user.avatar || Ava}
+            // src={(auth0.user && auth0.user.picture) || user.avatar || Ava}
+            src={user.avatar || Ava}
             alt="avatar"
           />
           <p className="topbar__avatar-name">
-            { auth0.loading ? 'Loading...' : (auth0.user && auth0.user.name) || user.fullName}
+            {/* { auth0.loading ? 'Loading...' : (auth0.user && auth0.user.name) || user.fullName} */}
+            {user.fullName}
           </p>
           <DownIcon className="topbar__icon" />
         </button>
@@ -86,7 +88,7 @@ class TopbarProfile extends PureComponent {
               path="/lock_screen"
               onClick={this.toggle}
             />
-            {auth0.isAuthenticated && (
+            {auth0 && auth0.isAuthenticated && (
               <TopbarMenuLink
                 title="Log Out Auth0"
                 icon="exit"

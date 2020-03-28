@@ -16,9 +16,9 @@ import store from './store';
 import ScrollToTop from './ScrollToTop';
 import { config as i18nextConfig } from '../../translations';
 import firebaseConfig from '../../config/firebase';
-import Auth0Provider from '../../shared/components/auth/withAuth0';
+// import Auth0Provider from '../../shared/components/auth/withAuth0';
 import Loading from '../../shared/components/Loading';
-import auth0Config from '../../config/auth0';
+// import auth0Config from '../../config/auth0';
 
 i18next.init(i18nextConfig);
 
@@ -73,14 +73,14 @@ class App extends Component {
     const { loaded, loading } = this.state;
     return (
       <Provider store={store}>
-        <Auth0Provider
+        {/* <Auth0Provider
           domain={auth0Config.domain}
           client_id={auth0Config.clientId}
           redirect_uri={`${window.location.origin}/easydev/dashboard_crypto`}
           returnTo={`${window.location.origin}/easydev/dashboard_crypto`}
           onRedirectCallback={this.onRedirectCallbackAuth0}
-        >
-          <BrowserRouter basename="/easydev">
+        > */}
+          <BrowserRouter basename="">
             <I18nextProvider i18n={i18next}>
               <ScrollToTop>
                 <Fragment>
@@ -98,7 +98,7 @@ class App extends Component {
               </ScrollToTop>
             </I18nextProvider>
           </BrowserRouter>
-        </Auth0Provider>
+        {/* </Auth0Provider> */}
       </Provider>
     );
   }
