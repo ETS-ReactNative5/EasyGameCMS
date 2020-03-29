@@ -22,11 +22,6 @@ class SidebarContent extends Component {
       <div className="sidebar__content">
         <ul className="sidebar__block">
           {/* <SidebarLink
-          title="Dashboard Default"
-          icon="home" route="/dashboard_default"
-          onClick={this.hideSidebar}
-          />
-          <SidebarLink
             title="Dashboard E-commerce"
             icon="store"
             route="/dashboard_e_commerce"
@@ -37,11 +32,17 @@ class SidebarContent extends Component {
             icon="heart-pulse"
             route="/dashboard_fitness"
             onClick={this.hideSidebar}
-          />  */}
+          /> */}
           <SidebarLink
             title="Epic Dragon Dashboard"
             icon="rocket"
             route="/dashboard"
+            onClick={this.hideSidebar}
+          />
+          <SidebarLink
+            title="Marketing Dashboard"
+            icon="home"
+            route="/dashboard_default"
             onClick={this.hideSidebar}
           />
           <SidebarCategory title="Users" icon="user">
@@ -56,8 +57,8 @@ class SidebarContent extends Component {
               onClick={this.hideSidebar}
             />
             <SidebarLink
-              title="Copy User Data"
-              route="/ui/alerts"
+              title="User Manager"
+              route="/users/userfunction"
               onClick={this.hideSidebar}
             />
           </SidebarCategory>

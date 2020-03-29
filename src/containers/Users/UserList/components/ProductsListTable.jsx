@@ -1,13 +1,10 @@
 /* eslint-disable react/no-unused-state */
 import React, { PureComponent } from 'react';
-import {
-  ButtonToolbar, Card, CardBody, Col,
-} from 'reactstrap';
+import { ButtonToolbar, Card, CardBody, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MagnifyIcon from 'mdi-react/MagnifyIcon';
 import EditTable from '../../../../shared/components/table/EditableTable';
-
 
 const Img1 = `${process.env.PUBLIC_URL}/img/for_store/vase.png`;
 const Img2 = `${process.env.PUBLIC_URL}/img/for_store/vase_2.png`;
@@ -27,10 +24,12 @@ PhotoFormatter.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-const StatusFormatter = ({ value }) => (
-  value === 'Enabled' ? <span className="badge badge-success">Enabled</span>
-    : <span className="badge badge-disabled">Disabled</span>
-);
+const StatusFormatter = ({ value }) =>
+  value === 'Online' ? (
+    <span className="badge badge-success">Online</span>
+  ) : (
+    <span className="badge badge-disabled">Offline</span>
+  );
 
 StatusFormatter.propTypes = {
   value: PropTypes.string.isRequired,
@@ -53,27 +52,27 @@ export default class ProductsListTable extends PureComponent {
       },
       {
         key: 'name',
-        name: 'Name',
+        name: 'DisplayName',
         sortable: true,
       },
       {
         key: 'category',
-        name: 'Category',
+        name: 'Country',
         sortable: true,
       },
       {
         key: 'quantity',
-        name: 'Quantity',
+        name: 'Gem',
         sortable: true,
       },
       {
         key: 'articul',
-        name: 'Articul',
+        name: 'Gold',
         sortable: true,
       },
       {
         key: 'price',
-        name: 'Price, $',
+        name: 'Stone',
         sortable: true,
       },
       {
@@ -91,27 +90,31 @@ export default class ProductsListTable extends PureComponent {
     };
   }
 
-  onChangePage = (pageOfItems) => {
+  onChangePage = pageOfItems => {
     // update state with new page of items
     this.setState({ pageOfItems });
   };
 
-  getRandomDate = (start, end) => new Date(start.getTime() + (Math.random() * (end.getTime()
-    - start.getTime()))).toLocaleDateString();
+  getRandomDate = (start, end) =>
+    new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    ).toLocaleDateString();
 
-  createRows = (numberOfRows) => {
+  createRows = numberOfRows => {
     const rows = [];
 
     for (let i = 1; i < numberOfRows + 1; i += 1) {
       rows.push({
-        id: Math.min(99999, Math.round((Math.random() * 99999) + 1000)),
-        photo: [Img1, Img2, Img3, Img4, Img5, Img6, Img7][Math.floor((Math.random() * 7))],
-        name: ['Glass Vase', 'Pillow'][Math.floor((Math.random() * 2))],
-        category: 'Home accessories',
+        id: Math.min(99999, Math.round(Math.random() * 99999 + 1000)),
+        photo: [Img1, Img2, Img3, Img4, Img5, Img6, Img7][
+          Math.floor(Math.random() * 7)
+        ],
+        name: ['Glass Vase', 'Pillow'][Math.floor(Math.random() * 2)],
+        category: ['VN', 'US'][Math.floor(Math.random() * 2)],
         quantity: Math.min(400, Math.round(Math.random() * 400)),
-        articul: `art${Math.min(99999, Math.round((Math.random() * 99999) + 1))}`,
-        price: Math.min(1000, (Math.random() * 1000) + 20).toFixed(2),
-        status: ['Enabled', 'Disabled'][Math.floor((Math.random() * 2))],
+        articul: `${Math.min(99999, Math.round(Math.random() * 99999 + 1))}`,
+        price: Math.min(1000, Math.random() * 1000 + 20).toFixed(2),
+        status: ['Online', 'Offline'][Math.floor(Math.random() * 2)],
       });
     }
     return rows;
@@ -133,12 +136,16 @@ export default class ProductsListTable extends PureComponent {
                     <MagnifyIcon />
                   </div>
                 </form>
-                <Link className="btn btn-primary products-list__btn-add" to="/e-commerce/product_edit">Add new
-                  product
+                <Link
+                  className="btn btn-primary products-list__btn-add"
+                  to="/e-commerce/product_edit"
+                >
+                  Add new product
                 </Link>
               </ButtonToolbar>
             </div>
-            <p className="typography-message">Show
+            <p className="typography-message">
+              Show
               <select className="select-options">
                 <option value="10">10</option>
                 <option value="20">20</option>
