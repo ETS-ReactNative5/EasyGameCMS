@@ -8,7 +8,29 @@ import VerticalForm from './components/VerticalForm';
 import VerticalFormWithIcons from './components/VerticalFormWithIcons';
 import VerticalFormHalf from './components/VerticalFormHalf';
 import showResults from '../../Form/Show';
+const axios = require('axios');
 
+function submitViewUser(values) {
+  // print the form values to the console
+  // axios
+  //   .get(
+  //     'http://113.190.253.188:8080/user/getUserData?userID=5e7ed4bbce400426e46b411a'
+  //   )
+  //   .then(function(response) {
+  //     // handle success
+  //     console.log(response);
+  //   })
+  //   .catch(function(error) {
+  //     // handle error
+  //     console.log(error);
+  //   });
+  window.open(
+    'http://113.190.253.188:8080/user/getUserData?userID=5e7ed4bbce400426e46b411a',
+    '_blank'
+  );
+
+  console.log(values);
+}
 const FormLayouts = ({ t }) => (
   <Container>
     <Row>
@@ -22,8 +44,8 @@ const FormLayouts = ({ t }) => (
     </Row>
     <Row>
       {/* <HorizontalForm onSubmit={showResults} /> */}
-      {/* <HorizontalFormWithIcons onSubmit={showResults} /> */}
-      <VerticalForm onSubmit={showResults} />
+      {/* <HorizontalFormWithIcons onSubmit={submitViewUser} /> */}
+      <VerticalForm onSubmit={submitViewUser} />
       <VerticalFormWithIcons onSubmit={showResults} />
       <VerticalFormHalf onSubmit={showResults} />
     </Row>
