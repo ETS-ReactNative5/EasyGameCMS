@@ -8,14 +8,15 @@ import EyeIcon from 'mdi-react/EyeIcon';
 import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
 
 class VerticalForm extends PureComponent {
-  static propTypes = {
-    t: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired,
-  };
+  // static propTypes = {
+  //   t: PropTypes.func.isRequired,
+  //   handleSubmit: PropTypes.func.isRequired,
+  //   reset: PropTypes.func.isRequired,
+  // };
 
   constructor(props) {
     super(props);
+    this.OnSubmitCLick = this.OnSubmitCLick.bind(this);
     this.state = {
       showPassword: false,
     };
@@ -25,6 +26,11 @@ class VerticalForm extends PureComponent {
     e.preventDefault();
     this.setState(prevState => ({ showPassword: !prevState.showPassword }));
   };
+
+  OnSubmitCLick(values) {
+    // handle data after pass validate
+    window.alert(`You submitted Local :\n\n${JSON.stringify(values, null, 2)}`);
+  }
 
   render() {
     const { handleSubmit, reset, t } = this.props;
@@ -49,6 +55,15 @@ class VerticalForm extends PureComponent {
                     type="text"
                     placeholder="userID"
                   />
+                  <button
+                    type="button"
+                    className={`form__form-group-button${
+                      showPassword ? ' active' : ''
+                    }`}
+                    onClick={e => this.showPassword(e)}
+                  >
+                    <EyeIcon />
+                  </button>
                 </div>
               </div>
               <div className="form__form-group">
@@ -78,6 +93,13 @@ class VerticalForm extends PureComponent {
                 <Button color="primary" type="submit">
                   Submit
                 </Button>
+                {/* <Button
+                  type="button"
+                  color="primary"
+                  onClick={e => this.showPassword(e)}
+                >
+                  View
+                </Button> */}
                 <Button type="button" onClick={reset}>
                   Cancel
                 </Button>
