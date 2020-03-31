@@ -41,39 +41,40 @@ class VerticalFormWithIcons extends PureComponent {
         <Card>
           <CardBody>
             <div className="card__title">
-              <h5 className="bold-text">{t('forms.form_layouts.vertical_form_with_icons')}</h5>
-              <h5 className="subhead">Labels are above fields and icons</h5>
+              {/* <h5 className="bold-text">{t('forms.form_layouts.vertical_form_with_icons')}</h5> */}
+              <h5 className="bold-text">{'Copy UserData'}</h5>
+              <h5 className="subhead">Copy dữ liệu từ user này sang user khác</h5>
             </div>
             <form className="form" onSubmit={handleSubmit}>
               <div className="form__form-group">
-                <span className="form__form-group-label">Username</span>
+                <span className="form__form-group-label">UserID From</span>
                 <div className="form__form-group-field">
                   <div className="form__form-group-icon">
                     <AccountOutlineIcon />
                   </div>
                   <Field
-                    name="username"
+                    name="userFrom"
                     component="input"
                     type="text"
-                    placeholder="Name"
+                    placeholder="userFrom"
                   />
                 </div>
               </div>
               <div className="form__form-group">
-                <span className="form__form-group-label">E-mail</span>
+                <span className="form__form-group-label">UserID To</span>
                 <div className="form__form-group-field">
                   <div className="form__form-group-icon">
-                    <MailRuIcon />
+                  <AccountOutlineIcon />
                   </div>
                   <Field
-                    name="email"
+                    name="userTo"
                     component="input"
-                    type="email"
-                    placeholder="example@mail.com"
+                    type="text"
+                    placeholder="userTo"
                   />
                 </div>
               </div>
-              <div className="form__form-group">
+              {/* <div className="form__form-group">
                 <span className="form__form-group-label">Url</span>
                 <div className="form__form-group-field">
                   <div className="form__form-group-icon">
@@ -115,7 +116,7 @@ class VerticalFormWithIcons extends PureComponent {
                     label="Remember me"
                   />
                 </div>
-              </div>
+              </div> */}
               <ButtonToolbar className="form__button-toolbar">
                 <Button color="primary" type="submit">Submit</Button>
                 <Button type="button" onClick={reset}>

@@ -13,6 +13,7 @@ import Tables from './Tables';
 import Forms from './Forms';
 import UI from './UI';
 import Users from './Users';
+import GiftCode from './GiftCode';
 
 import Chat from '../../../Chat/index';
 import Todo from '../../../Todo/index';
@@ -38,6 +39,7 @@ export default () => (
       <Route path="/dashboard_booking" component={BookingDashboard} />
       <Route path="/ui" component={UI} />
       <Route path="/users" component={Users} />
+      <Route path="/giftcode" component={GiftCode} />
       <Route path="/mail" component={Mail} />
       <Route path="/chat" component={Chat} />
       <Route path="/todo" component={Todo} />

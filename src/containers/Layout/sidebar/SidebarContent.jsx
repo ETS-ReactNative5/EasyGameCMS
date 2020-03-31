@@ -62,18 +62,14 @@ class SidebarContent extends Component {
               onClick={this.hideSidebar}
             />
           </SidebarCategory>
-          <SidebarCategory title="GiftCode" icon="gift">
-            <SidebarLink
-              title="Create GiftCode"
-              route="/ui/alerts"
-              onClick={this.hideSidebar}
-            />
-            <SidebarLink
-              title="GiftCode"
-              route="/ui/alerts"
-              onClick={this.hideSidebar}
-            />
-          </SidebarCategory>
+
+          <SidebarLink
+            title="GiftCode"
+            icon="gift"
+            route="/giftcode"
+            onClick={this.hideSidebar}
+          />
+
 
           {/* <SidebarLink
             title="Dashboard Booking"

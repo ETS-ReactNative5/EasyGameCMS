@@ -42,7 +42,7 @@ class VerticalForm extends PureComponent {
           <CardBody>
             <div className="card__title">
               {/* <h5 className="bold-text">{t('forms.form_layouts.vertical_form')}</h5> */}
-              <h5 className="bold-text">Tra thông tin User</h5>
+              <h5 className="bold-text">Xem thông tin User</h5>
               <h5 className="subhead">Copy UserID Here</h5>
             </div>
             <form className="form" onSubmit={handleSubmit}>

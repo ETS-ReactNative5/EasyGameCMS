@@ -25,12 +25,33 @@ function submitViewUser(values) {
   //     console.log(error);
   //   });
   window.open(
-    'http://113.190.253.188:8080/user/getUserData?userID=5e7ed4bbce400426e46b411a',
+    'http://113.190.253.188:8080/user/getUserData?userID='+values.userID,
     '_blank'
   );
 
   console.log(values);
 }
+
+function CopyDataUser(values) {
+
+  axios
+    .get(
+      `http://113.190.253.188:8080/user/cloneData?fromID=${values.userFrom}&toID=${values.userTo}`
+    )
+    .then(function(response) {
+      // handle success
+      window.alert(`Copy Data Done`);
+      console.log(response);
+    })
+    .catch(function(error) {
+      // handle error
+      console.log(error);
+    });
+
+
+ 
+}
+
 const FormLayouts = ({ t }) => (
   <Container>
     <Row>
@@ -46,7 +67,7 @@ const FormLayouts = ({ t }) => (
       {/* <HorizontalForm onSubmit={showResults} /> */}
       {/* <HorizontalFormWithIcons onSubmit={submitViewUser} /> */}
       <VerticalForm onSubmit={submitViewUser} />
-      <VerticalFormWithIcons onSubmit={showResults} />
+      <VerticalFormWithIcons onSubmit={CopyDataUser} />
       <VerticalFormHalf onSubmit={showResults} />
     </Row>
   </Container>
