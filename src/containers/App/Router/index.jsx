@@ -11,7 +11,6 @@ import Register from '../../Account/Register/index';
 import RegisterPhoto from '../../Account/RegisterPhoto/index';
 import WrappedRoutes from './WrappedRoutes';
 
-
 const Router = () => (
   <MainWrapper>
     <main>

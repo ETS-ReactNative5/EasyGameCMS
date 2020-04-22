@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import Layout from '../../../Layout/index';
 // import Commerce from './Commerce';
 import Crypto from './Crypto';
@@ -24,10 +24,16 @@ import MobileAppDashboard from '../../../Dashboards/MobileApp/index';
 import BookingDashboard from '../../../Dashboards/Booking/index';
 
 import Mail from '../../../Mail/index';
-
+var checkAuth = () => {
+  if (sessionStorage.getItem('userID') === null) {
+    console.log('login redirect ');
+    return <Redirect to="/log_in" />;
+  }
+};
 export default () => (
   <div>
     <Layout />
+    {checkAuth()}
     <div className="container__wrap">
       <Route path="/dashboard_default" component={DefaultDashboard} />
       {/* <Route path="/dashboard_e_commerce" component={Commerce} />
@@ -35,7 +41,11 @@ export default () => (
       <Route path="/dashboard_crypto" component={Crypto} /> */}
       <Route path="/dashboard_crypto" component={Crypto} />
       <Route path="/dashboard" component={Crypto} />
-      <Route exact path="/dashboard_mobile_app" component={MobileAppDashboard} />
+      <Route
+        exact
+        path="/dashboard_mobile_app"
+        component={MobileAppDashboard}
+      />
       <Route path="/dashboard_booking" component={BookingDashboard} />
       <Route path="/ui" component={UI} />
       <Route path="/users" component={Users} />
