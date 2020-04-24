@@ -3,10 +3,10 @@ import { Col, Container, Row } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import BTC from './components/BTC';
-import ETH from './components/ETH';
-import BCH from './components/BCH';
-import XRP from './components/XRP';
+import CCU from './components/CCU';
+import DAU from './components/DAU';
+import NRU from './components/NRU';
+import PU from './components/PU';
 import TradeHistory from './components/TradeHistory';
 import BtcEth from './components/BtcEth';
 import CryptotrendsToday from './components/CryptotrendsToday';
@@ -15,6 +15,8 @@ import PlaceOrder from './components/PlaceOrder';
 import { deleteCryptoTableData } from '../../../redux/actions/cryptoTableActions';
 import { CryptoTableProps } from '../../../shared/prop-types/TablesProps';
 import { ThemeProps, RTLProps } from '../../../shared/prop-types/ReducerProps';
+import  config from '../../../config/appConfig'; 
+import axios from 'axios';
 
 class CryptoDashboard extends PureComponent {
   static propTypes = {
@@ -24,6 +26,50 @@ class CryptoDashboard extends PureComponent {
     rtl: RTLProps.isRequired,
     theme: ThemeProps.isRequired,
   };
+
+  constructor() {
+    super();
+    this.state = 
+    { ccu:0,nru:0,dau:0,pu:0, }
+    
+  }
+  componentDidMount() {
+
+    var dashboarResult;
+    axios.post(
+      config.base_url+config.url_gameStats,
+      {
+        userID:sessionStorage.getItem('userID')
+      }
+    ).then(function (response) {
+      console.log(response);
+      if(response.status === 200)
+      {
+        let data = response.data
+        console.log('data',data);
+        if(data.status === 'ok')
+        {
+          dashboarResult = data.data;
+          console.log('statsData',dashboarResult);
+
+          
+        }
+      }
+      
+    })
+    .catch(function (error) {
+      console.log(error);
+    }).then(
+      ()=>{
+        this.setState({
+          ccu:dashboarResult.CCU,
+          dau:dashboarResult.DAU,
+          nru:dashboarResult.NRU,
+        })
+      }
+    );
+  }
+  
 
   onDeleteCryptoTableData = (index, e) => {
     const { dispatch, cryptoTable } = this.props;
@@ -46,10 +92,10 @@ class CryptoDashboard extends PureComponent {
           </Col>
         </Row>
         <Row>
-          <BTC dir={rtl.direction} />
-          <ETH dir={rtl.direction} />
-          <BCH dir={rtl.direction} />
-          <XRP dir={rtl.direction} />
+          <CCU ccu={this.state.ccu}  />
+          <DAU dau={this.state.dau} />
+          <NRU nru={this.state.nru} />
+          <PU dir={rtl.direction} />
         </Row>
         <Row>
           <TradeHistory />
