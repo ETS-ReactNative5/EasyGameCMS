@@ -52,6 +52,26 @@ const TradeHistory = ({ t }) => (
           <td>$ 94,23</td>
           <td>-1,96 %</td>
         </tr>
+        <tr>
+          <td><p className="bold-text dashboard__lit">LIT</p></td>
+          <td>$ 94,23</td>
+          <td>-1,96 %</td>
+        </tr>
+        <tr>
+          <td><p className="bold-text dashboard__lit">LIT</p></td>
+          <td>$ 94,23</td>
+          <td>-1,96 %</td>
+        </tr>
+        <tr>
+          <td><p className="bold-text dashboard__lit">LIT</p></td>
+          <td>$ 94,23</td>
+          <td>-1,96 %</td>
+        </tr>
+        <tr>
+          <td><p className="bold-text dashboard__lit">LIT</p></td>
+          <td>$ 94,23</td>
+          <td>-1,96 %</td>
+        </tr>
       </tbody>
     </Table>
   </Panel>

@@ -30,12 +30,19 @@ class CryptoDashboard extends PureComponent {
   constructor() {
     super();
     this.state = 
-    { ccu:0,nru:0,dau:0,pu:0, }
+    { ccu:0,nru:0,dau:0,pu:0,totalIAP:0 }
     
   }
   componentDidMount() {
 
     var dashboarResult;
+    var lsIAP = [];
+    var totalIAP = 0;
+
+    var dicNationIAP = {};
+
+    var dicPackageIAP = {};
+
     axios.post(
       config.base_url+config.url_gameStats,
       {
@@ -51,8 +58,35 @@ class CryptoDashboard extends PureComponent {
         {
           dashboarResult = data.data;
           console.log('statsData',dashboarResult);
+          lsIAP = dashboarResult.IAP;
+          lsIAP.forEach(item => {
+            let country = item.Country===''? 'Unknow':item.Country ; 
+            if(dicNationIAP.hasOwnProperty(country))
+            {
+              dicNationIAP[country].count = dicNationIAP[country].count + 1;
+              dicNationIAP[country].total = dicNationIAP[country].total + item.price;
+            }
+            else
+            {
+              dicNationIAP[country] = {count:1,total:item.price}
+            }
 
-          
+            let pack = item.PackageID;
+            if(dicPackageIAP.hasOwnProperty(pack))
+            {
+              dicPackageIAP[pack].count = dicPackageIAP[pack].count + 1;
+              dicPackageIAP[pack].total = dicPackageIAP[pack].total + item.price;
+            }
+            else
+            {
+              dicPackageIAP[pack] = {count:1,total:item.price}
+            }
+
+            totalIAP += item.price;
+          });
+          console.log("totalIAP: " + totalIAP)
+          console.log(dicNationIAP);
+          console.log(dicPackageIAP);
         }
       }
       
@@ -65,6 +99,7 @@ class CryptoDashboard extends PureComponent {
           ccu:dashboarResult.CCU,
           dau:dashboarResult.DAU,
           nru:dashboarResult.NRU,
+          pu:dashboarResult.PU,
         })
       }
     );
@@ -95,7 +130,8 @@ class CryptoDashboard extends PureComponent {
           <CCU ccu={this.state.ccu}  />
           <DAU dau={this.state.dau} />
           <NRU nru={this.state.nru} />
-          <PU dir={rtl.direction} />
+          <PU pu={this.state.pu} />
+         
         </Row>
         <Row>
           <TradeHistory />

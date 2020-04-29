@@ -66,7 +66,7 @@ export default class PU extends PureComponent {
             <div className="dashboard__total dashboard__total--area">
               <TrendingUpIcon className="dashboard__trend-icon" />
               <p className="dashboard__total-stat">
-                ${(activeItem.PU).toFixed(2)}
+                {this.props.pu}
               </p>
               <div className="dashboard__chart-container">
                 <ResponsiveContainer height={70}>
