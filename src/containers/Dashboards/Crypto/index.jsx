@@ -108,8 +108,6 @@ class CryptoDashboard extends PureComponent {
               .sort((a, b) => b.total - a.total);
 
             console.log('totalIAP: ' + totalIAP);
-            console.log(lsCountry);
-            console.log(lsPackage);
           }
         }
       })
@@ -156,7 +154,9 @@ class CryptoDashboard extends PureComponent {
         <Row>
           <CryptotrendsToday
             total={this.state.totalIAP}
-            lsCountryIAP={this.state.lsCountryIAP}
+            lsCountryIAP={
+              this.state.lsCountryIAP ? this.state.lsCountryIAP : []
+            }
           />
           <TradeHistory
             title="IAP by Country"

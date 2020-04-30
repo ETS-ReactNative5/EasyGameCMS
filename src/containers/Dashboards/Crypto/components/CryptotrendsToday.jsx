@@ -15,6 +15,40 @@ const data01 = [
   { name: 'Ripple', value: 9934, fill: '#ff4861' },
 ];
 
+const COLORS = [
+  '#0088FE',
+  '#00C49F',
+  '#FFBB28',
+  '#FF8042',
+  '#9f68c1',
+  '#80f818',
+  '#d91a9e',
+  '#f97a9b',
+  '#e1829b',
+  '#836d3f',
+
+  '#02a8b3',
+  '#e94af3',
+  '#f91422',
+  '#ec4478',
+  '#34c3b2',
+  '#c6364d',
+  '#fd5277',
+  '#96e485',
+  '#c79c5a',
+
+  '#55648f',
+  '#e5327d',
+  '#bcdc19',
+  '#48f866',
+  '#0a22d7',
+  '#d2087e',
+  '#4963aa',
+  '#137e22',
+  '#4d082b',
+  '#404f4b',
+];
+
 const style = (dir) => {
   const left = dir === 'ltr' ? { left: 0 } : { right: 0 };
   return {
@@ -95,17 +129,15 @@ class CryptotrendsToday extends PureComponent {
                 {...getTooltipStyles(themeName)}
               />
               <Pie
-                data={this.props.lsCountryIAP}
+                data={this.props.lsCountryIAP.map((item, index) => {
+                  item.fill = COLORS[index % COLORS.length];
+                  return item;
+                })}
                 dataKey="total"
                 cy={175}
                 innerRadius={100}
                 outerRadius={160}
-                label={(value) => {
-                  return {
-                    value: `$${value.value.toFixed(2)}`,
-                    position: 'insideStart',
-                  };
-                }}
+                label={(value) => value.name}
                 onMouseMove={this.onMouseMove}
               />
               {/* <Legend
