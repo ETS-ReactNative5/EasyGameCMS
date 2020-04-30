@@ -1,84 +1,56 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Table } from 'reactstrap';
 import Panel from '../../../../shared/components/Panel';
 
-const TradeHistory = ({ t }) => (
-  <Panel
-    xl={4}
-    lg={5}
-    md={12}
-    xs={12}
-    title={t('dashboard_crypto.trade_history')}
-    subhead="Ratings by Market Capitalization"
-  >
-    <Table responsive striped>
-      <thead>
-        <tr>
-          <th>Coin</th>
-          <th>Cost</th>
-          <th>Change%</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><p className="bold-text dashboard__btc">BTC</p></td>
-          <td>$ 134,23</td>
-          <td>+12,21 %</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__eth">ETH</p></td>
-          <td>$ 12,23</td>
-          <td>+0,21 %</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__neo">NEO</p></td>
-          <td>$ 112,23</td>
-          <td>-2,27 %</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__ste">STE</p></td>
-          <td>$ 84,23</td>
-          <td>-10,01 %</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__eos">EOS</p></td>
-          <td>$ 134,23</td>
-          <td>$ 134,23</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__lit">LIT</p></td>
-          <td>$ 94,23</td>
-          <td>-1,96 %</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__lit">LIT</p></td>
-          <td>$ 94,23</td>
-          <td>-1,96 %</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__lit">LIT</p></td>
-          <td>$ 94,23</td>
-          <td>-1,96 %</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__lit">LIT</p></td>
-          <td>$ 94,23</td>
-          <td>-1,96 %</td>
-        </tr>
-        <tr>
-          <td><p className="bold-text dashboard__lit">LIT</p></td>
-          <td>$ 94,23</td>
-          <td>-1,96 %</td>
-        </tr>
-      </tbody>
-    </Table>
-  </Panel>
-);
+//export default withTranslation('common')(TradeHistory);
+export default class TradeHistory extends PureComponent {
+  static propTypes = {
+    dir: PropTypes.string.isRequired,
+  };
 
-TradeHistory.propTypes = {
-  t: PropTypes.func.isRequired,
-};
+  constructor() {
+    super();
+    this.state = {
+      activeIndex: 0,
+    };
+  }
 
-export default withTranslation('common')(TradeHistory);
+  renderTableData() {
+    console.log(this.props);
+    if (this.props.lsCountryIAP) {
+      return this.props.lsCountryIAP.map((nation) => {
+        const { name, count, total } = nation; //destructuring
+        return (
+          <tr>
+            <td>
+              <p className="bold-text dashboard__btc">{name}</p>
+            </td>
+            <td>{count}</td>
+            <td>{total}</td>
+          </tr>
+        );
+      });
+    } else {
+      return '';
+    }
+  }
+
+  render() {
+    return (
+      <Panel xl={4} lg={4} md={12} xs={12} title={this.props.title} subhead="">
+        <Table responsive striped>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Count</th>
+              <th>Total (USD)</th>
+            </tr>
+          </thead>
+          <tbody>{this.renderTableData()}</tbody>
+        </Table>
+      </Panel>
+    );
+  }
+}

@@ -1,46 +1,48 @@
 /* eslint-disable react/no-array-index-key */
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import {
-  PieChart, Pie, Tooltip, Legend, ResponsiveContainer,
-} from 'recharts';
+import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Panel from '../../../../shared/components/Panel';
 
 import getTooltipStyles from '../../../../shared/helpers';
 
-const data01 = [{ name: 'Bitcoin', value: 20432, fill: '#4ce1b6' },
+const data01 = [
+  { name: 'Bitcoin', value: 20432, fill: '#4ce1b6' },
   { name: 'Ethereum', value: 15432, fill: '#70bbfd' },
   { name: 'Bitcoin Cash', value: 12934, fill: '#f6da6e' },
-  { name: 'Ripple', value: 9934, fill: '#ff4861' }];
+  { name: 'Ripple', value: 9934, fill: '#ff4861' },
+];
 
 const style = (dir) => {
   const left = dir === 'ltr' ? { left: 0 } : { right: 0 };
-  return ({
+  return {
     ...left,
     width: 150,
     lineHeight: '24px',
     position: 'absolute',
-  });
+  };
 };
-
 
 const renderLegend = ({ payload }) => (
   <ul className="dashboard__chart-legend">
-    {
-        payload.map((entry, index) => (
-          <li key={`item-${index}`}><span style={{ backgroundColor: entry.color }} />{entry.value}</li>
-        ))
-      }
+    {payload.map((entry, index) => (
+      <li key={`item-${index}`}>
+        <span style={{ backgroundColor: entry.color }} />
+        {entry.value}
+      </li>
+    ))}
   </ul>
 );
 
 renderLegend.propTypes = {
-  payload: PropTypes.arrayOf(PropTypes.shape({
-    color: PropTypes.string,
-    vslue: PropTypes.string,
-  })).isRequired,
+  payload: PropTypes.arrayOf(
+    PropTypes.shape({
+      color: PropTypes.string,
+      vslue: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 class CryptotrendsToday extends PureComponent {
@@ -61,7 +63,10 @@ class CryptotrendsToday extends PureComponent {
   onMouseMove = (e) => {
     const { dir } = this.props;
     if (e.tooltipPosition) {
-      this.setState({ x: dir === 'ltr' ? e.tooltipPosition.x : e.tooltipPosition.x / 10, y: e.tooltipPosition.y });
+      this.setState({
+        x: dir === 'ltr' ? e.tooltipPosition.x : e.tooltipPosition.x / 10,
+        y: e.tooltipPosition.y,
+      });
     }
   };
 
@@ -70,31 +75,45 @@ class CryptotrendsToday extends PureComponent {
     const { x, y } = this.state;
 
     return (
-      <Panel
-        lg={12}
-        xl={6}
-        xs={12}
-        title={t('dashboard_crypto.cryptotrends_today')}
-        subhead="Top selling items statistic by last month"
-      >
+      <Panel lg={12} xl={4} xs={12} title="IAP Today" subhead="">
+        <div className="dashboard__stat dashboard__stat--budget">
+          <div className="dashboard__stat-main">
+            <p className="dashboard__stat-main-title">Total IAP</p>
+            <p className="dashboard__stat-main-number">${this.props.total}</p>
+            <hr />
+          </div>
+        </div>
         <div dir={dir}>
-          <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto" height={360}>
+          <ResponsiveContainer
+            className="dashboard__chart-pie dashboard__chart-pie--crypto"
+            height={360}
+          >
             <PieChart className="dashboard__chart-pie-container">
               <Tooltip
-                formatter={value => (`$${value.toFixed(2)}`)}
+                formatter={(value) => `$${value.toFixed(2)}`}
                 position={{ x, y }}
                 {...getTooltipStyles(themeName)}
               />
               <Pie
-                data={data01}
-                dataKey="value"
+                data={this.props.lsCountryIAP}
+                dataKey="total"
                 cy={175}
-                innerRadius={130}
+                innerRadius={100}
                 outerRadius={160}
-                label={value => (`$${value.value.toFixed(2)}`)}
+                label={(value) => {
+                  return {
+                    value: `$${value.value.toFixed(2)}`,
+                    position: 'insideStart',
+                  };
+                }}
                 onMouseMove={this.onMouseMove}
               />
-              <Legend layout="vertical" verticalAlign="bottom" wrapperStyle={style(dir)} content={renderLegend} />
+              {/* <Legend
+                layout="vertical"
+                verticalAlign="bottom"
+                wrapperStyle={style(dir)}
+                content={renderLegend}
+              /> */}
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -103,4 +122,6 @@ class CryptotrendsToday extends PureComponent {
   }
 }
 
-export default connect(state => ({ themeName: state.theme.className }))(withTranslation('common')(CryptotrendsToday));
+export default connect((state) => ({ themeName: state.theme.className }))(
+  withTranslation('common')(CryptotrendsToday)
+);

@@ -1,14 +1,11 @@
-import {
-  AUTHENTICATE,
-  AUTHENTICATE_ERROR_AUTH,
-} from '../actions/authActions';
+import { AUTHENTICATE, AUTHENTICATE_ERROR_AUTH } from '../actions/authActions';
 
 const initialState = {
-  fullName: 'Roman Johanson',
+  fullName: 'TuDT',
   avatar: '',
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case AUTHENTICATE:
       return { fullName: action.user.name, avatar: action.user.avatar };
