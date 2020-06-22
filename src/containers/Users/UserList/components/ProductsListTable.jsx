@@ -1,10 +1,20 @@
 /* eslint-disable react/no-unused-state */
 import React, { PureComponent } from 'react';
-import { ButtonToolbar, Card, CardBody, Col } from 'reactstrap';
+import { Button, Card, CardBody, Col, Row ,  Container,Label} from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MagnifyIcon from 'mdi-react/MagnifyIcon';
 import EditTable from '../../../../shared/components/table/EditableTable';
+import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
+import CellphoneKeyIcon from 'mdi-react/CellphoneKeyIcon';
+import DiamondStoneIcon from 'mdi-react/DiamondStoneIcon';
+import CommentAlertOutlineIcon from 'mdi-react/CommentAlertOutlineIcon';
+import CloseCircleOutlineIcon from 'mdi-react/CloseCircleOutlineIcon';
+import ThumbUpOutlineIcon from 'mdi-react/ThumbUpOutlineIcon';
+import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
+import { Field, reduxForm } from 'redux-form';
+import { withTranslation } from 'react-i18next';
+import TextField from '@material-ui/core/TextField';
 
 const Img1 = `${process.env.PUBLIC_URL}/img/for_store/vase.png`;
 const Img2 = `${process.env.PUBLIC_URL}/img/for_store/vase_2.png`;
@@ -35,13 +45,15 @@ StatusFormatter.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default class ProductsListTable extends PureComponent {
+
+
+class ProductsListTable extends PureComponent {
   constructor() {
     super();
     this.heads = [
       {
         key: 'id',
-        name: 'ID',
+        name: 'UserCode',
         width: 80,
         sortable: true,
       },
@@ -57,7 +69,7 @@ export default class ProductsListTable extends PureComponent {
       },
       {
         key: 'category',
-        name: 'Country',
+        name: 'MaxStage',
         sortable: true,
       },
       {
@@ -120,30 +132,168 @@ export default class ProductsListTable extends PureComponent {
     return rows;
   };
 
+
+  OnSearchClick = e => {
+    e.preventDefault();
+   console.log("click search")
+  };
+
+  handleSubmit = e => {
+
+   console.log("click search")
+  };
+
   render() {
     const { rows } = this.state;
 
     return (
       <Col md={12} lg={12}>
+        <Row>
         <Card>
+          <CardBody>
+          <div className="card__title">
+              <h5 className="bold-text">Search User</h5>
+              </div>
+ 
+                <form className="form" onSubmit = {this.handleSubmit(values => console.log(values))}>
+                <Container>
+                  <Row>
+                  <Col md={6} xl={3}>
+                   <div className="form__form-group-field">
+                  <div className="form__form-group-icon">
+                    <KeyVariantIcon />
+                  </div>
+                  <Field
+                    name="username"
+                    component="input"
+                    type="text"
+                    placeholder="_id"
+                  />
+                </div>
+                </Col>
+                <Col md={6} xl={3}>
+                   <div className="form__form-group-field">
+                  <div className="form__form-group-icon">
+                    <AccountOutlineIcon />
+                  </div>
+                  <Field
+                    name="username"
+                    component="input"
+                    type="text"
+                    placeholder="DisplayName"
+                  />
+                </div>
+                </Col>
+                <Col md={6} xl={3}>
+                   <div className="form__form-group-field">
+                  <div className="form__form-group-icon">
+                    <AccountOutlineIcon />
+                  </div>
+                  <Field
+                    name="username"
+                    component="input"
+                    type="text"
+                    placeholder="UserCode"
+                  />
+                </div>
+                </Col>
+                <Col md={6} xl={3}>
+                   <div className="form__form-group-field">
+                  <div className="form__form-group-icon">
+                    <CellphoneKeyIcon />
+                  </div>
+                  <Field
+                    name="username"
+                    component="input"
+                    type="text"
+                    placeholder="DeviceId"
+                  />
+                </div>
+                </Col>
+                </Row>
+               {/* <Row> <Label for="exampleEmail" sm={2}>Advance</Label></Row> */}
+                <Row >
+                  <Col md={4} xl={4} className="form--horizontal">
+                  <div className="form__form-group">
+                <span className="form__form-group-label"></span>
+                <div className="form__form-group-field">
+                <Label for="exampleEmail" sm={2}>Gem</Label>
+                <select className="select-options">
+                <option value="1">Lớn hơn</option>
+                <option value="-1">Nhỏ hơn</option>
+                <option value="0">Bằng</option>
+              </select>
+                  <div className="form__form-group-icon">
+                    <DiamondStoneIcon />
+                  </div>
+                  <Field
+                    name="gem"
+                    component="input"
+                    type="text"
+                    placeholder="Gem"
+                  />
+                </div>
+              </div> </Col>
+              <Col md={4} xl={4} className="form--horizontal">
+                  <div className="form__form-group">
+                <span className="form__form-group-label"></span>
+                <div className="form__form-group-field">
+                <Label for="exampleEmail" sm={2}>Coin</Label>
+                <select className="select-options">
+                <option value="1">Lớn hơn</option>
+                <option value="-1">Nhỏ hơn</option>
+                <option value="0">Bằng</option>
+              </select>
+                  <div className="form__form-group-icon">
+                    <DiamondStoneIcon />
+                  </div>
+                  <Field
+                    name="coin"
+                    component="input"
+                    type="text"
+                    placeholder="Coin"
+                  />
+                </div>
+              </div> </Col>
+              <Col md={4} xl={4} className="form--horizontal">
+                  <div className="form__form-group">
+                <span className="form__form-group-label"></span>
+                <div className="form__form-group-field">
+                <Label for="exampleEmail" sm={2}>Dragon</Label>
+                <select className="select-options">
+                <option value="1">Lớn hơn</option>
+                <option value="-1">Nhỏ hơn</option>
+                <option value="0">Bằng</option>
+              </select>
+                  <div className="form__form-group-icon">
+                    <DiamondStoneIcon />
+                  </div>
+                  <Field
+                    name="level"
+                    component="input"
+                    type="text"
+                    placeholder="DragonLevel"
+                  />
+                </div>
+              </div> </Col>
+            
+                </Row>
+              
+                  </Container>
+                  <Button className="icon" color="success" onClick={e => this.OnSearchClick(e)}><p> <MagnifyIcon /> Search</p></Button>
+                <Button className="icon" color="warning"><p><CloseCircleOutlineIcon /> Clear</p></Button>
+
+                </form>
+               
+       
+          </CardBody>
+        </Card>
+        </Row>
+        <Row>  <Card>
           <CardBody className="products-list">
             <div className="card__title">
-              <h5 className="bold-text">Products List</h5>
-              <ButtonToolbar className="products-list__btn-toolbar-top">
-                <form className="form">
-                  <div className="form__form-group products-list__search">
-                    <input placeholder="Search..." name="search" />
-                    <MagnifyIcon />
-                  </div>
-                </form>
-                <Link
-                  className="btn btn-primary products-list__btn-add"
-                  to="/e-commerce/product_edit"
-                >
-                  Add new product
-                </Link>
-              </ButtonToolbar>
-            </div>
+              <h5 className="bold-text">User List</h5>
+               </div>
             <p className="typography-message">
               Show
               <select className="select-options">
@@ -156,7 +306,15 @@ export default class ProductsListTable extends PureComponent {
             <EditTable heads={this.heads} rows={rows} enableRowSelect />
           </CardBody>
         </Card>
+     </Row>
+     
       </Col>
+  
     );
   }
 }
+
+
+export default reduxForm({
+  form: 'horizontal_form_layout_with_icons', // a unique identifier for this form
+})(withTranslation('common')(ProductsListTable));
