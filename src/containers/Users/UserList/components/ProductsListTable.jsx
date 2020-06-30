@@ -12,9 +12,10 @@ import CommentAlertOutlineIcon from 'mdi-react/CommentAlertOutlineIcon';
 import CloseCircleOutlineIcon from 'mdi-react/CloseCircleOutlineIcon';
 import ThumbUpOutlineIcon from 'mdi-react/ThumbUpOutlineIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm,formValues  } from 'redux-form';
 import { withTranslation } from 'react-i18next';
-import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
+import config from '../../../../config/appConfig';
 
 const Img1 = `${process.env.PUBLIC_URL}/img/for_store/vase.png`;
 const Img2 = `${process.env.PUBLIC_URL}/img/for_store/vase_2.png`;
@@ -45,30 +46,28 @@ StatusFormatter.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-
-
 class ProductsListTable extends PureComponent {
   constructor() {
     super();
     this.heads = [
       {
-        key: 'id',
-        name: 'UserCode',
+        key: '_id',
+        name: 'id',
         width: 80,
         sortable: true,
       },
       {
-        key: 'photo',
-        name: 'Photo',
+        key: 'UserCode',
+        name: 'UserCode',
         formatter: PhotoFormatter,
       },
       {
-        key: 'name',
+        key: 'DisplayName',
         name: 'DisplayName',
         sortable: true,
       },
       {
-        key: 'category',
+        key: 'MaxStage',
         name: 'MaxStage',
         sortable: true,
       },
@@ -97,9 +96,20 @@ class ProductsListTable extends PureComponent {
     ];
 
     this.state = {
-      rows: this.createRows(17),
+      rows: [],//this.createRows(17),
       pageOfItems: [],
+      UserId:"",
+      DisplayName:"",
+      UserCode:"",
+      DeviceId:""
+
     };
+  }
+
+   onChangeValue = e =>{
+    var data = {}
+    data[e.target.name] = e.target.value;
+    this.setState(data);
   }
 
   onChangePage = pageOfItems => {
@@ -135,16 +145,66 @@ class ProductsListTable extends PureComponent {
 
   OnSearchClick = e => {
     e.preventDefault();
-   console.log("click search")
+  console.log("UserId ",this.state.UserId);
+  console.log("DisplayName ",this.state.DisplayName);
+  console.log("UserCode ",this.state.UserCode);
+  console.log("DeviceId ",this.state.DeviceId);
+
+var userList = [];
+
+  axios.post(config.base_url + config.url_FindUser, {
+    UserId: this.state.UserId,
+    DisplayName:this.state.DisplayName,
+    UserCode:this.state.UserCode,
+    DeviceId:this.state.DeviceId,
+    Coin:this.state.Coin,
+    Gem:this.state.Gem,
+    Level:this.state.Level,
+  })
+  .then(function(response) {
+    console.log(response);
+    if (response.status === 200) {
+      let data = response.data;
+      console.log('data', data);
+      if (data.status === 'ok') {
+        userList = data.data;
+      }
+    }
+  })
+  .catch(function(error) {
+    console.log(error);
+  })
+  .then(() => {
+    console.log(userList);
+    this.setState({
+      rows:userList,
+    })
+  });
+
+};
+
+  OnClearClick = e => {
+    e.preventDefault();
+
+  this.setState({
+  UserId:'',
+  DisplayName:'',
+  UserCode:'',
+  DeviceId:'',
+
+  });
+
+
   };
 
-  handleSubmit = e => {
 
-   console.log("click search")
+  handleSubmit = e => {
+    const uName = formValues("username");
+    console.log("click search " + uName);
   };
 
   render() {
-    const { rows } = this.state;
+    //const { rows } = this.state;
 
     return (
       <Col md={12} lg={12}>
@@ -154,21 +214,18 @@ class ProductsListTable extends PureComponent {
           <div className="card__title">
               <h5 className="bold-text">Search User</h5>
               </div>
- 
-                <form className="form" onSubmit = {this.handleSubmit(values => console.log(values))}>
+                <form className="form" >
                 <Container>
-                  <Row>
-                  <Col md={6} xl={3}>
+                <Row>
+                <Col md={6} xl={3}>
                    <div className="form__form-group-field">
                   <div className="form__form-group-icon">
                     <KeyVariantIcon />
                   </div>
-                  <Field
-                    name="username"
-                    component="input"
-                    type="text"
-                    placeholder="_id"
-                  />
+                  <input name="UserId" 
+                  value = {this.state.UserId}
+                   placeholder="_id" 
+                   onChange={this.onChangeValue} />
                 </div>
                 </Col>
                 <Col md={6} xl={3}>
@@ -176,11 +233,11 @@ class ProductsListTable extends PureComponent {
                   <div className="form__form-group-icon">
                     <AccountOutlineIcon />
                   </div>
-                  <Field
-                    name="username"
-                    component="input"
-                    type="text"
+                  <input
+                    name="DisplayName"
+                    value = {this.state.DisplayName}
                     placeholder="DisplayName"
+                    onChange={this.onChangeValue}
                   />
                 </div>
                 </Col>
@@ -189,10 +246,10 @@ class ProductsListTable extends PureComponent {
                   <div className="form__form-group-icon">
                     <AccountOutlineIcon />
                   </div>
-                  <Field
-                    name="username"
-                    component="input"
-                    type="text"
+                  <input
+                    name="UserCode"
+                    value = {this.state.UserCode}
+                    onChange={this.onChangeValue}
                     placeholder="UserCode"
                   />
                 </div>
@@ -202,10 +259,10 @@ class ProductsListTable extends PureComponent {
                   <div className="form__form-group-icon">
                     <CellphoneKeyIcon />
                   </div>
-                  <Field
-                    name="username"
-                    component="input"
-                    type="text"
+                  <input
+                    name="DeviceId"
+                    value = {this.state.DeviceId}
+                    onChange={this.onChangeValue}
                     placeholder="DeviceId"
                   />
                 </div>
@@ -279,9 +336,9 @@ class ProductsListTable extends PureComponent {
             
                 </Row>
               
-                  </Container>
-                  <Button className="icon" color="success" onClick={e => this.OnSearchClick(e)}><p> <MagnifyIcon /> Search</p></Button>
-                <Button className="icon" color="warning"><p><CloseCircleOutlineIcon /> Clear</p></Button>
+                </Container>
+                <Button className="icon" color="success" onClick={e => this.OnSearchClick(e)}><p> <MagnifyIcon /> Search</p></Button>
+                <Button className="icon" color="warning" onClick={e => this.OnClearClick(e)}><p><CloseCircleOutlineIcon /> Clear</p></Button>
 
                 </form>
                
@@ -303,7 +360,7 @@ class ProductsListTable extends PureComponent {
               </select>
               entries
             </p>
-            <EditTable heads={this.heads} rows={rows} enableRowSelect />
+            <EditTable heads={this.heads} rows={this.state.rows} enableRowSelect />
           </CardBody>
         </Card>
      </Row>
@@ -316,5 +373,5 @@ class ProductsListTable extends PureComponent {
 
 
 export default reduxForm({
-  form: 'horizontal_form_layout_with_icons', // a unique identifier for this form
+  form: 'user-search-form', // a unique identifier for this form
 })(withTranslation('common')(ProductsListTable));

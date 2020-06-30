@@ -26,6 +26,7 @@ export default class EditableTable extends PureComponent {
     let { rows } = this.state;
     rows = rows.slice();
 
+
     for (let i = fromRow; i <= toRow; i += 1) {
       const rowToUpdate = rows[i];
       rows[i] = update(rowToUpdate, { $merge: updated });
@@ -52,6 +53,7 @@ export default class EditableTable extends PureComponent {
 
   rowGetter = (i) => {
     const { rows } = this.state;
+    console.log("Rows: ",rows);
     return rows[i];
   };
 
