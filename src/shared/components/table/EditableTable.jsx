@@ -53,7 +53,6 @@ export default class EditableTable extends PureComponent {
 
   rowGetter = (i) => {
     const { rows } = this.state;
-    console.log("Rows: ",rows);
     return rows[i];
   };
 

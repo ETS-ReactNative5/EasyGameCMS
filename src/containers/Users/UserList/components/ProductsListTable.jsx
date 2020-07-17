@@ -10,7 +10,7 @@ import CellphoneKeyIcon from 'mdi-react/CellphoneKeyIcon';
 import DiamondStoneIcon from 'mdi-react/DiamondStoneIcon';
 import CommentAlertOutlineIcon from 'mdi-react/CommentAlertOutlineIcon';
 import CloseCircleOutlineIcon from 'mdi-react/CloseCircleOutlineIcon';
-import ThumbUpOutlineIcon from 'mdi-react/ThumbUpOutlineIcon';
+import ReactDataGrid from 'react-data-grid';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import { Field, reduxForm,formValues  } from 'redux-form';
 import { withTranslation } from 'react-i18next';
@@ -36,10 +36,10 @@ PhotoFormatter.propTypes = {
 };
 
 const StatusFormatter = ({ value }) =>
-  value === 'Online' ? (
-    <span className="badge badge-success">Online</span>
+  value === 'Active' ? (
+    <span className="badge badge-success">Active</span>
   ) : (
-    <span className="badge badge-disabled">Offline</span>
+    <span className="badge badge-danger">Baned</span>
   );
 
 StatusFormatter.propTypes = {
@@ -52,14 +52,15 @@ class ProductsListTable extends PureComponent {
     this.heads = [
       {
         key: '_id',
-        name: 'id',
-        width: 80,
+        name: '_id',
+        width: 200,
         sortable: true,
       },
       {
         key: 'UserCode',
         name: 'UserCode',
-        formatter: PhotoFormatter,
+        width: 100,
+        sortable: true,
       },
       {
         key: 'DisplayName',
@@ -69,20 +70,21 @@ class ProductsListTable extends PureComponent {
       {
         key: 'MaxStage',
         name: 'MaxStage',
+        width: 80,
         sortable: true,
       },
       {
-        key: 'quantity',
+        key: 'Gem',
         name: 'Gem',
         sortable: true,
       },
       {
-        key: 'articul',
-        name: 'Gold',
+        key: 'Coin',
+        name: 'Coin',
         sortable: true,
       },
       {
-        key: 'price',
+        key: 'Stone',
         name: 'Stone',
         sortable: true,
       },
@@ -96,7 +98,7 @@ class ProductsListTable extends PureComponent {
     ];
 
     this.state = {
-      rows: [],//this.createRows(17),
+      rows:[],// this.createRows(15),
       pageOfItems: [],
       UserId:"",
       DisplayName:"",
@@ -123,16 +125,16 @@ class ProductsListTable extends PureComponent {
     ).toLocaleDateString();
 
   createRows = numberOfRows => {
-    const rows = [];
+    var rows = [];
 
     for (let i = 1; i < numberOfRows + 1; i += 1) {
       rows.push({
-        id: Math.min(99999, Math.round(Math.random() * 99999 + 1000)),
-        photo: [Img1, Img2, Img3, Img4, Img5, Img6, Img7][
+        _id: Math.min(99999, Math.round(Math.random() * 99999 + 1000)),
+        UserCode: [Img1, Img2, Img3, Img4, Img5, Img6, Img7][
           Math.floor(Math.random() * 7)
         ],
-        name: ['Glass Vase', 'Pillow'][Math.floor(Math.random() * 2)],
-        category: ['VN', 'US'][Math.floor(Math.random() * 2)],
+        DisplayName: ['Glass Vase', 'Pillow'][Math.floor(Math.random() * 2)],
+        MaxStage: ['VN', 'US'][Math.floor(Math.random() * 2)],
         quantity: Math.min(400, Math.round(Math.random() * 400)),
         articul: `${Math.min(99999, Math.round(Math.random() * 99999 + 1))}`,
         price: Math.min(1000, Math.random() * 1000 + 20).toFixed(2),
@@ -153,10 +155,10 @@ class ProductsListTable extends PureComponent {
 var userList = [];
 
   axios.post(config.base_url + config.url_FindUser, {
-    UserId: this.state.UserId,
-    DisplayName:this.state.DisplayName,
-    UserCode:this.state.UserCode,
-    DeviceId:this.state.DeviceId,
+    UserId: this.state.UserId.trim(),
+    DisplayName:this.state.DisplayName.trim(),
+    UserCode:this.state.UserCode.trim(),
+    DeviceId:this.state.DeviceId.trim(),
     Coin:this.state.Coin,
     Gem:this.state.Gem,
     Level:this.state.Level,
@@ -175,9 +177,11 @@ var userList = [];
     console.log(error);
   })
   .then(() => {
-    console.log(userList);
+   
     this.setState({
       rows:userList,
+    },()=>{
+      console.log(this.state.rows);
     })
   });
 
@@ -203,8 +207,13 @@ var userList = [];
     console.log("click search " + uName);
   };
 
+  rowGetter = (i) => {
+    const { rows } = this.state;
+    return rows[i];
+  };
+
   render() {
-    //const { rows } = this.state;
+    const { rows } = this.state;
 
     return (
       <Col md={12} lg={12}>
@@ -269,7 +278,7 @@ var userList = [];
                 </Col>
                 </Row>
                {/* <Row> <Label for="exampleEmail" sm={2}>Advance</Label></Row> */}
-                <Row >
+                {/* <Row >
                   <Col md={4} xl={4} className="form--horizontal">
                   <div className="form__form-group">
                 <span className="form__form-group-label"></span>
@@ -333,16 +342,13 @@ var userList = [];
                   />
                 </div>
               </div> </Col>
-            
-                </Row>
-              
-                </Container>
+
+                </Row>*/}
+                <div className="card__title"/>
+                </Container> 
                 <Button className="icon" color="success" onClick={e => this.OnSearchClick(e)}><p> <MagnifyIcon /> Search</p></Button>
                 <Button className="icon" color="warning" onClick={e => this.OnClearClick(e)}><p><CloseCircleOutlineIcon /> Clear</p></Button>
-
                 </form>
-               
-       
           </CardBody>
         </Card>
         </Row>
@@ -360,7 +366,19 @@ var userList = [];
               </select>
               entries
             </p>
-            <EditTable heads={this.heads} rows={this.state.rows} enableRowSelect />
+            <div className="table">
+        <ReactDataGrid
+          onGridSort={this.handleGridSort}
+          enableCellSelect
+          columns={this.heads}
+          rowGetter={this.rowGetter}
+          rowsCount={rows.length}
+          onGridRowsUpdated={this.handleGridRowsUpdated}
+          rowHeight={44}
+          minColumnWidth={100}
+        />
+      </div>
+            {/* <EditTable heads={this.heads} rows={this.state.rows} enableRowSelect /> */}
           </CardBody>
         </Card>
      </Row>
