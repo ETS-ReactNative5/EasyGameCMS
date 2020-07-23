@@ -1,10 +1,9 @@
 /* eslint-disable react/no-unused-state */
 import React, { PureComponent } from 'react';
-import { Button, Card, CardBody, Col, Row ,  Container,Label} from 'reactstrap';
+import { Button, Card, CardBody, Col, Row ,  Container,Table,} from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MagnifyIcon from 'mdi-react/MagnifyIcon';
-import EditTable from '../../../../shared/components/table/EditableTable';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import CellphoneKeyIcon from 'mdi-react/CellphoneKeyIcon';
 import DiamondStoneIcon from 'mdi-react/DiamondStoneIcon';
@@ -16,6 +15,8 @@ import { Field, reduxForm,formValues  } from 'redux-form';
 import { withTranslation } from 'react-i18next';
 import axios from 'axios';
 import config from '../../../../config/appConfig';
+
+import Panel from '../../../../shared/components/Panel';
 
 const Img1 = `${process.env.PUBLIC_URL}/img/for_store/vase.png`;
 const Img2 = `${process.env.PUBLIC_URL}/img/for_store/vase_2.png`;
@@ -76,16 +77,19 @@ class ProductsListTable extends PureComponent {
       {
         key: 'Gem',
         name: 'Gem',
+        width: 100,
         sortable: true,
       },
       {
         key: 'Coin',
         name: 'Coin',
+        width: 100,
         sortable: true,
       },
       {
         key: 'Stone',
         name: 'Stone',
+        width: 100,
         sortable: true,
       },
       {
@@ -103,8 +107,8 @@ class ProductsListTable extends PureComponent {
       UserId:"",
       DisplayName:"",
       UserCode:"",
-      DeviceId:""
-
+      DeviceId:"",
+      selectedIndexes: [],
     };
   }
 
@@ -144,6 +148,23 @@ class ProductsListTable extends PureComponent {
     return rows;
   };
 
+  onRowsSelected = rows => {
+    console.log(rows);
+    this.setState({
+      selectedIndexes: this.state.selectedIndexes.concat(
+        rows.map(r => r.rowIdx)
+      )
+    });
+  };
+
+  onRowsDeselected = rows => {
+    let rowIndexes = rows.map(r => r.rowIdx);
+    this.setState({
+      selectedIndexes: this.state.selectedIndexes.filter(
+        i => rowIndexes.indexOf(i) === -1
+      )
+    });
+  };
 
   OnSearchClick = e => {
     e.preventDefault();
@@ -368,12 +389,20 @@ var userList = [];
             </p>
             <div className="table">
         <ReactDataGrid
-          onGridSort={this.handleGridSort}
-          enableCellSelect
+          // onGridSort={this.handleGridSort}
+          rowKey="_id"
+          rowSelection={{
+            showCheckbox: true,
+            enableShiftSelect: true,
+            onRowsSelected: this.onRowsSelected,
+            onRowsDeselected: this.onRowsDeselected,
+            selectBy: {
+              indexes: this.state.selectedIndexes
+            }
+          }}
           columns={this.heads}
           rowGetter={this.rowGetter}
           rowsCount={rows.length}
-          onGridRowsUpdated={this.handleGridRowsUpdated}
           rowHeight={44}
           minColumnWidth={100}
         />
@@ -383,6 +412,57 @@ var userList = [];
         </Card>
      </Row>
      
+     <Panel lg={12} title="List User">
+    <Table responsive className="table--bordered dashboard__table-crypto">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>_id</th>
+          <th>UserCode</th>
+          <th>DisplayName</th>
+          <th>MaxStage</th>
+          <th>Gem</th>
+          <th>Coin</th>
+          <th>Stone</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((crypto, index) => (
+          <tr key={index}>
+            <td>{index + 1}</td>
+           
+            <td dir="ltr">{crypto._id}</td>
+            <td dir="ltr">{crypto.UserCode}</td>
+            <td dir="ltr">{crypto.DisplayName}</td>
+            <td dir="ltr">{crypto.MaxStage}</td>
+            <td>{crypto.Gem}</td>
+            <td>{crypto.Coin}</td>
+            <td>{crypto.Stone}</td>
+            {/* <td className="dashboard__table-crypto-chart">
+              <ResponsiveContainer height={36}>
+                <AreaChart data={data} margin={{ top: 0, left: 0, bottom: 0 }}>
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area
+                    type="monotone"
+                    dataKey={crypto.chart}
+                    fill="#4ce1b6"
+                    stroke="#4ce1b6"
+                    fillOpacity={0.2}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </td> */}
+            {/* <td>
+              <DropDownMore index={index} handleDeleteRow={e => onDeleteCryptoTableData(index, e)} />
+            </td> */}
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  </Panel>
+
+
       </Col>
   
     );
