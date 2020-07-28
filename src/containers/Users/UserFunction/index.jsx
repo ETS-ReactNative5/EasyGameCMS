@@ -8,6 +8,9 @@ import VerticalForm from './components/VerticalForm';
 import VerticalFormWithIcons from './components/VerticalFormWithIcons';
 import VerticalFormHalf from './components/VerticalFormHalf';
 import showResults from '../../Form/Show';
+
+import config from '../../../config/appConfig';
+
 const axios = require('axios');
 
 function submitViewUser(values) {
@@ -25,7 +28,7 @@ function submitViewUser(values) {
   //     console.log(error);
   //   });
   window.open(
-    'http://113.190.253.188:8080/user/getUserData?userID='+values.userID,
+      config.cms_url + `/user/getUserData?userID=` +values.userID,
     '_blank'
   );
 
@@ -36,7 +39,7 @@ function CopyDataUser(values) {
 
   axios
     .get(
-      `http://113.190.253.188:8080/user/cloneData?fromID=${values.userFrom}&toID=${values.userTo}`
+      config.cms_url + `/user/cloneData?fromID=${values.userFrom}&toID=${values.userTo}`
     )
     .then(function(response) {
       // handle success
