@@ -340,7 +340,7 @@ var userList = [];
               <h5 className="bold-text">User List</h5>
               <div style={{float: 'right'}}>
               <Expand title="View"  color="primary" />
-              <Expand title="Ban"  style={banStyle}  onClick={}/>
+              <Expand title="Ban"  style={banStyle}  />
               
               <Expand  color="danger" title="Delete" /></div>
               
