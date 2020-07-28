@@ -15,16 +15,9 @@ import { Field, reduxForm,formValues  } from 'redux-form';
 import { withTranslation } from 'react-i18next';
 import axios from 'axios';
 import config from '../../../../config/appConfig';
+import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
+import Expand from '../../../../shared/components/Expand';
 
-import Panel from '../../../../shared/components/Panel';
-
-const Img1 = `${process.env.PUBLIC_URL}/img/for_store/vase.png`;
-const Img2 = `${process.env.PUBLIC_URL}/img/for_store/vase_2.png`;
-const Img3 = `${process.env.PUBLIC_URL}/img/for_store/vase_3.png`;
-const Img4 = `${process.env.PUBLIC_URL}/img/for_store/fur.png`;
-const Img5 = `${process.env.PUBLIC_URL}/img/for_store/pillow.png`;
-const Img6 = `${process.env.PUBLIC_URL}/img/for_store/pillow_2.png`;
-const Img7 = `${process.env.PUBLIC_URL}/img/for_store/pillow_dog.png`;
 
 const PhotoFormatter = ({ value }) => (
   <div className="products-list__img-wrap">
@@ -50,56 +43,7 @@ StatusFormatter.propTypes = {
 class ProductsListTable extends PureComponent {
   constructor() {
     super();
-    this.heads = [
-      {
-        key: '_id',
-        name: '_id',
-        width: 200,
-        sortable: true,
-      },
-      {
-        key: 'UserCode',
-        name: 'UserCode',
-        width: 100,
-        sortable: true,
-      },
-      {
-        key: 'DisplayName',
-        name: 'DisplayName',
-        sortable: true,
-      },
-      {
-        key: 'MaxStage',
-        name: 'MaxStage',
-        width: 80,
-        sortable: true,
-      },
-      {
-        key: 'Gem',
-        name: 'Gem',
-        width: 100,
-        sortable: true,
-      },
-      {
-        key: 'Coin',
-        name: 'Coin',
-        width: 100,
-        sortable: true,
-      },
-      {
-        key: 'Stone',
-        name: 'Stone',
-        width: 100,
-        sortable: true,
-      },
-      {
-        key: 'status',
-        name: 'Status',
-        sortable: true,
-        formatter: StatusFormatter,
-        width: 110,
-      },
-    ];
+
 
     this.state = {
       rows:[],// this.createRows(15),
@@ -118,6 +62,36 @@ class ProductsListTable extends PureComponent {
     this.setState(data);
   }
 
+  onBanClick = e =>{
+    if(this.state.selectedIndexes.length > 0)
+    {
+      axios
+      .post(config.base_url + config.url_gameStats, {
+        userID: sessionStorage.getItem('userID'),
+      })
+      .then(function(response) {
+        console.log(response);
+      });
+    }
+  }
+
+  onSelectedChange = e =>{
+    if(e && e.target)
+    {
+      if(e.target.checked)
+      {
+        this.state.selectedIndexes.push(e.target.name);
+      }
+      else
+      {
+        this.state.selectedIndexes.splice(this.state.selectedIndexes.indexOf(e.target.name),1);
+      }
+
+      console.log(this.state.selectedIndexes);
+    }
+
+  }
+
   onChangePage = pageOfItems => {
     // update state with new page of items
     this.setState({ pageOfItems });
@@ -128,26 +102,7 @@ class ProductsListTable extends PureComponent {
       start.getTime() + Math.random() * (end.getTime() - start.getTime())
     ).toLocaleDateString();
 
-  createRows = numberOfRows => {
-    var rows = [];
-
-    for (let i = 1; i < numberOfRows + 1; i += 1) {
-      rows.push({
-        _id: Math.min(99999, Math.round(Math.random() * 99999 + 1000)),
-        UserCode: [Img1, Img2, Img3, Img4, Img5, Img6, Img7][
-          Math.floor(Math.random() * 7)
-        ],
-        DisplayName: ['Glass Vase', 'Pillow'][Math.floor(Math.random() * 2)],
-        MaxStage: ['VN', 'US'][Math.floor(Math.random() * 2)],
-        quantity: Math.min(400, Math.round(Math.random() * 400)),
-        articul: `${Math.min(99999, Math.round(Math.random() * 99999 + 1))}`,
-        price: Math.min(1000, Math.random() * 1000 + 20).toFixed(2),
-        status: ['Online', 'Offline'][Math.floor(Math.random() * 2)],
-      });
-    }
-    return rows;
-  };
-
+ 
   onRowsSelected = rows => {
     console.log(rows);
     this.setState({
@@ -235,6 +190,12 @@ var userList = [];
 
   render() {
     const { rows } = this.state;
+
+    const banStyle = {
+
+      backgroundColor: "#ffa500",
+
+    };
 
     return (
       <Col md={12} lg={12}>
@@ -377,7 +338,13 @@ var userList = [];
           <CardBody className="products-list">
             <div className="card__title">
               <h5 className="bold-text">User List</h5>
-               </div>
+              <div style={{float: 'right'}}>
+              <Expand title="View"  color="primary" />
+              <Expand title="Ban"  style={banStyle}  onClick={}/>
+              
+              <Expand  color="danger" title="Delete" /></div>
+              
+            </div>
             <p className="typography-message">
               Show
               <select className="select-options">
@@ -388,7 +355,7 @@ var userList = [];
               entries
             </p>
             <div className="table">
-        <ReactDataGrid
+        {/* <ReactDataGrid
           // onGridSort={this.handleGridSort}
           rowKey="_id"
           rowSelection={{
@@ -405,20 +372,14 @@ var userList = [];
           rowsCount={rows.length}
           rowHeight={44}
           minColumnWidth={100}
-        />
-      </div>
-            {/* <EditTable heads={this.heads} rows={this.state.rows} enableRowSelect /> */}
-          </CardBody>
-        </Card>
-     </Row>
-     
-     <Panel lg={12} title="List User">
-    <Table responsive className="table--bordered dashboard__table-crypto">
+        /> */}
+          <Table responsive className="table--bordered dashboard__table-crypto">
       <thead>
         <tr>
           <th>#</th>
           <th>_id</th>
           <th>UserCode</th>
+          <th>DataVersion</th>
           <th>DisplayName</th>
           <th>MaxStage</th>
           <th>Gem</th>
@@ -434,11 +395,29 @@ var userList = [];
            
             <td dir="ltr">{crypto._id}</td>
             <td dir="ltr">{crypto.UserCode}</td>
+            <td dir="ltr">{crypto.DataVersion}</td>
             <td dir="ltr">{crypto.DisplayName}</td>
             <td dir="ltr">{crypto.MaxStage}</td>
             <td>{crypto.Gem}</td>
             <td>{crypto.Coin}</td>
             <td>{crypto.Stone}</td>
+            <td>
+            <Field
+                  name={crypto._id}
+                  id={index}
+                  component={renderCheckBoxField}
+                  className="colored-click"
+                  onChange = {this.onSelectedChange}
+                />
+              {/* <input
+          className="checkbox-btn__checkbox"
+          type="checkbox"
+          id={crypto._id}
+          name={index}
+          onChange={this.onSelectedChange}
+          checked = 'false'
+        /> */}
+        </td>
             {/* <td className="dashboard__table-crypto-chart">
               <ResponsiveContainer height={36}>
                 <AreaChart data={data} margin={{ top: 0, left: 0, bottom: 0 }}>
@@ -460,9 +439,13 @@ var userList = [];
         ))}
       </tbody>
     </Table>
-  </Panel>
-
-
+ 
+      </div>
+            {/* <EditTable heads={this.heads} rows={this.state.rows} enableRowSelect /> */}
+          </CardBody>
+        </Card>
+     </Row>
+    
       </Col>
   
     );
