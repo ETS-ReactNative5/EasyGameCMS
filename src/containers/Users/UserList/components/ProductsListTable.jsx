@@ -69,7 +69,7 @@ class ProductsListTable extends PureComponent {
     if(this.state.selectedIndexes.length > 0)
     {
       axios
-      .post(config.base_url_user + config.url_BanListUser, {
+      .post(config.base_url + config.url_BanListUser, {
         lsUser: this.state.selectedIndexes,
         desc:this.state.banReason,
       })
