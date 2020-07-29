@@ -20,23 +20,30 @@ export default class Expand extends PureComponent {
     style:{},
   };
 
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
     this.state = {
       load: false,
     };
   }
 
   onLoad = () => {
+    console.log("handleClick");
+    if(this.props.handleClick)
+      this.props.handleClick();
+    
     this.setState({
       load: true,
     });
+  
     this.request();
   };
 
   request = () => {
     // your async logic here
-    setTimeout(() => this.setState({ load: false }), 5000);
+    console.log("handleClick");
+    setTimeout(() => this.setState({ load: false }), 1000);
   };
 
   render() {

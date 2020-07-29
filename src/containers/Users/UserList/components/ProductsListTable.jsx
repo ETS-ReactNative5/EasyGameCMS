@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unused-state */
 import React, { PureComponent } from 'react';
-import { Button, Card, CardBody, Col, Row ,  Container,Table,} from 'reactstrap';
+import { Button, Card, CardBody, Col, Row ,Modal,  Container,Table,ButtonToolbar,} from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MagnifyIcon from 'mdi-react/MagnifyIcon';
@@ -9,7 +9,6 @@ import CellphoneKeyIcon from 'mdi-react/CellphoneKeyIcon';
 import DiamondStoneIcon from 'mdi-react/DiamondStoneIcon';
 import CommentAlertOutlineIcon from 'mdi-react/CommentAlertOutlineIcon';
 import CloseCircleOutlineIcon from 'mdi-react/CloseCircleOutlineIcon';
-import ReactDataGrid from 'react-data-grid';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import { Field, reduxForm,formValues  } from 'redux-form';
 import { withTranslation } from 'react-i18next';
@@ -17,7 +16,7 @@ import axios from 'axios';
 import config from '../../../../config/appConfig';
 import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
 import Expand from '../../../../shared/components/Expand';
-
+import classNames from 'classnames';
 
 const PhotoFormatter = ({ value }) => (
   <div className="products-list__img-wrap">
@@ -44,6 +43,7 @@ class ProductsListTable extends PureComponent {
   constructor() {
     super();
 
+    this.toggle = this.toggle.bind(this)
 
     this.state = {
       rows:[],// this.createRows(15),
@@ -53,6 +53,8 @@ class ProductsListTable extends PureComponent {
       UserCode:"",
       DeviceId:"",
       selectedIndexes: [],
+      modal: false,
+      banReason:"",
     };
   }
 
@@ -63,11 +65,13 @@ class ProductsListTable extends PureComponent {
   }
 
   onBanClick = e =>{
+    e.preventDefault();
     if(this.state.selectedIndexes.length > 0)
     {
       axios
-      .post(config.base_url + config.url_gameStats, {
-        userID: sessionStorage.getItem('userID'),
+      .post(config.base_url_user + config.url_BanListUser, {
+        lsUser: this.state.selectedIndexes,
+        desc:this.state.banReason,
       })
       .then(function(response) {
         console.log(response);
@@ -123,10 +127,6 @@ class ProductsListTable extends PureComponent {
 
   OnSearchClick = e => {
     e.preventDefault();
-  console.log("UserId ",this.state.UserId);
-  console.log("DisplayName ",this.state.DisplayName);
-  console.log("UserCode ",this.state.UserCode);
-  console.log("DeviceId ",this.state.DeviceId);
 
 var userList = [];
 
@@ -178,15 +178,32 @@ var userList = [];
   };
 
 
-  handleSubmit = e => {
-    const uName = formValues("username");
-    console.log("click search " + uName);
-  };
 
   rowGetter = (i) => {
     const { rows } = this.state;
     return rows[i];
   };
+
+
+  handleDateChange(date) {
+    this.setState({
+      startDate: date,
+    });
+  }
+
+  handleTitleChange(event) {
+    this.setState({
+      banReason: event.target.value,
+    });
+  }
+  handleDescriptionChange(event) {
+    this.setState({
+      banReason: event.target.value,
+    });
+  }
+  toggle() {
+    this.setState({ modal: false });
+  }
 
   render() {
     const { rows } = this.state;
@@ -196,6 +213,12 @@ var userList = [];
       backgroundColor: "#ffa500",
 
     };
+    const modalClasses = classNames({
+      'todo__add-modal': true,
+    },);
+
+
+  
 
     return (
       <Col md={12} lg={12}>
@@ -340,7 +363,10 @@ var userList = [];
               <h5 className="bold-text">User List</h5>
               <div style={{float: 'right'}}>
               <Expand title="View"  color="primary" />
-              <Expand title="Ban"  style={banStyle}  />
+              <Expand title="Ban"  style={banStyle} handleClick={()=> {
+                this.setState({modal:true});
+                console.log("Ban click");
+              }} />
               
               <Expand  color="danger" title="Delete" /></div>
               
@@ -445,7 +471,67 @@ var userList = [];
           </CardBody>
         </Card>
      </Row>
-    
+     <Modal
+          isOpen = {this.state.modal} 
+          toggle= {this.toggle}
+          className={modalClasses}
+        >
+          <div className="form">
+            {/* <div className="form__form-group">
+              <span className="form__form-group-label typography-message">Title</span>
+              <div className="form__form-group-field">
+                <input
+                  type="text"
+                  placeholder="title.."
+                  required
+                  value={this.state.banReason}
+                  onChange={this.handleTitleChange.bind(this)}
+                />
+              </div>
+            </div> */}
+
+            <div className="form__form-group">
+              <span className="form__form-group-label">Lý do ban</span>
+              <div className="form__form-group-field">
+                <textarea
+                  placeholder="Description"
+                  required
+                  value={this.state.banReason}
+                  onChange={this.handleDescriptionChange.bind(this)}
+                />
+              </div>
+            </div>
+
+            {/* <div className="form__form-group">
+              <span className="form__form-group-label">Due Date</span>
+              <div className="form__form-group-field priority">
+                {/* <DatePicker
+                  dateFormat="yyyy/MM/dd"
+                  selected={startDate}
+                  onChange={this.handleDateChange}
+                />
+              </div>
+            </div> */}
+
+            {/* <div className="form__form-group">
+              <span className="form__form-group-label">Priority</span>
+              <div className="form__form-group-field priority">
+                <Select
+                  options={priorityOptions}
+                  onChange={this.handlePriorityChange}
+                  defaultValue={priority}
+                /> 
+              </div>
+            </div> */}
+
+
+            <ButtonToolbar className="form__button-toolbar">
+              <Button color="primary" type="submit" onClick={this.onBanClick}>Ban</Button>
+              <Button type="button" onClick={this.toggle}>Cancel</Button>
+            </ButtonToolbar>
+          </div>
+        </Modal>
+     
       </Col>
   
     );
