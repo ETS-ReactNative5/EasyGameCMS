@@ -68,15 +68,33 @@ class ProductsListTable extends PureComponent {
     e.preventDefault();
     if(this.state.selectedIndexes.length > 0)
     {
-      axios
-      .post(config.base_url + config.url_BanListUser, {
+      var msg = '';
+      axios.post(config.base_url + config.url_BanListUser, {
         lsUser: this.state.selectedIndexes,
         desc:this.state.banReason,
       })
       .then(function(response) {
+        if(response.data.status ==='ok')
+        {
+          msg = 'banned success!'; 
+          
+        }
+        else
+        {
+          msg = 'can not ban user';
+        }
+      
         console.log(response);
+      }).then(()=>{
+        this.setState({banReason:'',selectedIndexes:[],modal: false});
+        window.alert(msg);
       });
     }
+    else
+  {
+    window.alert('Chọn User cần ban');
+  }
+
   }
 
   onSelectedChange = e =>{
