@@ -430,6 +430,7 @@ var userList = [];
           <th>Coin</th>
           <th>Stone</th>
           <th>Status</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -445,6 +446,7 @@ var userList = [];
             <td>{crypto.Gem}</td>
             <td>{crypto.Coin}</td>
             <td>{crypto.Stone}</td>
+            <td>{StatusFormatter('Active')}</td>
             <td>
             <Field
                   name={crypto._id}
