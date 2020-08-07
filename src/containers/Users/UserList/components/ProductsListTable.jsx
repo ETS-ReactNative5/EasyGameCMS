@@ -64,6 +64,19 @@ class ProductsListTable extends PureComponent {
     this.setState(data);
   }
 
+onViewDataClick = e=>
+{
+  if(this.state.selectedIndexes.length > 0)
+    {
+     
+      window.open(
+        config.cms_url + `/user/getUserData?userID=` +this.state.selectedIndexes[0],
+      '_blank'
+    );
+        
+    }
+}
+
   onBanClick = e =>{
     e.preventDefault();
     if(this.state.selectedIndexes.length > 0)
@@ -380,10 +393,9 @@ var userList = [];
             <div className="card__title">
               <h5 className="bold-text">User List</h5>
               <div style={{float: 'right'}}>
-              <Expand title="View"  color="primary" />
+              <Expand title="View"  color="primary" handleClick={e => this.onViewDataClick(e)}/>
               <Expand title="Ban"  style={banStyle} handleClick={()=> {
                 this.setState({modal:true});
-                console.log("Ban click");
               }} />
               
               <Expand  color="danger" title="Delete" /></div>
