@@ -187,6 +187,7 @@ var userList = [];
    
     this.setState({
       rows:userList,
+      selectedIndexes:[],
     },()=>{
       console.log(this.state.rows);
     })
