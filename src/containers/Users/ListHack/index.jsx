@@ -7,7 +7,7 @@ const ProductsList = () => (
     <Row>
       <Col md={12}>
         <h3 className="page-title">User Hack Manager</h3>
-        <h3 className="page-subhead subhead">User Funtion
+        <h3 className="page-subhead subhead">Danh Sách Người Chơi Nghi Ngờ Hack
         </h3>
       </Col>
     </Row>

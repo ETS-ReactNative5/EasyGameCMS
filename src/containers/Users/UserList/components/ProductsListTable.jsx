@@ -87,7 +87,7 @@ onViewDataClick = e=>
       var msg = '';
       axios.post(config.base_url + config.url_BanListUser, {
         lsUser: this.state.selectedIndexes,
-        banType:1,
+        banType:this.state.banMode,
         desc:this.state.banReason,
       })
       .then(function(response) {

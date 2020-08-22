@@ -32,7 +32,7 @@ PhotoFormatter.propTypes = {
 };
 
 const StatusFormatter = ( value ) =>
-  value === 0 ? (
+  (value === 0 || value === undefined) ? (
     <span className="badge badge-success">Active</span>
   ) : (
     <span className="badge badge-danger">Baned</span>
@@ -94,7 +94,7 @@ onViewDataClick = e=>
       var msg = '';
       axios.post(config.base_url + config.url_BanListUser, {
         lsUser: this.state.selectedIndexes,
-        banType:1,
+        banType:this.state.banMode,
         desc:this.state.banReason,
       })
       .then(function(response) {
