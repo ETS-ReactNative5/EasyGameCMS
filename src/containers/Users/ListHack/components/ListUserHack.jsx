@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import MagnifyIcon from 'mdi-react/MagnifyIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import CellphoneKeyIcon from 'mdi-react/CellphoneKeyIcon';
-import DiamondStoneIcon from 'mdi-react/DiamondStoneIcon';
+import ListRemoveIcon from 'mdi-react/PlaylistRemoveIcon';
+import DatePicker from 'react-datepicker';
 import CommentAlertOutlineIcon from 'mdi-react/CommentAlertOutlineIcon';
 import CloseCircleOutlineIcon from 'mdi-react/CloseCircleOutlineIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
@@ -30,8 +31,8 @@ PhotoFormatter.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-const StatusFormatter = ({ value }) =>
-  value === 'Active' ? (
+const StatusFormatter = ( value ) =>
+  value === 0 ? (
     <span className="badge badge-success">Active</span>
   ) : (
     <span className="badge badge-danger">Baned</span>
@@ -41,7 +42,7 @@ StatusFormatter.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-class ProductsListTable extends PureComponent {
+class ListHackTable extends PureComponent {
   constructor() {
     super();
 
@@ -53,12 +54,17 @@ class ProductsListTable extends PureComponent {
       UserId:"",
       DisplayName:"",
       UserCode:"",
-      DeviceId:"",
+      isBanned:0,
+      TypeMod:'',
       selectedIndexes: [],
       modal: false,
       banReason:"",
       banMode:0,
+      startDate: new Date(),
     };
+
+    this.OnSearchClick();
+
   }
 
    onChangeValue = e =>{
@@ -71,7 +77,6 @@ onViewDataClick = e=>
 {
   if(this.state.selectedIndexes.length > 0)
     {
-     
       window.open(
         config.cms_url + `/user/getUserData?userID=` +this.state.selectedIndexes[0],
       '_blank'
@@ -161,18 +166,17 @@ onViewDataClick = e=>
   };
 
   OnSearchClick = e => {
+    if(e)
     e.preventDefault();
 
 var userList = [];
 
-  axios.post(config.base_url + config.url_FindUser, {
+  axios.post(config.base_url + config.url_FindHackUser, {
     UserId: this.state.UserId.trim(),
     DisplayName:this.state.DisplayName.trim(),
     UserCode:this.state.UserCode.trim(),
-    DeviceId:this.state.DeviceId.trim(),
-    Coin:this.state.Coin,
-    Gem:this.state.Gem,
-    Level:this.state.Level,
+    isBanned:this.state.isBanned,
+    TypeMod:this.state.TypeMod,
   })
   .then(function(response) {
     console.log(response);
@@ -226,6 +230,22 @@ var userList = [];
       startDate: date,
     });
   }
+
+formatStringDate(date)
+{
+  if(date.length === 8)
+    return date.substring(0,4) +  '/' + date.substring(4,6) + '/' + date.substring(6);
+  else 
+    {
+      var tmpDate = new Date(0);
+      tmpDate.setUTCMilliseconds(date);
+      var month = (tmpDate.getMonth() + 1) < 10 ? '0' + (tmpDate.getMonth() + 1) : (tmpDate.getMonth() + 1);
+      var day = tmpDate.getDate()  <10 ? '0' + tmpDate.getDate()  : (tmpDate.getDate() );
+
+      return tmpDate.getFullYear() + "/" + month + "/" + day;
+    }
+
+}
 
   handleTitleChange(event) {
     this.setState({
@@ -304,7 +324,7 @@ var userList = [];
                   />
                 </div>
                 </Col>
-                <Col md={6} xl={3}>
+                <Col md={6} xl={2}>
                    <div className="form__form-group-field">
                   <div className="form__form-group-icon">
                     <AccountOutlineIcon />
@@ -317,17 +337,43 @@ var userList = [];
                   />
                 </div>
                 </Col>
-                <Col md={6} xl={3}>
+                <Col md={6} xl={2}>
                    <div className="form__form-group-field">
                   <div className="form__form-group-icon">
                     <CellphoneKeyIcon />
                   </div>
-                  <input
+                   <div className="form__form-group">
+              
+              <div className="form__form-group-field priority">
+                <DatePicker
+                  dateFormat="yyyy/MM/dd"
+                  selected={this.state.startDate}
+                  onChange={this.handleDateChange}
+                />
+                
+              </div>
+              <span className="form__form-group-label">Hack Date (yyyy/MM/dd)</span>
+            </div>
+                  {/* *<input
                     name="DeviceId"
                     value = {this.state.DeviceId}
                     onChange={this.onChangeValue}
                     placeholder="DeviceId"
-                  />
+                  /> */}
+                </div>
+                </Col>
+                <Col md={6} xl={2}>
+                   <div className="form__form-group-field">
+                  <div className="form__form-group-icon">
+                    <ListRemoveIcon />
+                  </div>
+                  <select className="select-options" name = "isBanned" onChange={this.onChangeValue}>
+                <option value="-1">Tất Cả</option>
+                <option value="0">Chưa Ban</option>
+                <option value="1">Ban</option>
+                <option value="2">Ban & Xóa Data</option>
+                <option value="3">Ban Arena</option>
+              </select>
                 </div>
                 </Col>
                 </Row>
@@ -409,7 +455,7 @@ var userList = [];
         <Row>  <Card>
           <CardBody className="products-list">
             <div className="card__title">
-              <h5 className="bold-text">User List</h5>
+              <h5 className="bold-text">List User Hack</h5>
               <div style={{float: 'right'}}>
               <Expand title="View"  color="primary" handleClick={e => this.onViewDataClick(e)}/>
               <Expand title="Ban"  style={banStyle} handleClick={()=> {
@@ -422,9 +468,9 @@ var userList = [];
             <p className="typography-message">
               Show
               <select className="select-options">
-                <option value="10">10</option>
-                <option value="20">20</option>
                 <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
               </select>
               entries
             </p>
@@ -453,33 +499,38 @@ var userList = [];
           <th>#</th>
           <th>_id</th>
           <th>UserCode</th>
-          <th>DataVersion</th>
           <th>DisplayName</th>
-          <th>MaxStage</th>
-          <th>Gem</th>
-          <th>Coin</th>
-          <th>Stone</th>
+          <th>CreatedAt</th>
+          <th>HackDate</th>
+          <th>LastIAP</th>
+          <th>TypeMod</th>
+          <th>Description</th>
+
           <th>Status</th>
-          <th></th>
+          <th><Field
+                  component={renderCheckBoxField}
+                  className="colored-click"
+                  onChange = {this.onSelectedChange}
+                /></th>
         </tr>
       </thead>
       <tbody>
-        {rows.map((crypto, index) => (
+        {rows.map((user, index) => (
           <tr key={index}>
             <td>{index + 1}</td>
            
-            <td dir="ltr">{crypto._id}</td>
-            <td dir="ltr">{crypto.UserCode}</td>
-            <td dir="ltr">{crypto.DataVersion}</td>
-            <td dir="ltr">{crypto.DisplayName}</td>
-            <td dir="ltr">{crypto.MaxStage}</td>
-            <td>{crypto.Gem}</td>
-            <td>{crypto.Coin}</td>
-            <td>{crypto.Stone}</td>
-            <td>{StatusFormatter('Active')}</td>
+            <td dir="ltr">{user.User}</td>
+            <td dir="ltr">{user.UserCode}</td>
+            <td dir="ltr">{user.DisplayName}</td>
+            <td dir="ltr">{this.formatStringDate(user.CreatedAt.toString())}</td>
+            <td>{this.formatStringDate(user.HackDate.toString())}</td>
+            <td dir="ltr">{user.LastIAP}</td>
+            <td>{user.TypeMod}</td>
+            <td>{user.Desc}</td>
+            <td>{StatusFormatter(user.Banned)}</td>
             <td>
             <Field
-                  name={crypto._id}
+                  name={user.User}
                   id={index}
                   component={renderCheckBoxField}
                   className="colored-click"
@@ -630,4 +681,4 @@ var userList = [];
 
 export default reduxForm({
   form: 'user-search-form', // a unique identifier for this form
-})(withTranslation('common')(ProductsListTable));
+})(withTranslation('common')(ListHackTable));

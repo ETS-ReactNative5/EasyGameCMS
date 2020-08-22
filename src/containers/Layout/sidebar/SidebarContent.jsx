@@ -61,6 +61,11 @@ class SidebarContent extends Component {
               route="/users/userfunction"
               onClick={this.hideSidebar}
             />
+              <SidebarLink
+              title="List Hack"
+              route="/users/listhack"
+              onClick={this.hideSidebar}
+            />
           </SidebarCategory>
 
           <SidebarLink

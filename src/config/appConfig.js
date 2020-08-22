@@ -6,4 +6,5 @@
    url_gameStats: '/GetGameStats',
    url_FindUser: '/FindUser',
    url_BanListUser: '/BanListUser',
+   url_FindHackUser:'/FindHackUser',
  };
