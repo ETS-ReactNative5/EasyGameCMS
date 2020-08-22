@@ -55,6 +55,8 @@ class ListHackTable extends PureComponent {
       DisplayName:"",
       UserCode:"",
       isBanned:0,
+      Limit:30,
+      Page:0,
       TypeMod:'',
       selectedIndexes: [],
       modal: false,
@@ -177,6 +179,8 @@ var userList = [];
     UserCode:this.state.UserCode.trim(),
     isBanned:this.state.isBanned,
     TypeMod:this.state.TypeMod,
+    Limit:this.state.Limit,
+    Page:this.state.Page,
   })
   .then(function(response) {
     console.log(response);
@@ -467,7 +471,7 @@ formatStringDate(date)
             </div>
             <p className="typography-message">
               Show
-              <select className="select-options">
+              <select className="select-options" name = "Limit" onChange={this.onChangeValue}>
                 <option value="30">30</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
