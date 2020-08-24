@@ -134,9 +134,43 @@ onViewDataClick = e=>
       }
 
       console.log(this.state.selectedIndexes);
+      this.setState({rows:this.state.rows})
     }
 
   }
+
+  renderCheckbox = e =>{
+    console.log(e.name);
+    console.log(this.state.selectedIndexes);
+
+    if(this.state.selectedIndexes.indexOf(e.name) >= 0)
+      return true;
+    else
+      return false
+  }
+
+onSelectAll = e =>{
+  if(e && e.target)
+  {
+    if(e.target.checked)
+    {
+      console.log(this.state.rows);
+      this.setState({selectedIndexes:this.state.rows.map(item=> item.User)},()=>{
+        this.setState({ rows: this.state.rows.map(user=>{
+          user.isSelected = true;
+          return user;
+        }) });
+      }) ;
+    }
+    else
+    {
+      this.setState({selectedIndexes:[]}); 
+    }
+
+    
+  }
+
+}
 
   onChangePage = pageOfItems => {
     // update state with new page of items
@@ -149,23 +183,23 @@ onViewDataClick = e=>
     ).toLocaleDateString();
 
  
-  onRowsSelected = rows => {
-    console.log(rows);
-    this.setState({
-      selectedIndexes: this.state.selectedIndexes.concat(
-        rows.map(r => r.rowIdx)
-      )
-    });
-  };
+  // onRowsSelected = rows => {
+  //   console.log(rows);
+  //   this.setState({
+  //     selectedIndexes: this.state.selectedIndexes.concat(
+  //       rows.map(r => r.rowIdx)
+  //     )
+  //   });
+  // };
 
-  onRowsDeselected = rows => {
-    let rowIndexes = rows.map(r => r.rowIdx);
-    this.setState({
-      selectedIndexes: this.state.selectedIndexes.filter(
-        i => rowIndexes.indexOf(i) === -1
-      )
-    });
-  };
+  // onRowsDeselected = rows => {
+  //   let rowIndexes = rows.map(r => r.rowIdx);
+  //   this.setState({
+  //     selectedIndexes: this.state.selectedIndexes.filter(
+  //       i => rowIndexes.indexOf(i) === -1
+  //     )
+  //   });
+  // };
 
   OnSearchClick = e => {
     if(e)
@@ -199,7 +233,7 @@ var userList = [];
    
     this.setState({
       rows:userList,
-      selectedIndexes:[],
+      //selectedIndexes:[],
     },()=>{
       console.log(this.state.rows);
     })
@@ -514,12 +548,15 @@ formatStringDate(date)
           <th><Field
                   component={renderCheckBoxField}
                   className="colored-click"
-                  onChange = {this.onSelectedChange}
+                  onChange = {this.onSelectAll}
                 /></th>
         </tr>
       </thead>
       <tbody>
-        {rows.map((user, index) => (
+        {
+        rows.map((user, index) => (
+         
+
           <tr key={index}>
             <td>{index + 1}</td>
            
@@ -541,12 +578,13 @@ formatStringDate(date)
                   onChange = {this.onSelectedChange}
                 />
               {/* <input
-          className="checkbox-btn__checkbox"
+          //className="checkbox-btn__checkbox"
           type="checkbox"
-          id={crypto._id}
-          name={index}
+          name={user.User}
+          id={index}
           onChange={this.onSelectedChange}
-          checked = 'false'
+          //checked = {this.renderCheckbox}
+          checked = {user.isSelected}
         /> */}
         </td>
             {/* <td className="dashboard__table-crypto-chart">
