@@ -52,7 +52,7 @@ const renderTooltipContent = (o) => {
     	<p ><b>{`${label} `}</b></p>
       <ul className="list">
           <li style={{color: '#0088FE'}}>
-            {`Total: ${payload[0].payload.Yotal} `}
+            {`Total: ${payload[0].payload.Total} `}
           </li>
           <li style={{color: '#FF8042'}}>
             {`Win: ${payload[0].payload.Win} `}
