@@ -37,6 +37,7 @@ class CryptoDashboard extends PureComponent {
       totalIAP: 0,
       lsIAPCountry: [],
       lsIAPPackage: [],
+      lsWinrate:[],
     };
   }
   componentDidMount() {
@@ -44,6 +45,7 @@ class CryptoDashboard extends PureComponent {
     var lsIAP = [];
     var lsCountry = [];
     var lsPackage = [];
+    var lsRate = [];
 
     var totalIAP = 0;
 
@@ -125,6 +127,38 @@ class CryptoDashboard extends PureComponent {
           lsPackageIAP: lsPackage,
         });
       });
+
+      axios
+      .post(config.base_url + config.url_winRate, {
+        startStage: 0,
+        endStage:500,
+      })
+      .then(function(response) {
+        console.log('__________________________',response);
+        if (response.status === 200) {
+          let data = response.data;
+          console.log('data', data);
+          if (data.status === 'ok') {
+            lsRate = data.data;
+          }
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+      .then(() => {
+        this.setState({
+         lsWinrate:lsRate.map(item=>{
+           item.name = 'Stage_'+ item.Level;
+           if(item.total > 0)
+            item.rate = Math.round((item.Win / item.Total) * 100 ) ;
+            else
+            item.rate = 0;
+          return item;
+        })
+        });
+      });
+
   }
 
   onDeleteCryptoTableData = (index, e) => {
@@ -166,7 +200,7 @@ class CryptoDashboard extends PureComponent {
             title="IAP by Package"
             lsCountryIAP={this.state.lsPackageIAP}
           />
-          <BtcEth dir={rtl.direction} theme={theme.className} />
+          <BtcEth dir={rtl.direction} data={this.state.lsWinrate} theme={theme.className} />
 
           <TopTen
             cryptoTable={cryptoTable}
