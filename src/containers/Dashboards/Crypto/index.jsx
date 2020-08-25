@@ -131,7 +131,7 @@ class CryptoDashboard extends PureComponent {
       axios
       .post(config.base_url + config.url_winRate, {
         startStage: 0,
-        endStage:500,
+        endStage:501,
       })
       .then(function(response) {
         console.log('__________________________',response);
