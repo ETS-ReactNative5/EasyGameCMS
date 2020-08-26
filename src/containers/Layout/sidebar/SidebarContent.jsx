@@ -67,13 +67,20 @@ class SidebarContent extends Component {
               onClick={this.hideSidebar}
             />
           </SidebarCategory>
-
-          <SidebarLink
+          <SidebarCategory title="Game Settings" icon="rocket">
+            <SidebarLink
+              title="Battle Pass"
+              route="/game/battlepass"
+              onClick={this.hideSidebar}
+            />
+            <SidebarLink
             title="GiftCode"
-            icon="gift"
             route="/giftcode"
             onClick={this.hideSidebar}
           />
+          </SidebarCategory>
+
+         
 
 
           {/* <SidebarLink

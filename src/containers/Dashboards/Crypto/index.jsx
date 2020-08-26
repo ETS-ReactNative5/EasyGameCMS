@@ -150,6 +150,7 @@ class CryptoDashboard extends PureComponent {
         this.setState({
          lsWinrate:lsRate.map(item=>{
            item.name = 'Stage_'+ item.Level;
+           item.Total = item.Win + item.Lose;
            if(item.Total > 0)
             item.rate = Math.round((item.Win / item.Total) * 100 ) ;
             else
