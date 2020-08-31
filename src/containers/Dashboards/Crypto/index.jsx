@@ -11,13 +11,13 @@ import TradeHistory from './components/TradeHistory';
 import BtcEth from './components/BtcEth';
 import CryptotrendsToday from './components/CryptotrendsToday';
 import TopTen from './components/TopTen';
-import PlaceOrder from './components/PlaceOrder';
+//import PlaceOrder from './components/PlaceOrder';
 import { deleteCryptoTableData } from '../../../redux/actions/cryptoTableActions';
 import { CryptoTableProps } from '../../../shared/prop-types/TablesProps';
 import { ThemeProps, RTLProps } from '../../../shared/prop-types/ReducerProps';
 import config from '../../../config/appConfig';
 import axios from 'axios';
-
+var winRateIndex = 0;
 class CryptoDashboard extends PureComponent {
   static propTypes = {
     t: PropTypes.func.isRequired,
@@ -37,9 +37,13 @@ class CryptoDashboard extends PureComponent {
       totalIAP: 0,
       lsIAPCountry: [],
       lsIAPPackage: [],
-      lsWinrate:[],
+      lsWinrate:[{name:"Stage_1",Win:0,Lose:0,Total:0}],
+     
     };
   }
+
+
+
   componentDidMount() {
     var dashboarResult;
     var lsIAP = [];
@@ -117,21 +121,78 @@ class CryptoDashboard extends PureComponent {
         console.log(error);
       })
       .then(() => {
-        this.setState({
-          ccu: dashboarResult.CCU,
-          dau: dashboarResult.DAU,
-          nru: dashboarResult.NRU,
-          pu: dashboarResult.PU,
-          totalIAP: totalIAP,
-          lsCountryIAP: lsCountry,
-          lsPackageIAP: lsPackage,
+
+        axios
+        .post(config.base_url + config.url_winRate, {
+          startStage: 0,
+          endStage:501,
+        })
+        .then(function(response) {
+          console.log('__________________________',response);
+          if (response.status === 200) {
+            let data = response.data;
+            console.log('data', data);
+            if (data.status === 'ok') {
+              lsRate = data.data;
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+        .then(() => {
+          this.setState({
+            ccu: dashboarResult.CCU,
+            dau: dashboarResult.DAU,
+            nru: dashboarResult.NRU,
+            pu: dashboarResult.PU,
+            totalIAP: totalIAP,
+            lsCountryIAP: lsCountry,
+            lsPackageIAP: lsPackage,
+           lsWinrate:lsRate.map(item=>{
+             item.name = 'Stage_'+ item.Level;
+             item.Total = item.Win + item.Lose;
+             if(item.Total > 0)
+              item.rate = Math.round((item.Win / item.Total) * 100 ) ;
+              else
+              item.rate = 0;
+            return item;
+          })
+          });
         });
+
+
+
       });
 
+  }
+
+
+
+
+  onDeleteCryptoTableData = (index, e) => {
+    const { dispatch, cryptoTable } = this.props;
+    e.preventDefault();
+    const arrayCopy = [...cryptoTable];
+    arrayCopy.splice(index, 1);
+    dispatch(deleteCryptoTableData(arrayCopy));
+  };
+
+  onStageCallback = (e) => {
+    console.log(e.target.name);
+    if(e.target.name === 'back')
+    {
+      if(winRateIndex !== 0)
+      winRateIndex --;
+    }
+    else
+      winRateIndex ++;
+
+      var lsRate = [];
       axios
       .post(config.base_url + config.url_winRate, {
-        startStage: 0,
-        endStage:501,
+        startStage: winRateIndex * 500,
+        endStage:(winRateIndex + 1) * 500 + 1,
       })
       .then(function(response) {
         console.log('__________________________',response);
@@ -161,14 +222,6 @@ class CryptoDashboard extends PureComponent {
       });
 
   }
-
-  onDeleteCryptoTableData = (index, e) => {
-    const { dispatch, cryptoTable } = this.props;
-    e.preventDefault();
-    const arrayCopy = [...cryptoTable];
-    arrayCopy.splice(index, 1);
-    dispatch(deleteCryptoTableData(arrayCopy));
-  };
 
   render() {
     const { t, cryptoTable, rtl, theme } = this.props;
@@ -201,7 +254,7 @@ class CryptoDashboard extends PureComponent {
             title="IAP by Package"
             lsCountryIAP={this.state.lsPackageIAP}
           />
-          <BtcEth dir={rtl.direction} data={this.state.lsWinrate} theme={theme.className} />
+          <BtcEth dir={rtl.direction} data={this.state.lsWinrate} theme={theme.className} callback={this.onStageCallback} />
 
           <TopTen
             cryptoTable={cryptoTable}

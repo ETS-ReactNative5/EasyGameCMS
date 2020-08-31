@@ -53,7 +53,7 @@ export default class DAU extends PureComponent {
   render() {
     const { dir } = this.props;
     const { activeIndex } = this.state;
-    const activeItem = data[activeIndex];
+    //const activeItem = data[activeIndex];
 
     return (
       <Col md={12} xl={3} lg={6} xs={12}>
