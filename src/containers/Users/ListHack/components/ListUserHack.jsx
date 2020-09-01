@@ -54,7 +54,7 @@ class ListHackTable extends PureComponent {
       UserId:"",
       DisplayName:"",
       UserCode:"",
-      isBanned:0,
+      isBanned:-1,
       Limit:30,
       Page:0,
       TypeMod:'',
@@ -269,7 +269,7 @@ var userList = [];
     });
   }
 
-formatStringDate(date)
+  formatStringDate(date)
 {
   if(date.length === 8)
     return date.substring(0,4) +  '/' + date.substring(4,6) + '/' + date.substring(6);
