@@ -9,6 +9,7 @@ import NRU from './components/NRU';
 import PU from './components/PU';
 import TradeHistory from './components/TradeHistory';
 import BtcEth from './components/BtcEth';
+import WinRateBR from './components/WinRateBR';
 import CryptotrendsToday from './components/CryptotrendsToday';
 import TopTen from './components/TopTen';
 //import PlaceOrder from './components/PlaceOrder';
@@ -255,6 +256,9 @@ class CryptoDashboard extends PureComponent {
             lsCountryIAP={this.state.lsPackageIAP}
           />
           <BtcEth dir={rtl.direction} data={this.state.lsWinrate} theme={theme.className} callback={this.onStageCallback} />
+
+          <WinRateBR dir={rtl.direction}  theme={theme.className}  />
+
 
           <TopTen
             cryptoTable={cryptoTable}
