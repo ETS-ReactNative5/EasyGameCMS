@@ -40,7 +40,7 @@ class SidebarContent extends Component {
             onClick={this.hideSidebar}
           />
           <SidebarLink
-            title="Marketing Dashboard"
+            title="GameDesign Dashboard"
             icon="home"
             route="/dashboard_default"
             onClick={this.hideSidebar}
