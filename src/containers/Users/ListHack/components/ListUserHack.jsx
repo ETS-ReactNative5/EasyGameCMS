@@ -111,6 +111,7 @@ onViewDataClick = e=>
         console.log(response);
       }).then(()=>{
         this.setState({banReason:'',selectedIndexes:[],modal: false});
+        this.OnSearchClick();
         window.alert(msg);
       });
     }
@@ -134,7 +135,7 @@ onViewDataClick = e=>
       }
 
       console.log(this.state.selectedIndexes);
-      this.setState({rows:this.state.rows})
+      //this.setState({rows:this.state.rows})
     }
 
   }
@@ -233,7 +234,7 @@ var userList = [];
    
     this.setState({
       rows:userList,
-      //selectedIndexes:[],
+      selectedIndexes:[],
     },()=>{
       console.log(this.state.rows);
     })
@@ -326,7 +327,6 @@ var userList = [];
       { value: '4', label: 'Reset Data Only' },
     ];
   
-
     return (
       <Col md={12} lg={12}>
         <Row>
@@ -380,18 +380,28 @@ var userList = [];
                   <div className="form__form-group-icon">
                     <CellphoneKeyIcon />
                   </div>
-                   <div className="form__form-group">
+                   {/* <div className="form__form-group"> */}
               
-              <div className="form__form-group-field priority">
-                <DatePicker
+              {/* <div className="form__form-group-field"> */}
+              {/* <div className="form__form-group-field priority"> */}
+                {/* <DatePicker
                   dateFormat="yyyy/MM/dd"
                   selected={this.state.startDate}
                   onChange={this.handleDateChange}
-                />
-                
-              </div>
-              <span className="form__form-group-label">Hack Date (yyyy/MM/dd)</span>
-            </div>
+                /> */}
+                 <select className="select-options" name = "TypeMod" onChange={this.onChangeValue}>
+                <option value="">Loại Hack</option>
+                <option value="LEVEL_DRAGON">Level Dragon</option>
+                <option value="LEVEL_DRAGON_SAME">Level Dragon Same</option>
+                <option value="NUMBER_DRAGON">Hack Rồng</option>
+                <option value="GEM">Hack Gem</option>
+                <option value="GOLD">Hack Gold</option>
+                <option value="BATTLE_POINT">Hack BattlePoint</option>
+                <option value="MOD_DAMAGE_HP ">Hack Dame</option>
+              </select>
+              {/* </div> */}
+              {/* <span className="form__form-group-label">Hack Date (yyyy/MM/dd)</span> */}
+            {/* </div> */}
                   {/* *<input
                     name="DeviceId"
                     value = {this.state.DeviceId}
