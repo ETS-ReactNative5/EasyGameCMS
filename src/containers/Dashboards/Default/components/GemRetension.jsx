@@ -51,9 +51,10 @@ const renderTooltipContent = (o) => {
   	<div className="customized-tooltip-content">
     	<p ><b>{`${label} `}</b></p>
       <ul className="list">
-          {/* <li style={{color: '#0088FE'}}>
-            {`Total: ${payload[0].payload.Total} `}
+          <li style={{color: '#0088FE'}}>
+            {`Users: ${payload[0].payload.users} `}
           </li>
+           {/*
           <li style={{color: '#FF8042'}}>
             {`Win: ${payload[0].payload.Win} `}
           </li> */}
