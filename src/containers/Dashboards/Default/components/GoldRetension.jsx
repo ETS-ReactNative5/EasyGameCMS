@@ -42,7 +42,6 @@ const renderTooltipContent = (o) => {
 	const { payload, label } = o;
  //const total = payload.reduce((result, entry) => (result + entry.value), 0);
 // console.log(o);
- console.log(payload);
  if(payload.length === 0)
   return '';
  else
