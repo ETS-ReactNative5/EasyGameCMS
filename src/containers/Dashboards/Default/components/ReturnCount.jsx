@@ -31,7 +31,7 @@ const brush = (theme) => {
 
 
 const toPercent = (decimal) => {
-	return `${decimal}%`;
+	return `${decimal}`;
 };
 
 const renderTooltipContent = (o) => {
@@ -52,13 +52,14 @@ const renderTooltipContent = (o) => {
     	<p ><b>{`${label} `}</b></p>
       <ul className="list">
           <li style={{color: '#0088FE'}}>
-            {`Total: ${payload[0].payload.Total} `}
+            {`Users: ${payload[0].payload.users} `}
           </li>
+           {/*
           <li style={{color: '#FF8042'}}>
             {`Win: ${payload[0].payload.Win} `}
-          </li>
+          </li> */}
 	        <li >
-            {`${payload[0].name}: ${payload[0].value}% `}
+            {`${payload[0].name}: ${payload[0].value.toLocaleString()} `}
           </li>
       </ul>
     </div>
@@ -68,28 +69,27 @@ const renderTooltipContent = (o) => {
 } 
 
 
-const BtcEth = ({ theme, data,callback }) => (
+const BtcEth = ({ theme, dir, data,callback }) => (
   <Panel
     xl={12}
     lg={12}
     md={12}
     xs={12}
-    title="Level WinRate"
-    subhead="Tỷ lệ WinRate TotalWin/TotalPlay (Khi CurrentStage = MaxStage)  "
+    title="Return Count By Stage"
+    subhead="Số lần return trung bình của User theo Stage  "
   >
-    <div >
-    <Button name="back" className="icon" color="success" onClick={e => callback(e)}>Back</Button>
+    <div dir="ltr" >
+    {/* <Button name="back" className="icon" color="success" onClick={e => callback(e)}>Back</Button>
     <Button name="next" className="icon" color="success" onClick={e => callback(e)}>Next</Button>
+    className="dashboard__area" */}
       <ResponsiveContainer height={350} >
-
-       
-        <AreaChart  data={data} margin={{ top: 20, left: -20, bottom: 20 }}> 
+        <AreaChart  stackOffset="expand" data={data} margin={{ top: 20, left: -15, bottom: 20 }}> 
         {/* <AreaChart   stackOffset="expand" data={dataSet} margin={{ top: 20, left: -15, bottom: 20 }}>  */}
        
-          <XAxis dataKey="name" tickLine={false}  />
+          <XAxis dataKey="name" tickLine={false} reversed={dir === 'rtl'} />
           <YAxis
             tickFormatter={toPercent}
-            
+            orientation={dir === 'rtl' ? 'right' : 'left'}
           />
           <Tooltip 
            content={renderTooltipContent} />
@@ -110,7 +110,7 @@ const BtcEth = ({ theme, data,callback }) => (
             fillOpacity={0.2}
           /> */}
           <Area
-            name="WinRate"
+            name="Return"
             type="monotone"
             dataKey="rate"
             // stackId="1"
@@ -128,7 +128,6 @@ const BtcEth = ({ theme, data,callback }) => (
             fillOpacity={0.2}
           /> */}
         </AreaChart>
-       
       </ResponsiveContainer>
     </div>
   </Panel>

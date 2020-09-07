@@ -12,6 +12,7 @@ import BounceRate from './components/BounceRate';
 import ABTestingAnalytics from './components/ABTestingAnalytics';
 import GoldRetension from './components/GoldRetension';
 import GemRetension from './components/GemRetension';
+import ReturnCount from './components/ReturnCount';
 import SalesStatistic from './components/SalesStatistic';
 import VisitorsSessions from './components/VisitorsSessions';
 import BounceRateArea from './components/BounceRateArea';
@@ -36,6 +37,7 @@ class GameDesignDashboard extends PureComponent {
     this.state = {
       lsGoldData: [{name:"Stage_1",rate:0}],
       lsGemData: [{name:"Stage_1",rate:0}],
+      lsReturnData: [{name:"Stage_1",rate:0}],
     };
   }
 
@@ -45,6 +47,7 @@ class GameDesignDashboard extends PureComponent {
 
     var lsGoldRate = [];
     var lsGemRate = [];
+    var lsReturn = [];
 
 
 
@@ -55,13 +58,13 @@ class GameDesignDashboard extends PureComponent {
           endStage:501,
         })
         .then(function(response) {
-          console.log('__________________________',response);
           if (response.status === 200) {
             let data = response.data;
             console.log('data', data);
             if (data.status === 'ok') {
               lsGoldRate = data.data.GoldRateData;
               lsGemRate = data.data.GemRateData;
+              lsReturn = data.data.ReturnData;
             }
           }
         })
@@ -72,15 +75,29 @@ class GameDesignDashboard extends PureComponent {
           this.setState({
            lsGemData:lsGemRate,
            lsGoldData:lsGoldRate,
+           lsReturnData:lsReturn,
           });
         });
-
-
 
   }
   render() {
 
     const { t, rtl, theme } = this.props;
+
+    var chartGold;
+    if(this.state.lsGoldData.length > 1) 
+      chartGold = <GoldRetension dir={rtl.direction} data={this.state.lsGoldData}  callback={this.onStageCallback} /> 
+    
+    var chartGem;
+    if(this.state.lsGemData.length > 1) 
+      chartGem = <GemRetension dir={rtl.direction} data={this.state.lsGemData}  callback={this.onStageCallback} /> 
+     
+    var chartReturn;
+    if(this.state.lsReturnData.length > 1) 
+      chartReturn = <ReturnCount dir={rtl.direction} data={this.state.lsReturnData}  callback={this.onStageCallback} /> 
+          
+
+
     return (
       <Container className="dashboard">
       <Row>
@@ -97,9 +114,13 @@ class GameDesignDashboard extends PureComponent {
       <Row>
         {/* <ABTestingAnalytics dir={rtl.direction} /> */}
         {/* theme={theme.className} */}
-        <GoldRetension dir={rtl.direction} data={this.state.lsGoldData}  callback={this.onStageCallback} /> 
+        {chartGold}
+        {chartGem}
+        {chartReturn}
+        {/* <GoldRetension dir={rtl.direction} data={this.state.lsGoldData}  callback={this.onStageCallback} /> 
         <GemRetension dir={rtl.direction} data={this.state.lsGemData} callback={this.onStageCallback} />
-  
+        <ReturnCount dir={rtl.direction} data={this.state.lsReturnData} callback={this.onStageCallback} /> */}
+        
         {/* <BounceRateArea dir={rtl.direction} />
         <VisitorsSessions dir={rtl.direction} />
         <SalesStatistic />

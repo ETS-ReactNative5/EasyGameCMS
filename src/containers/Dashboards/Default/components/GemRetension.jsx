@@ -78,11 +78,12 @@ const BtcEth = ({ theme, dir, data,callback }) => (
     title="Gem Retention"
     subhead="Tỷ lệ Gem trung bình của User theo Stage  "
   >
-    <div dir="ltr">
+    <div dir="ltr" >
     {/* <Button name="back" className="icon" color="success" onClick={e => callback(e)}>Back</Button>
-    <Button name="next" className="icon" color="success" onClick={e => callback(e)}>Next</Button> */}
-      <ResponsiveContainer height={350} className="dashboard__area">
-        <AreaChart  data={data} margin={{ top: 20, left: -15, bottom: 20 }}> 
+    <Button name="next" className="icon" color="success" onClick={e => callback(e)}>Next</Button>
+    className="dashboard__area" */}
+      <ResponsiveContainer height={350} >
+        <AreaChart  stackOffset="expand" data={data} margin={{ top: 20, left: -15, bottom: 20 }}> 
         {/* <AreaChart   stackOffset="expand" data={dataSet} margin={{ top: 20, left: -15, bottom: 20 }}>  */}
        
           <XAxis dataKey="name" tickLine={false} reversed={dir === 'rtl'} />

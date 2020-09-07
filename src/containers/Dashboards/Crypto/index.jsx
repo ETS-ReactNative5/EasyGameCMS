@@ -227,6 +227,12 @@ class CryptoDashboard extends PureComponent {
   render() {
     const { t, cryptoTable, rtl, theme } = this.props;
 
+    var chartStage;
+    if(this.state.lsWinrate.length > 1) 
+      chartStage = <BtcEth  data={this.state.lsWinrate} theme={theme.className} callback={this.onStageCallback} />
+      
+      
+
     return (
       <Container className="dashboard">
         <Row>
@@ -255,7 +261,8 @@ class CryptoDashboard extends PureComponent {
             title="IAP by Package"
             lsCountryIAP={this.state.lsPackageIAP}
           />
-          <BtcEth dir={rtl.direction} data={this.state.lsWinrate} theme={theme.className} callback={this.onStageCallback} />
+          {chartStage}
+          
 
           <WinRateBR dir={rtl.direction}  theme={theme.className}  />
 
