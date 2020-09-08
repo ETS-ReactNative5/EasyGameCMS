@@ -55,7 +55,7 @@ class GameDesignDashboard extends PureComponent {
         axios
         .post(config.base_url + config.url_gem_gold_rate, {
           startStage: 0,
-          endStage:501,
+          endStage:801,
         })
         .then(function(response) {
           if (response.status === 200) {
