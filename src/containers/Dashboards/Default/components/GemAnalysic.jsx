@@ -119,7 +119,7 @@ class CryptotrendsToday extends PureComponent {
           >
             <PieChart className="dashboard__chart-pie-container">
               <Tooltip
-                formatter={(value) => `$${value.toFixed(2)}`}
+                formatter={(value) => (Math.round(value.percent* 100)) + "%"}
                 position={{ x, y }}
                 {...getTooltipStyles(themeName)}
               />

@@ -33,8 +33,8 @@ class GameDesignDashboard extends PureComponent {
       lsGoldData: [{name:"Stage_1",rate:0}],
       lsGemData: [{name:"Stage_1",rate:0}],
       lsReturnData: [{name:"Stage_1",rate:0}],
-      lsEarnGem: [{name:"gem",total:0}],
-      lsUseGem: [{name:"gem",total:0}],
+      lsEarnGem: [{name:"gem",total:1}],
+      lsUseGem: [{name:"gem",total:1}],
     };
   }
 
