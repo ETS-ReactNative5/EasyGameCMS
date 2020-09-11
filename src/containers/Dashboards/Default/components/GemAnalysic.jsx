@@ -1,19 +1,14 @@
 /* eslint-disable react/no-array-index-key */
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer,Label } from 'recharts';
+import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Panel from '../../../../shared/components/Panel';
 
+
 import getTooltipStyles from '../../../../shared/helpers';
 
-const data01 = [
-  { name: 'Bitcoin', value: 20432, fill: '#4ce1b6' },
-  { name: 'Ethereum', value: 15432, fill: '#70bbfd' },
-  { name: 'Bitcoin Cash', value: 12934, fill: '#f6da6e' },
-  { name: 'Ripple', value: 9934, fill: '#ff4861' },
-];
 
 const COLORS = [
   '#0088FE',
@@ -109,44 +104,37 @@ class CryptotrendsToday extends PureComponent {
     const { x, y } = this.state;
 
     return (
-      <Panel lg={12} xl={4} xs={12} title="IAP Today" subhead="">
-        <div className="dashboard__stat dashboard__stat--budget">
+      <Panel lg={12} xl={4} xs={12} title={this.props.title} subhead="">
+        {/* <div className="dashboard__stat dashboard__stat--budget">
           <div className="dashboard__stat-main">
             <p className="dashboard__stat-main-title">Total IAP</p>
             <p className="dashboard__stat-main-number">${this.props.total}</p>
             <hr />
           </div>
-        </div>
+        </div> */}
         <div dir={dir}>
           <ResponsiveContainer
             className="dashboard__chart-pie dashboard__chart-pie--crypto"
             height={360}
           >
-            {/* x={cx} y={cy} dy={8} */}
-           
             <PieChart className="dashboard__chart-pie-container">
-           
               <Tooltip
                 formatter={(value) => `$${value.toFixed(2)}`}
                 position={{ x, y }}
                 {...getTooltipStyles(themeName)}
               />
               <Pie
-                data={this.props.lsCountryIAP.map((item, index) => {
+                data={this.props.lsData.map((item, index) => {
                   item.fill = COLORS[index % COLORS.length];
                   return item;
                 })}
                 dataKey="total"
                 cy={175}
-                innerRadius={100}
-                outerRadius={160}
-                label={(value) => value.name}
+               
+                outerRadius={150}
+                label={(value) => value.name + " " +(Math.round(value.percent* 100)) + "%" }
                 onMouseMove={this.onMouseMove}
-              >
-
-              {/* <Label  position="center"> </Label> */}
-              </Pie>
-
+              />
               {/* <Legend
                 layout="vertical"
                 verticalAlign="bottom"

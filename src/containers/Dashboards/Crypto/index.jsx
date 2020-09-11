@@ -267,10 +267,10 @@ class CryptoDashboard extends PureComponent {
           <WinRateBR dir={rtl.direction}  theme={theme.className}  />
 
 
-          <TopTen
+          {/* <TopTen
             cryptoTable={cryptoTable}
             onDeleteCryptoTableData={this.onDeleteCryptoTableData}
-          />
+          /> */}
         </Row>
       </Container>
     );

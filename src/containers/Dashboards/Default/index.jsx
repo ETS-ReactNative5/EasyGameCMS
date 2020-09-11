@@ -13,13 +13,8 @@ import ABTestingAnalytics from './components/ABTestingAnalytics';
 import GoldRetension from './components/GoldRetension';
 import GemRetension from './components/GemRetension';
 import ReturnCount from './components/ReturnCount';
-import SalesStatistic from './components/SalesStatistic';
-import VisitorsSessions from './components/VisitorsSessions';
-import BounceRateArea from './components/BounceRateArea';
-import AudienceByCountry from './components/AudienceByCountry';
-import BudgetStatistic from './components/BudgetStatistic';
-import BestSellingRegions from './components/BestSellingRegions';
-import GoalsCompletion from './components/GoalsCompletion';
+import GemChart from './components/GemAnalysic';
+
 import { ThemeProps, RTLProps } from '../../../shared/prop-types/ReducerProps';
 import config from '../../../config/appConfig';
 import axios from 'axios';
@@ -38,6 +33,8 @@ class GameDesignDashboard extends PureComponent {
       lsGoldData: [{name:"Stage_1",rate:0}],
       lsGemData: [{name:"Stage_1",rate:0}],
       lsReturnData: [{name:"Stage_1",rate:0}],
+      lsEarnGem: [{name:"gem",total:0}],
+      lsUseGem: [{name:"gem",total:0}],
     };
   }
 
@@ -48,7 +45,8 @@ class GameDesignDashboard extends PureComponent {
     var lsGoldRate = [];
     var lsGemRate = [];
     var lsReturn = [];
-
+    var lsUse = [];
+    var lsEarn = [];
 
 
 
@@ -65,6 +63,8 @@ class GameDesignDashboard extends PureComponent {
               lsGoldRate = data.data.GoldRateData;
               lsGemRate = data.data.GemRateData;
               lsReturn = data.data.ReturnData;
+              lsUse = data.data.UseGem;
+              lsEarn = data.data.EarnGem;
             }
           }
         })
@@ -76,6 +76,8 @@ class GameDesignDashboard extends PureComponent {
            lsGemData:lsGemRate,
            lsGoldData:lsGoldRate,
            lsReturnData:lsReturn,
+           lsEarnGem :lsEarn,
+           lsUseGem:lsUse,
           });
         });
 
@@ -111,6 +113,11 @@ class GameDesignDashboard extends PureComponent {
         <NewUsers />
         <BounceRate />
       </Row> */}
+       <Row>
+         <GemChart title = "Use Gem" lsData={this.state.lsUseGem}></GemChart>
+         <GemChart  title = "Earn Gem"  lsData={this.state.lsEarnGem} ></GemChart>
+         <GemChart lsData={[]}></GemChart>
+       </Row>
       <Row>
         {/* <ABTestingAnalytics dir={rtl.direction} /> */}
         {/* theme={theme.className} */}
