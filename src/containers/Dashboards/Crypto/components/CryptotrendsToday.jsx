@@ -109,7 +109,7 @@ class CryptotrendsToday extends PureComponent {
     const { x, y } = this.state;
 
     return (
-      <Panel lg={12} xl={6} xs={12} title="IAP Today" subhead="">
+      <Panel lg={12} xl={4} xs={12} title="IAP Today" subhead="">
         <div className="dashboard__stat dashboard__stat--budget">
           <div className="dashboard__stat-main">
             <p className="dashboard__stat-main-title">Total IAP</p>
