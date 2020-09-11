@@ -81,11 +81,13 @@ class CryptotrendsToday extends PureComponent {
     themeName: PropTypes.string.isRequired,
   };
 
+  
   constructor(props) {
     super(props);
     this.state = {
       x: 0,
       y: 0,
+      
     };
   }
 
@@ -103,6 +105,7 @@ class CryptotrendsToday extends PureComponent {
     const { t, dir, themeName } = this.props;
     const { x, y } = this.state;
 
+    var sum = 0;
     return (
       <Panel lg={12} xl={4} xs={12} title={this.props.title} subhead="">
         {/* <div className="dashboard__stat dashboard__stat--budget">
@@ -119,13 +122,14 @@ class CryptotrendsToday extends PureComponent {
           >
             <PieChart className="dashboard__chart-pie-container">
               <Tooltip
-                formatter={(value) => (Math.round(value.percent* 100)) + "%"}
+                formatter={(value) => ((value/sum) * 100).toFixed(2) + '%' }
                 position={{ x, y }}
                 {...getTooltipStyles(themeName)}
               />
               <Pie
                 data={this.props.lsData.map((item, index) => {
                   item.fill = COLORS[index % COLORS.length];
+                  sum+= item.total;
                   return item;
                 })}
                 dataKey="total"
@@ -135,12 +139,7 @@ class CryptotrendsToday extends PureComponent {
                 label={(value) => value.name + " " +(Math.round(value.percent* 100)) + "%" }
                 onMouseMove={this.onMouseMove}
               />
-              {/* <Legend
-                layout="vertical"
-                verticalAlign="bottom"
-                wrapperStyle={style(dir)}
-                content={renderLegend}
-              /> */}
+           
             </PieChart>
           </ResponsiveContainer>
         </div>
