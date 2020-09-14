@@ -307,6 +307,13 @@ var userList = [];
     });
   }
 
+
+  OnkeyPress(e){
+    if(e.which === 13){
+      this.OnSearchClick(e);
+    }
+ }
+
   render() {
     const { rows } = this.state;
 
@@ -346,6 +353,7 @@ var userList = [];
                   <input name="UserId" 
                   value = {this.state.UserId}
                    placeholder="_id" 
+                   onKeyPress={this.OnkeyPress.bind(this)}
                    onChange={this.onChangeValue} />
                 </div>
                 </Col>
@@ -359,6 +367,7 @@ var userList = [];
                     value = {this.state.DisplayName}
                     placeholder="DisplayName"
                     onChange={this.onChangeValue}
+                    onKeyPress={this.OnkeyPress.bind(this)}
                   />
                 </div>
                 </Col>
@@ -370,6 +379,7 @@ var userList = [];
                   <input
                     name="UserCode"
                     value = {this.state.UserCode}
+                    onKeyPress={this.OnkeyPress.bind(this)}
                     onChange={this.onChangeValue}
                     placeholder="UserCode"
                   />

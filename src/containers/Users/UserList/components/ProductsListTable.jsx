@@ -46,6 +46,7 @@ class ProductsListTable extends PureComponent {
     super();
 
     this.toggle = this.toggle.bind(this)
+    this.OnSearchClick = this.OnSearchClick.bind(this);
 
     this.state = {
       rows:[],// this.createRows(15),
@@ -213,7 +214,14 @@ var userList = [];
 
   };
 
+  OnkeyPress(e){
 
+
+    if(e.which === 13){
+
+      this.OnSearchClick(e);
+    }
+ }
 
   rowGetter = (i) => {
     const { rows } = this.state;
@@ -288,6 +296,7 @@ var userList = [];
                   <input name="UserId" 
                   value = {this.state.UserId}
                    placeholder="_id" 
+                   onKeyPress={this.OnkeyPress}
                    onChange={this.onChangeValue} />
                 </div>
                 </Col>
@@ -300,6 +309,7 @@ var userList = [];
                     name="DisplayName"
                     value = {this.state.DisplayName}
                     placeholder="DisplayName"
+                   onKeyPress={this.OnkeyPress.bind(this)}
                     onChange={this.onChangeValue}
                   />
                 </div>
@@ -313,6 +323,7 @@ var userList = [];
                     name="UserCode"
                     value = {this.state.UserCode}
                     onChange={this.onChangeValue}
+                   onKeyPress={this.OnkeyPress.bind(this)}
                     placeholder="UserCode"
                   />
                 </div>
@@ -326,6 +337,7 @@ var userList = [];
                     name="DeviceId"
                     value = {this.state.DeviceId}
                     onChange={this.onChangeValue}
+                   onKeyPress={this.OnkeyPress.bind(this)}
                     placeholder="DeviceId"
                   />
                 </div>
