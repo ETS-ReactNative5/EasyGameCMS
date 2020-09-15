@@ -35,6 +35,7 @@ class GameDesignDashboard extends PureComponent {
       lsReturnData: [{name:"Stage_1",rate:0}],
       lsEarnGem: [{name:"gem",total:1}],
       lsUseGem: [{name:"gem",total:1}],
+      lsTotalData :[{name:'Use',total:1},{name:'Earn',total:1}],
     };
   }
 
@@ -47,8 +48,8 @@ class GameDesignDashboard extends PureComponent {
     var lsReturn = [];
     var lsUse = [];
     var lsEarn = [];
-
-
+    var totalUse = 0;
+    var totalEarn = 0;
 
         axios
         .post(config.base_url + config.url_gem_gold_rate, {
@@ -65,6 +66,11 @@ class GameDesignDashboard extends PureComponent {
               lsReturn = data.data.ReturnData;
               lsUse = data.data.UseGem;
               lsEarn = data.data.EarnGem;
+
+              totalUse = data.data.SumUse;
+              totalEarn = data.data.SumEarn;
+
+
             }
           }
         })
@@ -78,6 +84,7 @@ class GameDesignDashboard extends PureComponent {
            lsReturnData:lsReturn,
            lsEarnGem :lsEarn,
            lsUseGem:lsUse,
+           lsTotalData:[{name:'Use',total:totalUse},{name:'Earn',total:totalEarn}],
           });
         });
 
@@ -116,7 +123,7 @@ class GameDesignDashboard extends PureComponent {
        <Row>
          <GemChart title = "Use Gem" lsData={this.state.lsUseGem}></GemChart>
          <GemChart  title = "Earn Gem"  lsData={this.state.lsEarnGem} ></GemChart>
-         <GemChart lsData={[]}></GemChart>
+         <GemChart title = "Gem Balancing" lsData={this.state.lsTotalData}></GemChart>
        </Row>
       <Row>
         {/* <ABTestingAnalytics dir={rtl.direction} /> */}
