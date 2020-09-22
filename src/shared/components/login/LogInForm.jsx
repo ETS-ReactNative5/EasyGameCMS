@@ -31,6 +31,8 @@ class LogInForm extends PureComponent {
     this.state = {
       redirect: false,
       showPassword: false,
+      username:'',
+      password:'',
     };
 
     this.showPassword = this.showPassword.bind(this);
@@ -39,6 +41,14 @@ class LogInForm extends PureComponent {
   showPassword(e) {
     e.preventDefault();
     this.setState((prevState) => ({ showPassword: !prevState.showPassword }));
+
+  }
+
+  onChangeValue = e =>{
+    var data = {}
+    data[e.target.name] = e.target.value;
+    this.setState(data);
+    console.log(this.state.username);
   }
 
   renderRedirect = () => {
@@ -46,7 +56,7 @@ class LogInForm extends PureComponent {
       console.log('redirec dashboard');
 
       sessionStorage.setItem('userID', 'userID');
-      window.location.replace('http://34.87.56.192:3000/dashboard');
+      window.location.replace('http://35.240.208.109:3000/dashboard');
       //window.location.replace('http://localhost:3000/dashboard');
       //return <Redirect to="/dashboard" />;
     }
@@ -80,6 +90,7 @@ class LogInForm extends PureComponent {
               component="input"
               type={typeFieldUser}
               placeholder={fieldUser}
+              onChange={this.onChangeValue} 
             />
           </div>
         </div>
@@ -94,6 +105,7 @@ class LogInForm extends PureComponent {
               component="input"
               type={showPassword ? 'text' : 'password'}
               placeholder="Password"
+              onChange={this.onChangeValue} 
             />
             <button
               type="button"
