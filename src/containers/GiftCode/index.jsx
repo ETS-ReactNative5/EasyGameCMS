@@ -3,7 +3,9 @@ import { Col, Container, Row } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import GiftCodeForm from './components/GiftCodeForm';
-import VerticalFormWithIcons from './components/VerticalFormWithIcons';
+//import VerticalFormWithIcons from './components/VerticalFormWithIcons';
+import RewardItems from './components/RewardItems';
+
 import VerticalFormHalf from './components/VerticalFormHalf';
 import showResults from '../Form/Show';
 import config from '../../config/appConfig';
@@ -86,8 +88,9 @@ const FormLayouts = ({ t }) => (
       {/* <HorizontalForm onSubmit={showResults} /> */}
       {/* <HorizontalFormWithIcons onSubmit={submitViewUser} /> */}
       <GiftCodeForm onSubmit={submitViewUser} />
-      <VerticalFormWithIcons onSubmit={CopyDataUser} />
-      <VerticalFormHalf onSubmit={showResults} />
+      <RewardItems /> 
+      {/* onSubmit={CopyDataUser} */}
+      {/* <VerticalFormHalf onSubmit={showResults} /> */}
     </Row>
   </Container>
 );
