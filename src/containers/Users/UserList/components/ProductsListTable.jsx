@@ -467,6 +467,8 @@ var userList = [];
           <th>UserCode</th>
           <th>DataVersion</th>
           <th>DisplayName</th>
+          <th>Version</th>
+          <th>FirstVersion</th>
           <th>MaxStage</th>
           <th>Gem</th>
           <th>Coin</th>
@@ -484,6 +486,8 @@ var userList = [];
             <td dir="ltr">{crypto.UserCode}</td>
             <td dir="ltr">{crypto.DataVersion}</td>
             <td dir="ltr">{crypto.DisplayName}</td>
+            <td dir="ltr">{crypto.Version}</td>
+            <td dir="ltr">{crypto.FirstVerSion}</td>
             <td dir="ltr">{crypto.MaxStage}</td>
             <td>{crypto.Gem}</td>
             <td>{crypto.Coin}</td>

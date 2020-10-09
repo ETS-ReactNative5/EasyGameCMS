@@ -560,6 +560,8 @@ var userList = [];
           <th>DisplayName</th>
           <th>CreatedAt</th>
           <th>HackDate</th>
+          <th>Version</th>
+          <th>FirsrVersion</th>
           <th>LastIAP</th>
           <th>TypeMod</th>
           <th>Description</th>
@@ -585,6 +587,8 @@ var userList = [];
             <td dir="ltr">{user.DisplayName}</td>
             <td dir="ltr">{this.formatStringDate(user.CreatedAt.toString())}</td>
             <td>{this.formatStringDate(user.HackDate.toString())}</td>
+            <td>{user.Version}</td>
+            <td>{user.FirstVerSion}</td>
             <td dir="ltr">{user.LastIAP}</td>
             <td>{user.TypeMod}</td>
             <td>{user.Desc}</td>
