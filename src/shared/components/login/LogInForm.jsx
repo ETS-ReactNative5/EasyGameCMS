@@ -56,8 +56,8 @@ class LogInForm extends PureComponent {
       console.log('redirec dashboard');
 
       sessionStorage.setItem('userID', 'userID');
-      window.location.replace('http://35.240.210.55:3000/dashboard');
-      //window.location.replace('http://localhost:3000/dashboard');
+      //window.location.replace('http://34.133.148.87:3000/dashboard');
+      window.location.replace('http://localhost:3000/dashboard');
       //return <Redirect to="/dashboard" />;
     }
   };

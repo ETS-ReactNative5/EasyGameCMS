@@ -66,31 +66,30 @@ class CryptoDashboard extends PureComponent {
         console.log(response);
         if (response.status === 200) {
           let data = response.data;
-          console.log('data', data);
           if (data.status === 'ok') {
             dashboarResult = data.data;
             console.log('statsData', dashboarResult);
             lsIAP = dashboarResult.IAP;
             lsIAP.forEach((item) => {
-              let country = item.Country === '' ? 'Unknow' : item.Country;
+              let country = item.Currency === '' ? 'Unknow' : item.Currency;
               if (dicNationIAP.hasOwnProperty(country)) {
                 dicNationIAP[country].count = dicNationIAP[country].count + 1;
                 dicNationIAP[country].total =
-                  dicNationIAP[country].total + item.price;
+                  dicNationIAP[country].total + item.PriceUSD * 1.43;
               } else {
-                dicNationIAP[country] = { count: 1, total: item.price };
+                dicNationIAP[country] = { count: 1, total: item.PriceUSD };
               }
 
-              let pack = item.PackageID;
+              let pack = item.ProductId;
               if (dicPackageIAP.hasOwnProperty(pack)) {
                 dicPackageIAP[pack].count = dicPackageIAP[pack].count + 1;
                 dicPackageIAP[pack].total =
-                  dicPackageIAP[pack].total + item.price;
+                  dicPackageIAP[pack].total + item.PriceUSD * 1.43;
               } else {
-                dicPackageIAP[pack] = { count: 1, total: item.price };
+                dicPackageIAP[pack] = { count: 1, total: item.PriceUSD * 1.43 };
               }
 
-              totalIAP += item.price;
+              totalIAP += item.PriceUSD * 1.43;
             });
 
             var lsCountryName = Object.keys(dicNationIAP);
@@ -147,7 +146,7 @@ class CryptoDashboard extends PureComponent {
             dau: dashboarResult.DAU,
             nru: dashboarResult.NRU,
             pu: dashboarResult.PU,
-            totalIAP: totalIAP,
+            totalIAP: Math.round(totalIAP),
             lsCountryIAP: lsCountry,
             lsPackageIAP: lsPackage,
            lsWinrate:lsRate.map(item=>{

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import * as firebase from 'firebase/app';
+
 import RegisterForm from '../../../shared/components/login/RegisterForm';
 
 class RegisterPhoto extends PureComponent {
@@ -18,13 +18,13 @@ class RegisterPhoto extends PureComponent {
 
   registerFireBase = (user) => {
     const { history } = this.props;
-    firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-      .then(() => {
-        history.push('/log_in_photo');
-      })
-      .catch((error) => {
-        this.setState({ error: error.message });
-      });
+    // firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+    //   .then(() => {
+    //     history.push('/log_in_photo');
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ error: error.message });
+    //   });
   };
 
   render() {

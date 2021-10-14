@@ -34,7 +34,7 @@ class SidebarContent extends Component {
             onClick={this.hideSidebar}
           /> */}
           <SidebarLink
-            title="Epic Dragon Dashboard"
+            title="Jackal"
             icon="rocket"
             route="/dashboard"
             onClick={this.hideSidebar}
