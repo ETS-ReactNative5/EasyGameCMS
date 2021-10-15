@@ -454,9 +454,9 @@ class ProductsListTable extends PureComponent {
                       <th>Version</th>
                       <th>FirstVersion</th>
                       <th>MaxStage</th>
-                      <th>Gem</th>
+                      <th>Cash</th>
                       <th>Coin</th>
-                      <th>Stone</th>
+                      <th>Titanium</th>
                       <th>Status</th>
                       <th></th>
                     </tr>

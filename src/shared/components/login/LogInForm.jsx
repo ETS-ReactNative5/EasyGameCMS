@@ -31,8 +31,8 @@ class LogInForm extends PureComponent {
     this.state = {
       redirect: false,
       showPassword: false,
-      username:'',
-      password:'',
+      username: '',
+      password: '',
     };
 
     this.showPassword = this.showPassword.bind(this);
@@ -41,109 +41,99 @@ class LogInForm extends PureComponent {
   showPassword(e) {
     e.preventDefault();
     this.setState((prevState) => ({ showPassword: !prevState.showPassword }));
-
   }
 
-  onChangeValue = e =>{
-    var data = {}
+  onChangeValue = (e) => {
+    var data = {};
     data[e.target.name] = e.target.value;
     this.setState(data);
     console.log(this.state.username);
-  }
+  };
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      console.log('redirec dashboard');
+      let list_user = {
+        jackaladmin: 'NXh8b3wt',
+      };
 
-      sessionStorage.setItem('userID', 'userID');
-      //window.location.replace('http://34.133.148.87:3000/dashboard');
-      window.location.replace('http://localhost:3000/dashboard');
-      //return <Redirect to="/dashboard" />;
+      if (list_user[this.state.username] === this.state.password) {
+        sessionStorage.setItem('userID', this.state.username);
+        window.location.replace('jackal.rocketstudio.com.vn/dashboard');
+        //window.location.replace('http://mkt.rocketstudio.com.vn:8080/mkt/export');
+        //return <Redirect to='/dashboard' />;
+      }
     }
   };
 
   render() {
-    const {
-      handleSubmit,
-      errorMessage,
-      errorMsg,
-      fieldUser,
-      typeFieldUser,
-      form,
-    } = this.props;
+    const { handleSubmit, errorMessage, errorMsg, fieldUser, typeFieldUser, form } = this.props;
     const { showPassword } = this.state;
     return (
-      <Form className="form login-form" onSubmit={handleSubmit}>
+      <Form className='form login-form' onSubmit={handleSubmit}>
         {this.renderRedirect()}
-        <Alert color="danger" isOpen={!!errorMessage || !!errorMsg}>
+        <Alert color='danger' isOpen={!!errorMessage || !!errorMsg}>
           {errorMessage}
           {errorMsg}
         </Alert>
-        <div className="form__form-group">
-          <span className="form__form-group-label">{fieldUser}</span>
-          <div className="form__form-group-field">
-            <div className="form__form-group-icon">
+        <div className='form__form-group'>
+          <span className='form__form-group-label'>{fieldUser}</span>
+          <div className='form__form-group-field'>
+            <div className='form__form-group-icon'>
               <AccountOutlineIcon />
             </div>
             <Field
-              name="username"
-              component="input"
+              name='username'
+              component='input'
               type={typeFieldUser}
               placeholder={fieldUser}
-              onChange={this.onChangeValue} 
+              onChange={this.onChangeValue}
             />
           </div>
         </div>
-        <div className="form__form-group">
-          <span className="form__form-group-label">Password</span>
-          <div className="form__form-group-field">
-            <div className="form__form-group-icon">
+        <div className='form__form-group'>
+          <span className='form__form-group-label'>Password</span>
+          <div className='form__form-group-field'>
+            <div className='form__form-group-icon'>
               <KeyVariantIcon />
             </div>
             <Field
-              name="password"
-              component="input"
+              name='password'
+              component='input'
               type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
-              onChange={this.onChangeValue} 
+              placeholder='Password'
+              onChange={this.onChangeValue}
             />
             <button
-              type="button"
-              className={`form__form-group-button${
-                showPassword ? ' active' : ''
-              }`}
+              type='button'
+              className={`form__form-group-button${showPassword ? ' active' : ''}`}
               onClick={(e) => this.showPassword(e)}
             >
               <EyeIcon />
             </button>
-            <div className="account__forgot-password">
-              <a href="/">Forgot a password?</a>
+            <div className='account__forgot-password'>
+              <a href='/'>Forgot a password?</a>
             </div>
           </div>
         </div>
-        <div className="form__form-group">
-          <div className="form__form-group form__form-group-field">
-            <Field
-              name={`remember_me-${form}`}
-              component={renderCheckBoxField}
-              label="Remember me"
-            />
+        <div className='form__form-group'>
+          <div className='form__form-group form__form-group-field'>
+            <Field name={`remember_me-${form}`} component={renderCheckBoxField} label='Remember me' />
           </div>
         </div>
-        <div className="account__btns">
+        <div className='account__btns'>
           <Button
-            className="account__btn"
+            className='account__btn'
             onClick={(e) =>
               this.setState({
                 redirect: true,
               })
             }
-            color="primary"
+            color='primary'
           >
             Sign In
           </Button>
 
-          <Link className="btn btn-outline-primary account__btn" to="/register">
+          <Link className='btn btn-outline-primary account__btn' to='/register'>
             Create Account
           </Link>
         </div>

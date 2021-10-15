@@ -10,19 +10,19 @@ const LoginCard = () => {
   //   return <Loading />;
   // }
   return (
-    <div className="account__wrapper">
-      <div className="account__card">
-        <div className="account__head">
-          <h3 className="account__title">
+    <div className='account__wrapper'>
+      <div className='account__card'>
+        <div className='account__head'>
+          <h3 className='account__title'>
             Rocket
-            <span className="account__logo">
+            <span className='account__logo'>
               {' '}
-              Epic Dragon <span className="account__logo-accent"> CMS</span>
+              Jackal <span className='account__logo-accent'> CMS</span>
             </span>
           </h3>
-          <h4 className="account__subhead subhead">Staff Only</h4>
+          <h4 className='account__subhead subhead'>Staff Only</h4>
         </div>
-        <LogInForm onSubmin form="log_in_form" />
+        <LogInForm onSubmin form='log_in_form' />
         {/* <div className="account__or">
           <p>Or Easily Using</p>
         </div>
