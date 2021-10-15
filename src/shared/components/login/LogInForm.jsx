@@ -53,12 +53,12 @@ class LogInForm extends PureComponent {
   renderRedirect = () => {
     if (this.state.redirect) {
       let list_user = {
-        jackaladmin: 'NXh8b3wt',
+        jackaladmin: 'Rocket_Jackal_12345678',
       };
 
       if (list_user[this.state.username] === this.state.password) {
         sessionStorage.setItem('userID', this.state.username);
-        window.location.replace('jackal.rocketstudio.com.vn/dashboard');
+        window.location.replace('http://jackal.rocketstudio.com.vn/dashboard');
         //window.location.replace('http://mkt.rocketstudio.com.vn:8080/mkt/export');
         //return <Redirect to='/dashboard' />;
       }
