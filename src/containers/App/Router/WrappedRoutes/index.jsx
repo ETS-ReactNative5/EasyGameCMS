@@ -14,6 +14,7 @@ import Forms from './Forms';
 import UI from './UI';
 import Users from './Users';
 import GiftCode from './GiftCode';
+import GameRocket from './GameRocket';
 
 import Chat from '../../../Chat/index';
 import Todo from '../../../Todo/index';
@@ -27,40 +28,37 @@ import Mail from '../../../Mail/index';
 var checkAuth = () => {
   if (sessionStorage.getItem('userID') === null) {
     console.log('login redirect ');
-    return <Redirect to="/log_in" />;
+    return <Redirect to='/log_in' />;
   }
 };
 export default () => (
   <div>
     <Layout />
     {checkAuth()}
-    <div className="container__wrap">
-      <Route path="/dashboard_default" component={DefaultDashboard} />
+    <div className='container__wrap'>
+      <Route path='/dashboard_default' component={DefaultDashboard} />
       {/* <Route path="/dashboard_e_commerce" component={Commerce} />
       <Route path="/dashboard_fitness" component={FitnessDashboard} />
       <Route path="/dashboard_crypto" component={Crypto} /> */}
-      <Route path="/dashboard_crypto" component={Crypto} />
-      <Route path="/dashboard" component={Crypto} />
-      <Route
-        exact
-        path="/dashboard_mobile_app"
-        component={MobileAppDashboard}
-      />
-      <Route path="/dashboard_booking" component={BookingDashboard} />
-      <Route path="/ui" component={UI} />
-      <Route path="/users" component={Users} />
-      <Route path="/giftcode" component={GiftCode} />
-      <Route path="/mail" component={Mail} />
-      <Route path="/chat" component={Chat} />
-      <Route path="/todo" component={Todo} />
-      <Route path="/forms" component={Forms} />
-      <Route path="/tables" component={Tables} />
-      <Route path="/charts" component={Charts} />
-      <Route path="/maps" component={Maps} />
-      <Route path="/account" component={Account} />
-      <Route path="/e-commerce" component={ECommerce} />
-      <Route path="/default_pages" component={DefaultPages} />
-      <Route path="/documentation" component={Documentation} />
+      <Route path='/dashboard_crypto' component={Crypto} />
+      <Route path='/dashboard' component={Crypto} />
+      <Route exact path='/dashboard_mobile_app' component={MobileAppDashboard} />
+      <Route path='/dashboard_booking' component={BookingDashboard} />
+      <Route path='/ui' component={UI} />
+      <Route path='/users' component={Users} />
+      <Route path='/giftcode' component={GiftCode} />
+      <Route path='/mail' component={Mail} />
+      <Route path='/chat' component={Chat} />
+      <Route path='/todo' component={Todo} />
+      <Route path='/forms' component={Forms} />
+      <Route path='/tables' component={Tables} />
+      <Route path='/charts' component={Charts} />
+      <Route path='/maps' component={Maps} />
+      <Route path='/account' component={Account} />
+      <Route path='/e-commerce' component={ECommerce} />
+      <Route path='/default_pages' component={DefaultPages} />
+      <Route path='/documentation' component={Documentation} />
+      <Route path='/leaderboard' component={GameRocket} />
     </div>
   </div>
 );
