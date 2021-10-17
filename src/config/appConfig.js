@@ -7,6 +7,8 @@
 
    url_gameStats: '/GetGameStats',
    url_getSurvival: '/GetSurvivalLeaderboard',
+   url_deleteLeaderBoard: '/DeleteUserLeaderBoard',
+   
    url_winRate: '/GetWinRate',
    url_gem_gold_rate :'/GetGoldGemRate',
    url_FindUser: '/FindUser',

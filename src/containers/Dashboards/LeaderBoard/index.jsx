@@ -3,15 +3,9 @@ import { Col, Container, Row } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import CCU from './components/CCU';
-import DAU from './components/DAU';
-import NRU from './components/NRU';
-import PU from './components/PU';
+
 import LeaderboardView from './components/LeaderboardView';
-import BtcEth from './components/BtcEth';
-import WinRateBR from './components/WinRateBR';
-import CryptotrendsToday from './components/CryptotrendsToday';
-import TopTen from './components/TopTen';
+
 //import PlaceOrder from './components/PlaceOrder';
 import { deleteCryptoTableData } from '../../../redux/actions/cryptoTableActions';
 import { CryptoTableProps } from '../../../shared/prop-types/TablesProps';
@@ -65,6 +59,8 @@ class CryptoDashboard extends PureComponent {
             user.DisplayName = item.PlayerData.DisplayName;
             user.Country = item.PlayerData.Country;
             user.Score = item.Score;
+            user.Kill = item.PlayerData.Kill;
+            user.TimePlay = item.PlayerData.TimePlay;
             return user;
           }),
           //lsPackageIAP: lsPackage,
@@ -97,7 +93,7 @@ class CryptoDashboard extends PureComponent {
 
         <Row>
           <LeaderboardView title='Survival' lsCountryIAP={this.state.listSurvival} />
-          <LeaderboardView title='BossScore' lsCountryIAP={this.state.lsPackageIAP} />
+          {/* <LeaderboardView title='BossScore' lsCountryIAP={this.state.lsPackageIAP} /> */}
           {/* {chartStage} */}
 
           {/* <TopTen cryptoTable={cryptoTable} onDeleteCryptoTableData={this.onDeleteCryptoTableData} /> */}
