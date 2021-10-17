@@ -8,14 +8,14 @@ import DotsHorizontalIcon from 'mdi-react/DotsHorizontalIcon';
 import axios from 'axios';
 import config from '../../../../config/appConfig';
 
-const DropDownMore = ({ index, handleDeleteRow }) => (
+const DropDownMore = ({ index, handleDeleteRow,handleViewData }) => (
   <UncontrolledDropdown className="dashboard__table-more">
     <DropdownToggle>
       <p><DotsHorizontalIcon /></p>
     </DropdownToggle>
     <DropdownMenu className="dropdown__menu">
       {/* <Link to={`/dashboard_crypto/edit/${index}`}><DropdownItem>View</DropdownItem></Link> */}
-      <DropdownItem>View</DropdownItem>
+      <DropdownItem onClick={handleViewData}>View</DropdownItem>
       <DropdownItem onClick={handleDeleteRow}>Delete</DropdownItem>
     </DropdownMenu>
   </UncontrolledDropdown>
@@ -35,6 +35,10 @@ export default class LeaderboardView extends PureComponent {
       activeIndex: 0,
     };
   }
+
+OnViewUserData = (index,e) =>{
+  window.open(config.cms_url + `/user/getUserData?userID=` + this.props.lsCountryIAP[index].UserId, '_blank');
+}
 
   onDeleteCryptoTableData = (index, e) => {
  
@@ -83,7 +87,9 @@ export default class LeaderboardView extends PureComponent {
             <td>{Kill}</td>
             <td>{TimePlay}</td>
             <td>
-              <DropDownMore index={index} handleDeleteRow={e => this.onDeleteCryptoTableData(index, e)} /> 
+              <DropDownMore index={index} handleDeleteRow={e => this.onDeleteCryptoTableData(index, e)} 
+              handleViewData={e => this.OnViewUserData(index, e)}/> 
+              
               {/*  */}
             </td>
           </tr>
