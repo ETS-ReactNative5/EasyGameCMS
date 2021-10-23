@@ -34,7 +34,10 @@ class SidebarContent extends Component {
             onClick={this.hideSidebar}
           /> */}
           <SidebarLink title='Jackal' icon='rocket' route='/dashboard' onClick={this.hideSidebar} />
-          <SidebarLink title='Leaderboard' icon='rocket' route='/leaderboard' onClick={this.hideSidebar} />
+          <SidebarCategory title='Leaderboard' icon='rocket'>
+            <SidebarLink title='Survival' route='/leaderboard/survival' onClick={this.hideSidebar} />
+            <SidebarLink title='Boss Score' route='/leaderboard/bossscore' onClick={this.hideSidebar} />
+          </SidebarCategory>
           <SidebarLink title='GameDesign Dashboard' icon='home' route='/dashboard_default' onClick={this.hideSidebar} />
           <SidebarCategory title='Users' icon='user'>
             <SidebarLink title='User List' route='/users/userlist' onClick={this.hideSidebar} />
