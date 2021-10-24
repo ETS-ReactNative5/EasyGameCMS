@@ -25,7 +25,7 @@ class CryptoDashboard extends PureComponent {
   constructor() {
     super();
     this.state = {
-      levelBoss: 0,
+      levelBoss: 20,
       listSurvival: [],
       listBossScore: [],
     };
