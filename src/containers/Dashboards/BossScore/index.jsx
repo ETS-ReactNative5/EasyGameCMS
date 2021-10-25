@@ -3,6 +3,10 @@ import { Col, Container, Row, Button } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
+import MagnifyIcon from 'mdi-react/MagnifyIcon';
+import CloseCircleOutlineIcon from 'mdi-react/CloseCircleOutlineIcon';
+
 
 import BossScoreView from './components/BossScoreView';
 
@@ -25,7 +29,7 @@ class CryptoDashboard extends PureComponent {
   constructor() {
     super();
     this.state = {
-      levelBoss: 20,
+      levelBoss: 1,
       listSurvival: [],
       listBossScore: [],
     };
@@ -39,7 +43,7 @@ class CryptoDashboard extends PureComponent {
     let lsSurvival = [];
     await  
         axios
-        .post(config.base_url + config.url_getBossScore, {
+        .post(config.test_url + config.url_getBossScore, {
           userID: sessionStorage.getItem('userID'),
           BossScore: this.state.levelBoss,
         })
@@ -76,6 +80,33 @@ class CryptoDashboard extends PureComponent {
     arrayCopy.splice(index, 1);
     dispatch(deleteCryptoTableData(arrayCopy));
   };
+  
+  OnSearchClick = (e) => {
+    if (e) e.preventDefault();
+    this.getBossScore();
+  }
+
+  OnClearClick = (e) => {
+    e.preventDefault();
+
+    this.setState({
+     levelBoss: 0,
+    });
+  };
+
+  onChangeValue = (e) => {
+    let data = [];
+    data[e.target.name] = e.target.value;
+    this.setState(data, () => {
+      this.OnSearchClick();
+    });
+  };
+
+  OnkeyPress(e) {
+    if (e.which === 13) {
+      this.OnSearchClick(e);
+    }
+  }
 
   inCreaseLevelBoss = async() => {
     this.setState({levelBoss: this.state.levelBoss +1 }, () => {
@@ -93,7 +124,6 @@ class CryptoDashboard extends PureComponent {
   }
   }
   render() {
-    const { t, cryptoTable, rtl, theme } = this.props;
     const levelBoss = 'Level: ' + this.state.levelBoss
     // var chartStage;
     // if (this.state.lsWinrate.length > 1)
@@ -102,9 +132,26 @@ class CryptoDashboard extends PureComponent {
     return (
       <Container className='dashboard'>
         <Row>
-          <Col md={12}>
-            <h3 className='page-title'>Jackal Leaderboard</h3>
-            <Container style={{ textAlign: 'center' }}>
+          <Col><h3 className='page-title'>Jackal Leaderboard</h3> </Col>
+          <Container >
+        <Col className='inline'>
+                      <div className='form__form-group-field'>
+                        <div>
+                          <AccountOutlineIcon />
+                        </div>
+                        <input
+                          type = 'text'
+                          name='level'
+                          value={this.state.levelBoss}
+                          onKeyPress={this.OnkeyPress.bind(this)}
+                          onChange={this.onChangeValue}
+                          placeholder='level'
+                        />
+                      </div>
+                    </Col>
+                </Container>
+          <Col md={10} x1={1}>
+            <Container style={{ textAlign: 'center', display: 'inline_block' }}>
                 <Button className='inlineBtn' 
                         onClick={() => this.deCreaseLevelBoss()}>
                   <p> Previous</p>
@@ -119,16 +166,13 @@ class CryptoDashboard extends PureComponent {
                     Next
                   </p>
                 </Button>
+                
               </Container>
           </Col>
         </Row>
 
         <Row>
-          <BossScoreView title='Boss Score' lsCountryIAP={this.state.listSurvival} />
-          {/* <LeaderboardView title='BossScore' lsCountryIAP={this.state.lsPackageIAP} /> */}
-          {/* {chartStage} */}
-          
-          {/* <TopTen cryptoTable={cryptoTable} onDeleteCryptoTableData={this.onDeleteCryptoTableData} /> */}
+          <BossScoreView title='Boss Score' lsCountryIAP={this.state.listSurvival} levelBoss={this.state.levelBoss} />
         </Row>
       </Container>
     );

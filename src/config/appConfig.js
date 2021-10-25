@@ -5,9 +5,14 @@
    base_url_user:'http://34.133.148.87:8088/user',
    cms_url: 'http://34.133.148.87:8088',
 
+
+   test_url: 'http://localhost:8088/cms',
+
    url_gameStats: '/GetGameStats',
    url_getSurvival: '/GetSurvivalLeaderboard',
    url_deleteLeaderBoard: '/DeleteUserLeaderBoard',
+   url_getBossScore: '/GetSurvivalBossScore',
+   url_deleteBossScore: '/DeleteUserBossScore',
    
    url_winRate: '/GetWinRate',
    url_gem_gold_rate :'/GetGoldGemRate',

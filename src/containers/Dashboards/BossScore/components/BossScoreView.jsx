@@ -3,7 +3,6 @@ import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Table,  DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import Panel from '../../../../shared/components/Panel';
-import { Link } from 'react-router-dom';
 import DotsHorizontalIcon from 'mdi-react/DotsHorizontalIcon';
 import axios from 'axios';
 import config from '../../../../config/appConfig';
@@ -48,9 +47,9 @@ OnViewUserData = (index,e) =>{
     console.log(index,this.props.lsCountryIAP[index].UserId);
 
     axios
-    .post(config.base_url + config.url_deleteBossScore, {
+    .post(config.test_url + config.url_deleteBossScore, {
       UserId: this.props.lsCountryIAP[index].UserId,
-      LeaderbardName:'Survival'
+      BossScore: this.props.levelBoss
     })
     .then(function(response) {
       console.log(response);
@@ -110,7 +109,7 @@ OnViewUserData = (index,e) =>{
             <th>UserId</th>
               <th>Country</th>
               <th>Name</th>
-              <th>Score</th>
+              <th>Time</th>
             </tr>
           </thead>
           <tbody>{this.renderTableData()}</tbody>
