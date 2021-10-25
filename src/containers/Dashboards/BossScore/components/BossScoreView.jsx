@@ -47,7 +47,7 @@ OnViewUserData = (index,e) =>{
     console.log(index,this.props.lsCountryIAP[index].UserId);
 
     axios
-    .post(config.test_url + config.url_deleteBossScore, {
+    .post(config.cms_url + config.url_deleteBossScore, {
       UserId: this.props.lsCountryIAP[index].UserId,
       BossScore: this.props.levelBoss
     })

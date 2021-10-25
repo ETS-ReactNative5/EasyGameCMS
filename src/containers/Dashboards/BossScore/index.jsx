@@ -43,7 +43,7 @@ class CryptoDashboard extends PureComponent {
     let lsSurvival = [];
     await  
         axios
-        .post(config.test_url + config.url_getBossScore, {
+        .post(config.cms_url + config.url_getBossScore, {
           userID: sessionStorage.getItem('userID'),
           BossScore: this.state.levelBoss,
         })
