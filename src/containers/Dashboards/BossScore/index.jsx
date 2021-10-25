@@ -30,7 +30,6 @@ class CryptoDashboard extends PureComponent {
     super();
     this.state = {
       levelBoss: 1,
-      listSurvival: [],
       listBossScore: [],
     };
   }
@@ -40,10 +39,10 @@ class CryptoDashboard extends PureComponent {
   }
 
   getBossScore = async() => {
-    let lsSurvival = [];
+    let lsBossScore = [];
     await  
         axios
-        .post(config.cms_url + config.url_getBossScore, {
+        .post(config.base_url + config.url_getBossScore, {
           userID: sessionStorage.getItem('userID'),
           BossScore: this.state.levelBoss,
         })
@@ -52,7 +51,7 @@ class CryptoDashboard extends PureComponent {
           if (response.status === 200) {
             let data = response.data;
             if (data.status === 'ok') {
-              lsSurvival = data.data;
+              lsBossScore = data.data;
             }
           }
         })
@@ -61,7 +60,7 @@ class CryptoDashboard extends PureComponent {
         })
         .then(() => {
           this.setState({
-            listSurvival: lsSurvival.map((item) => {
+            listBossScore: lsBossScore.map((item) => {
               let user = {};
               user.UserId = item.UserId;
               user.DisplayName = item.PlayerData.DisplayName;
@@ -97,7 +96,7 @@ class CryptoDashboard extends PureComponent {
   onChangeValue = (e) => {
     let data = [];
     data[e.target.name] = e.target.value;
-    this.setState(data, () => {
+    this.setState({levelBoss: e.target.value}, () => {
       this.OnSearchClick();
     });
   };
@@ -134,15 +133,14 @@ class CryptoDashboard extends PureComponent {
         <Row>
           <Col><h3 className='page-title'>Jackal Leaderboard</h3> </Col>
           <Container >
-        <Col className='inline'>
-                      <div className='form__form-group-field'>
-                        <div>
+        <Col>
+                  <div className='form__form-group-field'>
+                        <div className='form__form-group-icon'>
                           <AccountOutlineIcon />
                         </div>
                         <input
-                          type = 'text'
                           name='level'
-                          value={this.state.levelBoss}
+                          defaultvalue={this.state.levelBoss}
                           onKeyPress={this.OnkeyPress.bind(this)}
                           onChange={this.onChangeValue}
                           placeholder='level'
@@ -172,7 +170,7 @@ class CryptoDashboard extends PureComponent {
         </Row>
 
         <Row>
-          <BossScoreView title='Boss Score' lsCountryIAP={this.state.listSurvival} levelBoss={this.state.levelBoss} />
+          <BossScoreView title='Boss Score' lsCountryIAP={this.state.listBossScore} levelBoss={this.state.levelBoss} />
         </Row>
       </Container>
     );
