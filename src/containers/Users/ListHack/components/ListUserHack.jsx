@@ -62,6 +62,9 @@ class ListHackTable extends PureComponent {
       modal: false,
       banReason:"",
       banMode:0,
+      cash: 0,
+      coin: 0,
+      titanium: 0,
       startDate: new Date(),
     };
 
@@ -556,16 +559,11 @@ var userList = [];
         <tr>
           <th>#</th>
           <th>_id</th>
-          <th>UserCode</th>
           <th>DisplayName</th>
           <th>CreatedAt</th>
-          <th>HackDate</th>
-          <th>Version</th>
-          <th>FirsrVersion</th>
-          <th>LastIAP</th>
-          <th>TypeMod</th>
-          <th>Description</th>
-
+          <th>Cash</th>
+          <th>Coin</th>
+          <th>Titanium</th>
           <th>Status</th>
           <th><Field
                   component={renderCheckBoxField}
@@ -583,15 +581,11 @@ var userList = [];
             <td>{index + 1}</td>
            
             <td dir="ltr">{user.User}</td>
-            <td dir="ltr">{user.UserCode}</td>
             <td dir="ltr">{user.DisplayName}</td>
-            <td dir="ltr">{this.formatStringDate(user.CreatedAt.toString())}</td>
-            <td>{this.formatStringDate(user.HackDate.toString())}</td>
-            <td>{user.Version}</td>
-            <td>{user.FirstVerSion}</td>
-            <td dir="ltr">{user.LastIAP}</td>
-            <td>{user.TypeMod}</td>
-            <td>{user.Desc}</td>
+            <td dir="ltr">{user.CreatedAt && (user.CreatedAt.slice(0, 10))}</td>
+            <td>{user.Coin}</td>
+            <td>{user.Gem}</td>
+            <td>{user.Stone}</td>
             <td>{StatusFormatter(user.Banned)}</td>
             <td>
             <Field
