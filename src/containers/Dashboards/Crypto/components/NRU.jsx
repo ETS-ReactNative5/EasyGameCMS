@@ -3,6 +3,7 @@ import { Card, CardBody, Col } from 'reactstrap';
 import {
   AreaChart, Tooltip, Area, ResponsiveContainer, XAxis,
 } from 'recharts';
+import TrendingDownIcon from 'mdi-react/TrendingDownIcon';
 import TrendingUpIcon from 'mdi-react/TrendingUpIcon';
 import PropTypes from 'prop-types';
 import config from '../../../../config/appConfig';
@@ -70,6 +71,25 @@ export default class NRU extends PureComponent {
     .catch(err => console.log(err))
   };
 
+  conditionUpOrDown() {
+    let firstHalf = 0;
+    let lastHalf = 0;
+    for(let i = 0; i < data.length; i ++)
+    {
+      if(i < data.length / 2)
+      {
+        firstHalf += data[i].DAU;
+      }
+      if(i > data.length / 2)
+      {
+        lastHalf += data[i].DAU;
+      }
+    }
+    console.log(firstHalf);
+    console.log(lastHalf);
+    if(firstHalf > lastHalf) return false;
+    else return true;
+  }
 
   render() {
     const { dir } = this.props;
@@ -85,7 +105,13 @@ export default class NRU extends PureComponent {
               <h5 className="subhead">Week</h5>
             </div>
             <div className="dashboard__total dashboard__total--area">
-              <TrendingUpIcon className="dashboard__trend-icon" />
+            {(() => {
+            if (this.conditionUpOrDown()) {
+              return <TrendingUpIcon className="dashboard__trend-icon" />;
+              } else {
+              return <TrendingDownIcon className="dashboard__trend-icon" />;
+            }
+            })()}
               <p className="dashboard__total-stat">
                 {this.props.nru}
               </p>
@@ -101,8 +127,8 @@ export default class NRU extends PureComponent {
                       name="NRU"
                       type="monotone"
                       dataKey="NRU"
-                      fill="#6faae1"
-                      stroke="#6faae1"
+                      fill= {this.conditionUpOrDown()?"#4ce1b6":"#c39fdf"}
+                      stroke= {this.conditionUpOrDown()?"#4ce1b6":"#c39fdf"}
                       fillOpacity={0.2}
                     />
                   </AreaChart>
