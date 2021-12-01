@@ -43,7 +43,7 @@ class CryptoDashboard extends PureComponent {
   }
 
   componentDidMount() {
-    var dashboarResult;
+    var dashboardResult;
     var lsIAP = [];
     var lsCountry = [];
     var lsPackage = [];
@@ -58,7 +58,7 @@ class CryptoDashboard extends PureComponent {
     let listPU = {};
 
     axios
-      .post(config.base_url + config.url_gameStats, {
+      .post(config.test_url + config.url_gameStats, {
         userID: sessionStorage.getItem('userID'),
       })
       .then(function(response) {
@@ -66,9 +66,9 @@ class CryptoDashboard extends PureComponent {
         if (response.status === 200) {
           let data = response.data;
           if (data.status === 'ok') {
-            dashboarResult = data.data;
-            console.log('statsData', dashboarResult);
-            lsIAP = dashboarResult.IAP;
+            dashboardResult = data.data;
+            console.log('statsData', dashboardResult);
+            lsIAP = dashboardResult.IAP;
             lsIAP.forEach((item) => {
               let country = item.Currency === '' ? 'Unknow' : item.Currency;
               if (dicNationIAP.hasOwnProperty(country)) {
@@ -137,11 +137,13 @@ class CryptoDashboard extends PureComponent {
             console.log(error);
           })
           .then(() => {
+           let DAU = 0;
+           dashboardResult.DAU.forEach(e => { DAU += e });
             this.setState({
-              ccu: dashboarResult.CCU,
-              dau: dashboarResult.DAU,
-              nru: dashboarResult.NRU,
-              pu: dashboarResult.PU,
+              ccu: dashboardResult.CCU,
+              dau: DAU,
+              nru: dashboardResult.NRU,
+              pu: dashboardResult.PU,
               totalIAP: Math.round(totalIAP),
               lsCountryIAP: lsCountry,
               lsPackageIAP: lsPackage,
