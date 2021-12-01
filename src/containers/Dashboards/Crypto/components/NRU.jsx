@@ -5,14 +5,17 @@ import {
 } from 'recharts';
 import TrendingUpIcon from 'mdi-react/TrendingUpIcon';
 import PropTypes from 'prop-types';
+import config from '../../../../config/appConfig';
+import axios from 'axios';
 
-const data = [{ name: 'Mon', NRU: 70.23 },
-  { name: 'Tue', NRU: 80.5 },
-  { name: 'Wed', NRU: 38.45 },
-  { name: 'Thu', NRU: 89.2 },
-  { name: 'Fri', NRU: 105.61 },
-  { name: 'Sat', NRU: 98.6 },
-  { name: 'Sun', NRU: 115 }];
+
+var data = [{ name: '6DaysAgo', NRU: 0 },
+  { name: '5DaysAgo', NRU: 0 },
+  { name: '4DaysAgo', NRU: 0 },
+  { name: '3DaysAgo', NRU: 0 },
+  { name: '2DaysAgo', NRU: 0 },
+  { name: 'YesterDay', NRU: 0 },
+  { name: 'Now', NRU: 0 }];
 
 const CustomTooltip = ({ active, payload }) => {
   if (active) {
@@ -49,6 +52,24 @@ export default class NRU extends PureComponent {
       activeIndex: 0,
     };
   }
+  componentDidMount() {
+    axios
+    .post(config.test_url + config.url_gameStats, {
+      userID: sessionStorage.getItem('userID'),
+    })
+    .then(function(response) {
+      if (response.status === 200) {
+        let result = response.data;
+        if (result.status === 'ok') {
+          let NruResult = result.data.NRU;
+          for(let i = 0; i < NruResult.length; i++) {
+            data[i].NRU = NruResult[i];
+          }
+        }
+      }})
+    .catch(err => console.log(err))
+  };
+
 
   render() {
     const { dir } = this.props;
@@ -61,7 +82,7 @@ export default class NRU extends PureComponent {
           <CardBody className="dashboard__card-widget">
             <div className="card__title">
               <h4 className="bold-text">NRU</h4>
-              <h5 className="subhead">Today</h5>
+              <h5 className="subhead">Week</h5>
             </div>
             <div className="dashboard__total dashboard__total--area">
               <TrendingUpIcon className="dashboard__trend-icon" />

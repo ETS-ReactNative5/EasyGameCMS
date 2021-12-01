@@ -138,11 +138,13 @@ class CryptoDashboard extends PureComponent {
           })
           .then(() => {
            let DAU = 0;
+           let NRU = 0;
            dashboardResult.DAU.forEach(e => { DAU += e });
+           dashboardResult.NRU.forEach(e => { NRU += e });
             this.setState({
               ccu: dashboardResult.CCU,
               dau: DAU,
-              nru: dashboardResult.NRU,
+              nru: NRU,
               pu: dashboardResult.PU,
               totalIAP: Math.round(totalIAP),
               lsCountryIAP: lsCountry,
