@@ -104,7 +104,7 @@ export default class DAU extends PureComponent {
           <CardBody className="dashboard__card-widget">
             <div className="card__title">
               <h4 className="bold-text">DAU</h4>
-              <h5 className="subhead">Week</h5>
+              <h5 className="subhead">Today</h5>
             </div>
             <div className="dashboard__total dashboard__total--area">
             {(() => {

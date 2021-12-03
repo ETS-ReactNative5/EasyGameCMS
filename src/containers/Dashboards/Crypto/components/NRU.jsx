@@ -80,11 +80,11 @@ export default class NRU extends PureComponent {
     {
       if(i < data.length / 2)
       {
-        firstHalf += data[i].DAU;
+        firstHalf += data[i].NRU;
       }
       if(i > data.length / 2)
       {
-        lastHalf += data[i].DAU;
+        lastHalf += data[i].NRU;
       }
     }
     console.log(firstHalf);
@@ -104,7 +104,7 @@ export default class NRU extends PureComponent {
           <CardBody className="dashboard__card-widget">
             <div className="card__title">
               <h4 className="bold-text">NRU</h4>
-              <h5 className="subhead">Week</h5>
+              <h5 className="subhead">Today</h5>
             </div>
             <div className="dashboard__total dashboard__total--area">
             {(() => {
