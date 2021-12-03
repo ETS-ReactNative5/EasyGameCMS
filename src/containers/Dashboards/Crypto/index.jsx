@@ -58,7 +58,7 @@ class CryptoDashboard extends PureComponent {
     let listPU = {};
 
     axios
-      .post(config.test_url + config.url_gameStats, {
+      .post(config.base_url + config.url_gameStats, {
         userID: sessionStorage.getItem('userID'),
       })
       .then(function(response) {
@@ -139,8 +139,8 @@ class CryptoDashboard extends PureComponent {
           .then(() => {
            let DAU = 0;
            let NRU = 0;
-           dashboardResult.DAU.forEach(e => { DAU += e });
-           dashboardResult.NRU.forEach(e => { NRU += e });
+            dashboardResult.DAU.forEach(e => { DAU += e });
+            dashboardResult.NRU.forEach(e => { NRU += e });
             this.setState({
               ccu: dashboardResult.CCU,
               dau: DAU,

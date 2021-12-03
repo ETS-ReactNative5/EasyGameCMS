@@ -55,7 +55,7 @@ export default class NRU extends PureComponent {
   }
   componentDidMount() {
     axios
-    .post(config.test_url + config.url_gameStats, {
+    .post(config.base_url + config.url_gameStats, {
       userID: sessionStorage.getItem('userID'),
     })
     .then(function(response) {
