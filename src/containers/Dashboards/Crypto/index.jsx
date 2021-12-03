@@ -9,7 +9,7 @@ import NRU from './components/NRU';
 import PU from './components/PU';
 import TradeHistory from './components/TradeHistory';
 import BtcEth from './components/BtcEth';
-import WinRateBR from './components/WinRateBR';
+import TopUserIAP from './components/TopUserIAP';
 import CryptotrendsToday from './components/CryptotrendsToday';
 import TopTen from './components/TopTen';
 //import PlaceOrder from './components/PlaceOrder';
@@ -141,10 +141,10 @@ class CryptoDashboard extends PureComponent {
            let DAU = 0;
            let NRU = 0;
            if(Array.isArray(dashboardResult.DAU)) {
-            dashboardResult.DAU.forEach(e => { DAU += e });
+             DAU = dashboardResult.DAU[dashboardResult.DAU.length - 1];
            }
            if(Array.isArray(dashboardResult.NRU)) {
-            dashboardResult.NRU.forEach(e => { NRU += e });  
+            NRU = dashboardResult.NRU[dashboardResult.NRU.length - 1]; 
           }   
             this.setState({
               ccu: dashboardResult.CCU,
@@ -241,12 +241,8 @@ class CryptoDashboard extends PureComponent {
           <TradeHistory title='IAP by Package' lsCountryIAP={this.state.lsPackageIAP} />
           {chartStage}
 
-          <WinRateBR dir={rtl.direction} theme={theme.className} />
+          <TopUserIAP dir={rtl.direction} theme={theme.className} />
 
-          {/* <TopTen
-            cryptoTable={cryptoTable}
-            onDeleteCryptoTableData={this.onDeleteCryptoTableData}
-          /> */}
         </Row>
       </Container>
     );
