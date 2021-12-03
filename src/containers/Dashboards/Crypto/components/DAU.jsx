@@ -64,9 +64,11 @@ export default class DAU extends PureComponent {
         let result = response.data;
         if (result.status === 'ok') {
           let DauResult = result.data.DAU;
+          if(Array.isArray(DauResult)) {
           for(let i = 0; i < DauResult.length; i++) {
             data[i].DAU = DauResult[i];
           }
+        }
         }
       }})
     .catch(err => console.log(err))

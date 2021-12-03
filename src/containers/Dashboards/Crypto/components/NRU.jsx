@@ -63,9 +63,11 @@ export default class NRU extends PureComponent {
         let result = response.data;
         if (result.status === 'ok') {
           let NruResult = result.data.NRU;
+          if(Array.isArray(NruResult)) {
           for(let i = 0; i < NruResult.length; i++) {
             data[i].NRU = NruResult[i];
           }
+        }
         }
       }})
     .catch(err => console.log(err))
