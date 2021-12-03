@@ -22,7 +22,7 @@ const CustomTooltip = ({ active, payload }) => {
   if (active) {
     return (
       <div className="dashboard__total-tooltip">
-        <p className="label">{`$${payload[0].value}`}</p>
+        <p className="label">{`${payload[0].value}`}</p>
       </div>
     );
   }
@@ -63,9 +63,11 @@ export default class NRU extends PureComponent {
         let result = response.data;
         if (result.status === 'ok') {
           let NruResult = result.data.NRU;
+          if(Array.isArray(NruResult)) {
           for(let i = 0; i < NruResult.length; i++) {
             data[i].NRU = NruResult[i];
           }
+        }
         }
       }})
     .catch(err => console.log(err))

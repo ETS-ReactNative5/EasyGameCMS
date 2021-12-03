@@ -18,6 +18,7 @@ import { CryptoTableProps } from '../../../shared/prop-types/TablesProps';
 import { ThemeProps, RTLProps } from '../../../shared/prop-types/ReducerProps';
 import config from '../../../config/appConfig';
 import axios from 'axios';
+import { data } from 'autoprefixer';
 var winRateIndex = 0;
 class CryptoDashboard extends PureComponent {
   static propTypes = {
@@ -139,8 +140,12 @@ class CryptoDashboard extends PureComponent {
           .then(() => {
            let DAU = 0;
            let NRU = 0;
+           if(Array.isArray(dashboardResult.DAU)) {
             dashboardResult.DAU.forEach(e => { DAU += e });
-            dashboardResult.NRU.forEach(e => { NRU += e });
+           }
+           if(Array.isArray(dashboardResult.NRU)) {
+            dashboardResult.NRU.forEach(e => { NRU += e });  
+          }   
             this.setState({
               ccu: dashboardResult.CCU,
               dau: DAU,
