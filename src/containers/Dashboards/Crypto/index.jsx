@@ -86,18 +86,23 @@ class CryptoDashboard extends PureComponent {
               } else {
                 dicPackageIAP[pack] = { count: 1, total: item.PriceUSD * 1.43 };
               }
-              
               let userID = item.User;
               if (dicUserIAP.hasOwnProperty(userID)) {
                 dicUserIAP[userID].total = dicUserIAP[userID].total + item.PriceUSD * 1.43;
               } else {
                 dicUserIAP[userID] = { country: item.Currency, total: item.PriceUSD * 1.43 };
               }
-
-
               totalIAP += item.PriceUSD * 1.43;
             });
-
+              // get key packge shorter
+              let newKeyPackage = [];
+              let oldkeyPackage = Object.keys(dicPackageIAP);
+              for(let i = 0; i < oldkeyPackage.length; i++) {
+              newKeyPackage.push(oldkeyPackage[i].split('.')[3]);
+                }
+              for(let i = 0; i < oldkeyPackage.length; i++) {
+              delete Object.assign(dicPackageIAP, {[newKeyPackage[i]]: dicPackageIAP[oldkeyPackage[i]] })[oldkeyPackage[i]];
+              }
             var lsCountryName = Object.keys(dicNationIAP);
             lsCountry = lsCountryName
               .map((item) => {
@@ -131,6 +136,7 @@ class CryptoDashboard extends PureComponent {
             .sort((a, b) => b.total - a.total);
 
             lsIAPUser  = lsIAPUser.slice(0, 10);
+
           }
         }
       })
@@ -163,7 +169,7 @@ class CryptoDashboard extends PureComponent {
              DAU = dashboardResult.DAU[dashboardResult.DAU.length - 1];
            }
            if(Array.isArray(dashboardResult.NRU)) {
-            NRU = dashboardResult.NRU[dashboardResult.NRU.length - 1]; 
+              NRU = dashboardResult.NRU[dashboardResult.NRU.length - 1]; 
           }   
           dashboardResult.IAP.forEach(e => {
             PUtoday.add(e.User);
