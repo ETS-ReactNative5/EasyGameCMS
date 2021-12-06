@@ -18,7 +18,8 @@ import { CryptoTableProps } from '../../../shared/prop-types/TablesProps';
 import { ThemeProps, RTLProps } from '../../../shared/prop-types/ReducerProps';
 import config from '../../../config/appConfig';
 import axios from 'axios';
-import { data } from 'autoprefixer';
+import { ContinuousColorLegend } from 'react-vis';
+
 var winRateIndex = 0;
 class CryptoDashboard extends PureComponent {
   static propTypes = {
@@ -39,6 +40,7 @@ class CryptoDashboard extends PureComponent {
       totalIAP: 0,
       lsIAPCountry: [],
       lsIAPPackage: [],
+      lsIAPUser: [],
       lsWinrate: [{ name: 'Stage_1', Win: 0, Lose: 0, Total: 0 }],
     };
   }
@@ -49,13 +51,11 @@ class CryptoDashboard extends PureComponent {
     var lsCountry = [];
     var lsPackage = [];
     var lsRate = [];
-
+    var lsIAPUser = [];
     var totalIAP = 0;
-
     var dicNationIAP = {};
-
     var dicPackageIAP = {};
-
+    var dicUserIAP = {};
     let listPU = {};
 
     axios
@@ -86,10 +86,23 @@ class CryptoDashboard extends PureComponent {
               } else {
                 dicPackageIAP[pack] = { count: 1, total: item.PriceUSD * 1.43 };
               }
-
+              let userID = item.User;
+              if (dicUserIAP.hasOwnProperty(userID)) {
+                dicUserIAP[userID].total = dicUserIAP[userID].total + item.PriceUSD * 1.43;
+              } else {
+                dicUserIAP[userID] = { country: item.Currency, total: item.PriceUSD * 1.43 };
+              }
               totalIAP += item.PriceUSD * 1.43;
             });
-
+              // get key packge shorter
+              let newKeyPackage = [];
+              let oldkeyPackage = Object.keys(dicPackageIAP);
+              for(let i = 0; i < oldkeyPackage.length; i++) {
+              newKeyPackage.push(oldkeyPackage[i].split('.')[3]);
+                }
+              for(let i = 0; i < oldkeyPackage.length; i++) {
+              delete Object.assign(dicPackageIAP, {[newKeyPackage[i]]: dicPackageIAP[oldkeyPackage[i]] })[oldkeyPackage[i]];
+              }
             var lsCountryName = Object.keys(dicNationIAP);
             lsCountry = lsCountryName
               .map((item) => {
@@ -110,8 +123,20 @@ class CryptoDashboard extends PureComponent {
                 return data;
               })
               .sort((a, b) => b.total - a.total);
-
             console.log('totalIAP: ' + totalIAP);
+
+            lsIAPUser = Object.keys(dicUserIAP)
+            .map((item) => {
+              var dataUser = {};
+              dataUser.userID = item;
+              dataUser.country = dicUserIAP[item].country;
+              dataUser.total = dicUserIAP[item].total;
+              return dataUser;
+            })
+            .sort((a, b) => b.total - a.total);
+
+            lsIAPUser  = lsIAPUser.slice(0, 10);
+
           }
         }
       })
@@ -120,17 +145,16 @@ class CryptoDashboard extends PureComponent {
       })
       .then(() => {
         axios
-          .post(config.base_url + config.url_winRate, {
-            startStage: 0,
-            endStage: 501,
-          })
+        .post(config.base_url + config.url_gameStats, {
+          userID: sessionStorage.getItem('userID'),
+        })
           .then(function(response) {
             console.log('__________________________', response);
             if (response.status === 200) {
               let data = response.data;
               console.log('data', data);
               if (data.status === 'ok') {
-                lsRate = data.data;
+               console.log('ok');
               }
             }
           })
@@ -138,29 +162,28 @@ class CryptoDashboard extends PureComponent {
             console.log(error);
           })
           .then(() => {
+           let PUtoday = new Set();
            let DAU = 0;
            let NRU = 0;
            if(Array.isArray(dashboardResult.DAU)) {
              DAU = dashboardResult.DAU[dashboardResult.DAU.length - 1];
            }
            if(Array.isArray(dashboardResult.NRU)) {
-            NRU = dashboardResult.NRU[dashboardResult.NRU.length - 1]; 
+              NRU = dashboardResult.NRU[dashboardResult.NRU.length - 1]; 
           }   
+          dashboardResult.IAP.forEach(e => {
+            PUtoday.add(e.User);
+          });
+          let PU = PUtoday.size;
             this.setState({
               ccu: dashboardResult.CCU,
               dau: DAU,
               nru: NRU,
-              pu: dashboardResult.PU,
+              pu: PU,
               totalIAP: Math.round(totalIAP),
               lsCountryIAP: lsCountry,
               lsPackageIAP: lsPackage,
-              lsWinrate: lsRate.map((item) => {
-                item.name = 'Stage_' + item.Level;
-                item.Total = item.Win + item.Lose;
-                if (item.Total > 0) item.rate = Math.round((item.Win / item.Total) * 100);
-                else item.rate = 0;
-                return item;
-              }),
+              lsIAPUser: lsIAPUser,
             });
           });
       });
@@ -172,44 +195,6 @@ class CryptoDashboard extends PureComponent {
     const arrayCopy = [...cryptoTable];
     arrayCopy.splice(index, 1);
     dispatch(deleteCryptoTableData(arrayCopy));
-  };
-
-  onStageCallback = (e) => {
-    console.log(e.target.name);
-    if (e.target.name === 'back') {
-      if (winRateIndex !== 0) winRateIndex--;
-    } else winRateIndex++;
-
-    var lsRate = [];
-    axios
-      .post(config.base_url + config.url_winRate, {
-        startStage: winRateIndex * 500,
-        endStage: (winRateIndex + 1) * 500 + 1,
-      })
-      .then(function(response) {
-        console.log('__________________________', response);
-        if (response.status === 200) {
-          let data = response.data;
-          console.log('data', data);
-          if (data.status === 'ok') {
-            lsRate = data.data;
-          }
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-      })
-      .then(() => {
-        this.setState({
-          lsWinrate: lsRate.map((item) => {
-            item.name = 'Stage_' + item.Level;
-            item.Total = item.Win + item.Lose;
-            if (item.Total > 0) item.rate = Math.round((item.Win / item.Total) * 100);
-            else item.rate = 0;
-            return item;
-          }),
-        });
-      });
   };
 
   render() {
@@ -239,9 +224,8 @@ class CryptoDashboard extends PureComponent {
           />
           <TradeHistory title='IAP by Country' lsCountryIAP={this.state.lsCountryIAP} />
           <TradeHistory title='IAP by Package' lsCountryIAP={this.state.lsPackageIAP} />
+          <TopUserIAP lsUserIAP={this.state.lsIAPUser}/>
           {chartStage}
-
-          <TopUserIAP dir={rtl.direction} theme={theme.className} />
 
         </Row>
       </Container>

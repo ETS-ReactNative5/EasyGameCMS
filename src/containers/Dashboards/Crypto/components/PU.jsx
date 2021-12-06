@@ -4,21 +4,24 @@ import {
   AreaChart, Tooltip, Area, ResponsiveContainer, XAxis,
 } from 'recharts';
 import TrendingUpIcon from 'mdi-react/TrendingUpIcon';
+import TrendingDownIcon from 'mdi-react/TrendingDownIcon';
 import PropTypes from 'prop-types';
+import config from '../../../../config/appConfig';
+import axios from 'axios';
 
-const data = [{ name: 'Mon', PU: 70.23 },
-  { name: 'Tue', PU: 80.5 },
-  { name: 'Wed', PU: 38.45 },
-  { name: 'Thu', PU: 89.2 },
-  { name: 'Fri', PU: 105.61 },
-  { name: 'Sat', PU: 98.6 },
-  { name: 'Sun', PU: 115 }];
+var data = [{ name: '6DaysAgo', PU: 0 },
+  { name: '5DaysAgo', PU: 0 },
+  { name: '4DaysAgo', PU: 0 },
+  { name: '3DaysAgo', PU: 0 },
+  { name: '2DaysAgo', PU: 0 },
+  { name: 'YesterDay', PU: 0 },
+  { name: 'Now', PU: 0 }];
 
 const CustomTooltip = ({ active, payload }) => {
   if (active) {
     return (
       <div className="dashboard__total-tooltip">
-        <p className="label">{`$${payload[0].value}`}</p>
+        <p className="label">{`${payload[0].value}`}</p>
       </div>
     );
   }
@@ -50,6 +53,43 @@ export default class PU extends PureComponent {
     };
   }
 
+  componentDidMount() {
+    var PUtoday = new Set();
+    axios
+    .post(config.base_url + config.url_gameStats, {
+      userID: sessionStorage.getItem('userID'),
+    })
+    .then(function(response) {
+      if (response.status === 200) {
+        let res = response.data;
+        if (res.status === 'ok') {
+          res.data.IAP.forEach(e => {
+            PUtoday.add(e.User);
+          });
+          data[data.length - 1].PU = PUtoday.size;
+        };
+      }})
+    .catch(err => console.log(err))
+  };
+
+  conditionUpOrDown() {
+    let firstHalf = 0;
+    let lastHalf = 0;
+    for(let i = 0; i < data.length; i ++)
+    {
+      if(i < data.length / 2)
+      {
+        firstHalf += data[i].PU;
+      }
+      if(i > data.length / 2)
+      {
+        lastHalf += data[i].PU;
+      }
+    }
+    if(firstHalf > lastHalf) return false;
+    else return true;
+  }
+
   render() {
     const { dir } = this.props;
     const { activeIndex } = this.state;
@@ -64,7 +104,13 @@ export default class PU extends PureComponent {
               <h5 className="subhead">Today</h5>
             </div>
             <div className="dashboard__total dashboard__total--area">
-              <TrendingUpIcon className="dashboard__trend-icon" />
+                 {(() => {
+              if (this.conditionUpOrDown()) {
+                 return <TrendingUpIcon className="dashboard__trend-icon" />;
+              } else {
+                return <TrendingDownIcon className="dashboard__trend-icon" />;
+              }
+              })()}
               <p className="dashboard__total-stat">
                 {this.props.pu}
               </p>
@@ -80,8 +126,8 @@ export default class PU extends PureComponent {
                       name="PU"
                       type="monotone"
                       dataKey="PU"
-                      fill="#c39fdf"
-                      stroke="#c39fdf"
+                      fill= {this.conditionUpOrDown()?"#4ce1b6":"#c39fdf"}
+                      stroke= {this.conditionUpOrDown()?"#4ce1b6":"#c39fdf"}
                       fillOpacity={0.2}
                     />
                   </AreaChart>
