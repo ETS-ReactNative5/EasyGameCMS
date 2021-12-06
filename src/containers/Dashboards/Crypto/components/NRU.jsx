@@ -78,17 +78,15 @@ export default class NRU extends PureComponent {
     let lastHalf = 0;
     for(let i = 0; i < data.length; i ++)
     {
-      if(i < data.length / 2)
+      if(i < (data.length - 1) / 2)
       {
         firstHalf += data[i].NRU;
       }
-      if(i > data.length / 2)
+      if(i > (data.length - 1) / 2)
       {
         lastHalf += data[i].NRU;
       }
     }
-    console.log(firstHalf);
-    console.log(lastHalf);
     if(firstHalf > lastHalf) return false;
     else return true;
   }
