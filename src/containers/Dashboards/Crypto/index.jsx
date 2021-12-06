@@ -136,7 +136,6 @@ class CryptoDashboard extends PureComponent {
             .sort((a, b) => b.total - a.total);
 
             lsIAPUser  = lsIAPUser.slice(0, 10);
-
           }
         }
       })
@@ -144,24 +143,6 @@ class CryptoDashboard extends PureComponent {
         console.log(error);
       })
       .then(() => {
-        axios
-        .post(config.base_url + config.url_gameStats, {
-          userID: sessionStorage.getItem('userID'),
-        })
-          .then(function(response) {
-            console.log('__________________________', response);
-            if (response.status === 200) {
-              let data = response.data;
-              console.log('data', data);
-              if (data.status === 'ok') {
-               console.log('ok');
-              }
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          })
-          .then(() => {
            let PUtoday = new Set();
            let DAU = 0;
            let NRU = 0;
@@ -185,7 +166,6 @@ class CryptoDashboard extends PureComponent {
               lsPackageIAP: lsPackage,
               lsIAPUser: lsIAPUser,
             });
-          });
       });
   }
 

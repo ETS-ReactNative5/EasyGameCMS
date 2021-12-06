@@ -14,6 +14,12 @@ const daySelected = [];
 for(let i = 6; i >=0; i--) {
   daySelected.push(new Date(new Date().getTime() - timeOfDay * i).toISOString().slice(0, 10));
 }
+// var data = [];
+// daySelected.forEach(e => {
+//   let dayChoose = {};
+//   dayChoose[e] = 0;
+//   data.push(dayChoose);
+// });
 var data = [{ name: '6DaysAgo', DAU: 0},
   { name: '5DaysAgo', DAU: 0 },
   { name: '4DaysAgo', DAU: 0 },
@@ -86,11 +92,11 @@ export default class DAU extends PureComponent {
     let lastHalf = 0;
     for(let i = 0; i < data.length; i ++)
     {
-      if(i < (data.length - 1) / 2)
+      if(i < (data.length - 2) / 2)
       {
         firstHalf += data[i].DAU;
       }
-      if(i > (data.length - 1)  / 2)
+      if(i > (data.length - 2)  / 2)
       {
         lastHalf += data[i].DAU;
       }
