@@ -77,11 +77,11 @@ export default class PU extends PureComponent {
     let lastHalf = 0;
     for(let i = 0; i < data.length; i ++)
     {
-      if(i < data.length / 2)
+      if(i < (data.length - 2) / 2)
       {
         firstHalf += data[i].PU;
       }
-      if(i > data.length / 2)
+      if(i > (data.length - 2) / 2)
       {
         lastHalf += data[i].PU;
       }

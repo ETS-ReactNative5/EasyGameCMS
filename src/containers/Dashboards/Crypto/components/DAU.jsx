@@ -8,16 +8,25 @@ import TrendingUpIcon from 'mdi-react/TrendingUpIcon';
 import PropTypes from 'prop-types';
 import config from '../../../../config/appConfig';
 import axios from 'axios';
-import { isFirefox } from 'react-device-detect';
 
-var data = [{ name: '6DaysAgo', DAU: 0 },
+const timeOfDay = 86400000;
+const daySelected = [];
+for(let i = 6; i >=0; i--) {
+  daySelected.push(new Date(new Date().getTime() - timeOfDay * i).toISOString().slice(0, 10));
+}
+// var data = [];
+// daySelected.forEach(e => {
+//   let dayChoose = {};
+//   dayChoose[e] = 0;
+//   data.push(dayChoose);
+// });
+var data = [{ name: '6DaysAgo', DAU: 0},
   { name: '5DaysAgo', DAU: 0 },
   { name: '4DaysAgo', DAU: 0 },
   { name: '3DaysAgo', DAU: 0 },
   { name: '2DaysAgo', DAU: 0 },
   { name: 'YesterDay', DAU: 0 },
   { name: 'Now', DAU: 0 }];
-
 const CustomTooltip = ({ active, payload }) => {
   if (active) {
     return (
@@ -65,9 +74,13 @@ export default class DAU extends PureComponent {
         if (result.status === 'ok') {
           let DauResult = result.data.DAU;
           if(Array.isArray(DauResult)) {
-          for(let i = 0; i < DauResult.length; i++) {
-            data[i].DAU = DauResult[i];
-          }
+            for(let i = 0; i < DauResult.length; i++) {
+              data[i].DAU = DauResult[i];
+           //   data[i][daySelected[i]] = data[i].DAU;
+            }
+            // for(let i = 0; i < DauResult.length; i++) {
+            //   delete data[i].DAU;
+            // }
         }
         }
       }})
@@ -79,17 +92,15 @@ export default class DAU extends PureComponent {
     let lastHalf = 0;
     for(let i = 0; i < data.length; i ++)
     {
-      if(i < data.length / 2)
+      if(i < (data.length - 2) / 2)
       {
         firstHalf += data[i].DAU;
       }
-      if(i > data.length / 2)
+      if(i > (data.length - 2)  / 2)
       {
         lastHalf += data[i].DAU;
       }
     }
-    console.log(firstHalf);
-    console.log(lastHalf);
     if(firstHalf > lastHalf) return false;
     else return true;
   }

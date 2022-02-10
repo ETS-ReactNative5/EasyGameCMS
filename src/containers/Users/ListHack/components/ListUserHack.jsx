@@ -62,6 +62,9 @@ class ListHackTable extends PureComponent {
       modal: false,
       banReason:"",
       banMode:0,
+      cash: 0,
+      coin: 0,
+      titanium: 0,
       startDate: new Date(),
     };
 
@@ -533,39 +536,16 @@ var userList = [];
               entries
             </p>
             <div className="table">
-        {/* <ReactDataGrid
-          // onGridSort={this.handleGridSort}
-          rowKey="_id"
-          rowSelection={{
-            showCheckbox: true,
-            enableShiftSelect: true,
-            onRowsSelected: this.onRowsSelected,
-            onRowsDeselected: this.onRowsDeselected,
-            selectBy: {
-              indexes: this.state.selectedIndexes
-            }
-          }}
-          columns={this.heads}
-          rowGetter={this.rowGetter}
-          rowsCount={rows.length}
-          rowHeight={44}
-          minColumnWidth={100}
-        /> */}
           <Table responsive className="table--bordered dashboard__table-crypto">
       <thead>
         <tr>
-          <th>#</th>
+        <th>#</th>
           <th>_id</th>
-          <th>UserCode</th>
           <th>DisplayName</th>
           <th>CreatedAt</th>
-          <th>HackDate</th>
-          <th>Version</th>
-          <th>FirsrVersion</th>
-          <th>LastIAP</th>
-          <th>TypeMod</th>
-          <th>Description</th>
-
+          <th>Cash</th>
+          <th>Coin</th>
+          <th>Titanium</th>
           <th>Status</th>
           <th><Field
                   component={renderCheckBoxField}
@@ -583,15 +563,11 @@ var userList = [];
             <td>{index + 1}</td>
            
             <td dir="ltr">{user.User}</td>
-            <td dir="ltr">{user.UserCode}</td>
             <td dir="ltr">{user.DisplayName}</td>
-            <td dir="ltr">{this.formatStringDate(user.CreatedAt.toString())}</td>
-            <td>{this.formatStringDate(user.HackDate.toString())}</td>
-            <td>{user.Version}</td>
-            <td>{user.FirstVerSion}</td>
-            <td dir="ltr">{user.LastIAP}</td>
-            <td>{user.TypeMod}</td>
-            <td>{user.Desc}</td>
+            <td dir="ltr">{user.CreatedAt && (user.CreatedAt.slice(0, 10))}</td>
+            <td>{user.Coin}</td>
+            <td>{user.Gem}</td>
+            <td>{user.Stone}</td>
             <td>{StatusFormatter(user.Banned)}</td>
             <td>
             <Field
@@ -601,33 +577,7 @@ var userList = [];
                   className="colored-click"
                   onChange = {this.onSelectedChange}
                 />
-              {/* <input
-          //className="checkbox-btn__checkbox"
-          type="checkbox"
-          name={user.User}
-          id={index}
-          onChange={this.onSelectedChange}
-          //checked = {this.renderCheckbox}
-          checked = {user.isSelected}
-        /> */}
         </td>
-            {/* <td className="dashboard__table-crypto-chart">
-              <ResponsiveContainer height={36}>
-                <AreaChart data={data} margin={{ top: 0, left: 0, bottom: 0 }}>
-                  <Tooltip content={<CustomTooltip />} />
-                  <Area
-                    type="monotone"
-                    dataKey={crypto.chart}
-                    fill="#4ce1b6"
-                    stroke="#4ce1b6"
-                    fillOpacity={0.2}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </td> */}
-            {/* <td>
-              <DropDownMore index={index} handleDeleteRow={e => onDeleteCryptoTableData(index, e)} />
-            </td> */}
           </tr>
         ))}
       </tbody>
@@ -644,20 +594,7 @@ var userList = [];
           className={modalClasses}
         >
           <div className="form">
-            {/* <div className="form__form-group">
-              <span className="form__form-group-label typography-message">Title</span>
-              <div className="form__form-group-field">
-                <input
-                  type="text"
-                  placeholder="title.."
-                  required
-                  value={this.state.banReason}
-                  onChange={this.handleTitleChange.bind(this)}
-                />
-              </div>
-            </div> */}
-
-            <div className="form__form-group">
+          <div className="form__form-group">
               <span className="form__form-group-label">Lý do ban</span>
               <div className="form__form-group-field">
                 <textarea
@@ -667,58 +604,7 @@ var userList = [];
                   onChange={this.handleDescriptionChange.bind(this)}
                 /> 
               </div>
-
-              {/* <div className="form__form-group">
-              <div className="form__form-group-field">
-              <Field
-                  name="rdBan"
-                  component={renderRadioButtonField}
-                  className="colored"
-                  radioValue="1"
-                  defaultChecked
-                  label="Ban"
-                  onChange = {this.onSelectedChange}
-                />
-                 <Field
-                  name="rdClear"
-                  component={renderRadioButtonField}
-                  className="colored"
-                  radioValue="2"
-                  label="Ban & Clear"
-                  onChange = {this.onSelectedChange}
-                />
-                  <Field
-                  name="rdArenaBan"
-                  component={renderRadioButtonField}
-                  className="colored"
-                  radioValue="2"
-                  label="Ban Arena Only"
-                  onChange = {this.onSelectedChange}
-                />
-                 <Field
-                  name="rdClearData"
-                  component={renderRadioButtonField}
-                  className="colored"
-                  radioValue="2"
-                  label="Clear Data Only"
-                  onChange = {this.onSelectedChange}
-                />
-              </div>
-              </div> */}
-
             </div>
-
-            {/* <div className="form__form-group">
-              <span className="form__form-group-label">Due Date</span>
-              <div className="form__form-group-field priority">
-                {/* <DatePicker
-                  dateFormat="yyyy/MM/dd"
-                  selected={startDate}
-                  onChange={this.handleDateChange}
-                />
-              </div>
-            </div> */}
-
             <div className="form__form-group">
               <span className="form__form-group-label"></span>
               <div className="form__form-group-field priority">
