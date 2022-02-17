@@ -42,9 +42,9 @@ OnViewUserData = (index,e) =>{
   onDeleteCryptoTableData = (index, e) => {
  
     e.preventDefault();
-    console.log(index,e);
+    // console.log(index,e);
 
-    console.log(index,this.props.lsCountryIAP[index].UserId);
+    // console.log(index,this.props.lsCountryIAP[index].UserId);
 
     axios
     .post(config.cms_url + config.url_deleteBossScore, {
@@ -52,11 +52,11 @@ OnViewUserData = (index,e) =>{
       BossScore: this.props.levelBoss
     })
     .then(function(response) {
-      console.log(response);
+    //  console.log(response);
       if (response.status === 200) {
         let data = response.data;
         if (data.status === 'ok') {
-          console.log(response.data);
+      //    console.log(response.data);
           this.props.lsCountryIAP.splice(index,1);
         }
       }

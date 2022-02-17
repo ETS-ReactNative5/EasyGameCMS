@@ -11,7 +11,7 @@
    url_gameStats: '/GetGameStats',
    url_getSurvival: '/GetSurvivalLeaderboard',
    url_deleteLeaderBoard: '/DeleteUserLeaderBoard',
-   url_getBossScore: '/GetSurvivalBossScore',
+   url_getBossScore: '/GetBossScoreLeaderboard',
    url_deleteBossScore: '/DeleteUserBossScore',
    
    url_winRate: '/GetWinRate',

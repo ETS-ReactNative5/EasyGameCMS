@@ -47,7 +47,7 @@ class CryptoDashboard extends PureComponent {
           BossScore: this.state.levelBoss,
         })
         .then(function(response) {
-          console.log(response);
+     //     console.log(response);
           if (response.status === 200) {
             let data = response.data;
             if (data.status === 'ok') {
