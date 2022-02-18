@@ -30,16 +30,15 @@ PhotoFormatter.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-const StatusFormatter = ({ value }) =>
-  value !== 'Active' ? (
+const StatusFormatter = ( value) =>
+  (value === false || value === undefined) ? (
     <span className='badge badge-success'>Active</span>
   ) : (
     <span className='badge badge-danger'>Baned</span>
   );
-
-StatusFormatter.propTypes = {
-  value: PropTypes.string.isRequired,
-};
+  StatusFormatter.propTypes = {
+    value: PropTypes.string.isRequired,
+  };
 
 class ProductsListTable extends PureComponent {
   constructor() {
@@ -53,6 +52,7 @@ class ProductsListTable extends PureComponent {
       pageOfItems: [],
       UserId: '',
       DisplayName: '',
+      isBanned: false,
       UserCode: '',
       DeviceId: '',
       selectedIndexes: [],
@@ -91,7 +91,6 @@ class ProductsListTable extends PureComponent {
             msg = 'can not ban user';
           }
 
-          console.log(response);
         })
         .then(() => {
           this.setState({ banReason: '', selectedIndexes: [], modal: false });
@@ -142,7 +141,7 @@ class ProductsListTable extends PureComponent {
     var userList = [];
 
     axios
-      .post(config.base_url + config.url_FindUser, {
+      .post(config.test_url + config.url_FindUser, {
         UserId: this.state.UserId.trim(),
         DisplayName: this.state.DisplayName.trim(),
         UserCode: this.state.UserCode.trim(),
@@ -152,10 +151,10 @@ class ProductsListTable extends PureComponent {
         Level: this.state.Level,
       })
       .then(function(response) {
-        console.log(response);
+    //    console.log(response);
         if (response.status === 200) {
           let data = response.data;
-          console.log('data', data);
+     //     console.log('data', data);
           if (data.status === 'ok') {
             userList = data.data;
           }
@@ -476,7 +475,7 @@ class ProductsListTable extends PureComponent {
                         <td>{crypto.Gem}</td>
                         <td>{crypto.Coin}</td>
                         <td>{crypto.Stone}</td>
-                        <td>{StatusFormatter('Active')}</td>
+                        <td>{StatusFormatter(crypto.isBanned)}</td>
                         <td>
                           <Field
                             name={crypto._id}
