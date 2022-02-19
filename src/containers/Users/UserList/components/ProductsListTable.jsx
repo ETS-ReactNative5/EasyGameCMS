@@ -34,7 +34,7 @@ const StatusFormatter = ( value) =>
   (value === false || value === undefined) ? (
     <span className='badge badge-success'>Active</span>
   ) : (
-    <span className='badge badge-danger'>Baned</span>
+    <span className='badge badge-danger'>Banned</span>
   );
   StatusFormatter.propTypes = {
     value: PropTypes.string.isRequired,
@@ -82,7 +82,7 @@ class ProductsListTable extends PureComponent {
         .post(config.base_url + config.url_BanListUser, {
           lsUser: this.state.selectedIndexes,
           banType: this.state.banMode,
-          desc: this.state.banReason,
+          banReason: this.state.banReason,
         })
         .then(function(response) {
           if (response.data.status === 'ok') {
@@ -93,7 +93,7 @@ class ProductsListTable extends PureComponent {
 
         })
         .then(() => {
-          this.setState({ banReason: '', selectedIndexes: [], modal: false });
+         // this.setState({ banReason: '', selectedIndexes: [], modal: false });
           window.alert(msg);
         });
     } else {
@@ -141,7 +141,7 @@ class ProductsListTable extends PureComponent {
     var userList = [];
 
     axios
-      .post(config.base_url + config.url_FindUser, {
+      .post(config.test_url + config.url_FindUser, {
         UserId: this.state.UserId.trim(),
         DisplayName: this.state.DisplayName.trim(),
         UserCode: this.state.UserCode.trim(),
@@ -204,11 +204,12 @@ class ProductsListTable extends PureComponent {
     });
   }
 
-  handleTitleChange(event) {
-    this.setState({
-      banReason: event.target.value,
-    });
-  }
+  // handleTitleChange(event) {
+  //   this.setState({
+  //     banReason: event.target.value,
+  //   });
+  // }
+
   handleDescriptionChange(event) {
     this.setState({
       banReason: event.target.value,
@@ -219,7 +220,6 @@ class ProductsListTable extends PureComponent {
   }
 
   handleBanModeChange(event) {
-    console.log(event.value);
     this.setState({
       banMode: event.value,
     });
@@ -544,6 +544,16 @@ class ProductsListTable extends PureComponent {
                   onChange={this.handleDescriptionChange.bind(this)}
                 />
               </div>
+              <div className='form__form-group'>
+              <span className='form__form-group-label'></span>
+              <div className='form__form-group-field priority'>
+                <Select
+                  options={BanModOption}
+                  onChange={this.handleBanModeChange.bind(this)}
+                  defaultValue='Select Action...'
+                />
+              </div>
+            </div>
 
               {/* <div className="form__form-group">
               <div className="form__form-group-field">
@@ -595,17 +605,7 @@ class ProductsListTable extends PureComponent {
               </div>
             </div> */}
 
-            <div className='form__form-group'>
-              <span className='form__form-group-label'></span>
-              <div className='form__form-group-field priority'>
-                <Select
-                  options={BanModOption}
-                  onChange={this.handleBanModeChange.bind(this)}
-                  defaultValue='Select Action...'
-                />
-              </div>
-            </div>
-
+      
             <ButtonToolbar className='form__button-toolbar'>
               <Button color='primary' type='submit' onClick={this.onBanClick}>
                 Ban
