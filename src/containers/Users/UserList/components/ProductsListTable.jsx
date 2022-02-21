@@ -141,7 +141,7 @@ class ProductsListTable extends PureComponent {
     var userList = [];
 
     axios
-      .post(config.test_url + config.url_FindUser, {
+      .post(config.base_url + config.url_FindUser, {
         UserId: this.state.UserId.trim(),
         DisplayName: this.state.DisplayName.trim(),
         UserCode: this.state.UserCode.trim(),
