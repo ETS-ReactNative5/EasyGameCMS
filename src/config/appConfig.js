@@ -8,6 +8,10 @@
 
    test_url: 'http://localhost:8088/cms',
 
+   test_mail: 'http://localhost:3000/api/mailAdmin',
+   url_addMail: '/createMail',
+   url_updateMail: '/updateMail',
+
    url_gameStats: '/GetGameStats',
    url_getSurvival: '/GetSurvivalLeaderboard',
    url_deleteLeaderBoard: '/DeleteUserLeaderBoard',

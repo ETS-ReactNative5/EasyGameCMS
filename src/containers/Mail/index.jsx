@@ -2,24 +2,28 @@ import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import InboxCard from './components/InboxCard';
+import MailSystem from './components/MailSytem';
 
-const Mail = ({ t }) => (
+const BasicForm = ({ t }) => (
   <Container>
     <Row>
       <Col md={12}>
-        <h3 className="page-title">{t('mail_application.page_title')}</h3>
-        <h3 className="page-subhead subhead">You can compose an email here</h3>
+        <h3 className="page-title">
+          Mail
+        </h3>
+        <h3 className="page-subhead subhead">
+          Add Mail System
+        </h3>
       </Col>
     </Row>
     <Row>
-      <InboxCard />
+      <MailSystem/>
     </Row>
   </Container>
 );
 
-Mail.propTypes = {
+BasicForm.propTypes = {
   t: PropTypes.func.isRequired,
 };
 
-export default withTranslation('common')(Mail);
+export default withTranslation('common')(BasicForm);
