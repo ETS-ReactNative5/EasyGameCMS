@@ -12,6 +12,15 @@ const validate = (values) => {
   } else if(isNaN(values.enddate)) {
     errors.enddate = 'End date required number';
   }
+  if(isNaN(values.minversion)) {
+    errors.minversion = 'Min Version required number';
+  }
+  if(isNaN(values.relativeversion)) {
+    errors.relativeversion = 'Relative version required number';
+  }
+  if(isNaN(values.appversion)) {
+    errors.appversion = 'App version required number';
+  }
   if (!values.mailId) {
     errors.mailId = 'Maid Id field shouldn’t be empty';
   } else if(values.mailId.length !== 24) {
