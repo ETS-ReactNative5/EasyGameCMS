@@ -102,8 +102,15 @@ class MailSystem extends PureComponent {
   }
 
   handleGiftChange(event) {
+    let giftList = event.target.value.replace(/ /g,'').split(',');
+    let gift = {};
+    if(giftList.length % 2 === 0) {
+      for(let i = 0 ; i < giftList.length - 1; i+=2) {
+        gift[giftList[i]] = giftList[i+1];
+      }
+    }
     this.setState({
-      gifts: event.target.value,
+      gifts: gift,
     });
   }
 
@@ -345,7 +352,7 @@ class MailSystem extends PureComponent {
                       name="gifts"
                       component="input"
                       type="text"
-                      placeholder="Optional: tạm thời sẽ nhập phần quà định dạng json, sẽ thay đổi sau này"
+                      placeholder="Optional: nhập các phần quà dạng string, string ( cách nhau bởi dấu phẩy)"
                       value={this.state.gifts}
                       onChange={this.handleGiftChange.bind(this)}
                     />
