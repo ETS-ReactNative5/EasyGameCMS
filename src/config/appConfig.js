@@ -11,6 +11,9 @@
    test_mail: 'http://localhost:3000/api/mailAdmin',
    url_addMail: '/createMail',
    url_updateMail: '/updateMail',
+   url_getMailSystem: '/getMailSystem',
+   url_disableMail: '/disableMail',
+   url_updateTemplateReward: '/templateReward',
 
    url_gameStats: '/GetGameStats',
    url_getSurvival: '/GetSurvivalLeaderboard',
