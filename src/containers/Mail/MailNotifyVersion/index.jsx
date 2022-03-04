@@ -12,7 +12,6 @@ const MailSystemUpdateForm = ({ t }) => (
         <h3 className="page-subhead subhead">
           Add Mail Notify For Update New Version
         </h3>
-
       </Col>
     </Row>
     <Row>

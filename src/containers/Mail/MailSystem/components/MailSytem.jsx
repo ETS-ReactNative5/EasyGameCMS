@@ -59,6 +59,8 @@ const StatusFormatter = (isDeleted, startDate, endDate) => {
     return <span className="badge badge-success">Active</span>;
   } else if (isDeleted === false && new Date(startDate) > new Date()) {
     return <span className="badge badge-warning">Coming soon</span>;
+  } else if(isDeleted && new Date(startDate) < new Date() && new Date(endDate)> new Date()) {
+    return <span className="badge badge-danger">Delete</span>;
   } else {
     return <span className="badge badge-danger">Expried</span>;
   }
@@ -91,8 +93,8 @@ class MailSystem extends PureComponent {
       gifts: "",
       startDate: "",
       endDate: "",
-      isActiveAdd: false,
-      isActiveUpdate: false,
+      isAddMail: false,
+      isAddLanguage: false,
       listMailSystem: [],
       viewByLanguage: "English",
     };
@@ -300,8 +302,8 @@ class MailSystem extends PureComponent {
                     color="secondary"
                     handleClick={() => {
                       this.setState({
-                        isActiveAdd: true,
-                        isActiveUpdate: false,
+                        isAddMail: true,
+                        isAddLanguage: false,
                       });
                     }}
                   />
@@ -310,8 +312,8 @@ class MailSystem extends PureComponent {
                     color="primary"
                     handleClick={() => {
                       this.setState({
-                        isActiveAdd: false,
-                        isActiveUpdate: true,
+                        isAddMail: false,
+                        isAddLanguage: true,
                       });
                     }}
                   />
@@ -339,8 +341,8 @@ class MailSystem extends PureComponent {
 
                         <td dir="ltr">{mail.id}</td>
                         <td dir="ltr">{mail.title}</td>
-                        <td>{mail.startDate}</td>
-                        <td>{mail.endDate}</td>
+                        <td>{mail.startDate.slice(0, 10)}</td>
+                        <td>{mail.endDate.slice(0, 10)}</td>
                         <td>
                           {StatusFormatter(
                             mail.isDeleted,
@@ -356,7 +358,7 @@ class MailSystem extends PureComponent {
             </CardBody>
           </Card>
         </Row>
-        {this.state.isActiveAdd ? (
+        {this.state.isAddMail ? (
           <Row>
             <Card>
               <CardBody>
@@ -480,9 +482,10 @@ class MailSystem extends PureComponent {
                     </Button>
                     <Button
                       type="button"
-                      onClick={
-                        (reset, () => this.setState({ isActiveAdd: false }))
-                      }
+                      onClick={() => {
+                        reset();
+                        this.setState({ isAddMail: false });
+                      }}
                       disabled={pristine || submitting}
                     >
                       Cancel
@@ -493,7 +496,7 @@ class MailSystem extends PureComponent {
             </Card>
           </Row>
         ) : null}
-        {this.state.isActiveUpdate ? (
+        {this.state.isAddLanguage ? (
           <Row>
             <Card>
               <CardBody>
@@ -564,9 +567,10 @@ class MailSystem extends PureComponent {
                     </Button>
                     <Button
                       type="button"
-                      onClick={
-                        (reset, () => this.setState({ isActiveUpdate: false }))
-                      }
+                      onClick={() => {
+                        reset();
+                        this.setState({ isAddLanguage: false });
+                      }}
                       disabled={pristine || submitting}
                     >
                       Cancel

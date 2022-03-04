@@ -51,7 +51,7 @@ class SidebarContent extends Component {
           </SidebarCategory>
           <SidebarCategory title='Mails' icon='envelope'>
             <SidebarLink title='Mail System' route='/mail/system' onClick={this.hideSidebar} />
-            <SidebarLink title='Mail Private' route='/mail/private' onClick={this.hideSidebar} />
+            <SidebarLink title='Mail Notify Version' route='/mail/notifyversion' onClick={this.hideSidebar} />
           </SidebarCategory>
           {/* <SidebarLink
             title="Dashboard Booking"

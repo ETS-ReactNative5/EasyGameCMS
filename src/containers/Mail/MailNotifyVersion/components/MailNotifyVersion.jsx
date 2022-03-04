@@ -109,8 +109,8 @@ class MailNotifyVersion extends PureComponent {
       minVersion: 0,
       relativeVersion: 0,
       mailIdActive: "",
-      isActiveAdd: false,
-      isActiveUpdate: false,
+      isAddMail: false,
+      isAddLanguage: false,
       addBigUpdate: false,
       updateTemplate: false,
       listMailNotifySystem: [],
@@ -201,7 +201,6 @@ class MailNotifyVersion extends PureComponent {
     this.setState({
       gifts: gift,
     });
-    console.log(Object.keys(this.state.gifts).length);
   }
 
   handleStartDateChange(event) {
@@ -259,47 +258,38 @@ class MailNotifyVersion extends PureComponent {
   onSubmitClick = (e) => {
     var msg = "";
     e.preventDefault();
-    axios
-      .post(config.test_mail + config.url_addMail, {
-        adminMail: sessionStorage.getItem("userID"),
-        passWord: sessionStorage.getItem("passWord"),
-        title: this.state.title,
-        sender: this.state.sender,
-        bannerUrl: this.state.bannerUrl,
-        link: this.state.link,
-        content: this.state.content,
-        gifts: this.state.gifts,
-        startDate: this.state.startDate,
-        endDate: this.state.endDate,
-        appVersion: this.state.appVersion,
-        minVersion: this.state.minVersion,
-        maxVersion: this.state.relativeVersion,
-        isSystemMail: true,
-      })
-      .then(function(response) {
-        console.log(response.data.Body);
-        if (response.data.Status === 1) {
-          msg = "Add Mail Success";
-          if (this.state.startDate < new Date()) {
-            axios
-              .post(config.test_mail + config.url_disableMail, {
-                adminMail: sessionStorage.getItem("userID"),
-                passWord: sessionStorage.getItem("passWord"),
-                mailId: this.state.mailIdActive,
-                isSystemMail: true,
-              })
-              .then((response) => {
-                console.log(response.data);
-              })
-              .catch((err) => console.log(err));
-          }
-        } else {
-          msg = `Add Mail Err: ${response.data.Body.Err}`;
-        }
-      })
-      .then(() => {
-        window.alert(msg);
-      });
+
+  axios
+  .post(config.test_mail + config.url_addMail, {
+    adminMail: sessionStorage.getItem("userID"),
+    passWord: sessionStorage.getItem("passWord"),
+    title: this.state.title,
+    sender: this.state.sender,
+    bannerUrl: this.state.bannerUrl,
+    link: this.state.link,
+    content: this.state.content,
+    gifts: this.state.gifts,
+    startDate: this.state.startDate,
+    endDate: this.state.endDate,
+    appVersion: this.state.appVersion,
+    minVersion: this.state.minVersion,
+    maxVersion: this.state.relativeVersion,
+    mailId: this.state.mailIdActive,
+    isSystemMail: true,
+  })
+  .then(function(response) {
+    console.log(response.data.Body);
+    if (response.data.Status === 1) {
+      msg = "Add Mail Success";
+ 
+    } else {
+      msg = `Add Mail Err: ${response.data.Body.Err}`;
+    }
+  })
+  .then(() => {
+    window.alert(msg);
+  });
+
   };
 
   onUpdateClick = (e) => {
@@ -388,8 +378,8 @@ class MailNotifyVersion extends PureComponent {
               handleClick={() => {
                 this.setState({
                   updateTemplate: true,
-                  isActiveAdd: false,
-                  isActiveUpdate: false,
+                  isAddMail: false,
+                  isAddLanguage: false,
                   isBigUpdate: false,
                 });
               }}
@@ -414,8 +404,8 @@ class MailNotifyVersion extends PureComponent {
                     color="secondary"
                     handleClick={() => {
                       this.setState({
-                        isActiveAdd: true,
-                        isActiveUpdate: false,
+                        isAddMail: true,
+                        isAddLanguage: false,
                         updateTemplate: false,
                       });
                     }}
@@ -425,8 +415,8 @@ class MailNotifyVersion extends PureComponent {
                     color="primary"
                     handleClick={() => {
                       this.setState({
-                        isActiveAdd: false,
-                        isActiveUpdate: true,
+                        isAddMail: false,
+                        isAddLanguage: true,
                         updateTemplate: false,
                       });
                     }}
@@ -459,8 +449,8 @@ class MailNotifyVersion extends PureComponent {
                         <td dir="ltr">{mail.id}</td>
                         <td dir="ltr">{mail.title}</td>
                         <td dir="ltr">{mail.Version}</td>
-                        <td>{mail.startDate}</td>
-                        <td>{mail.endDate}</td>
+                        <td>{mail.startDate.slice(0, 10)}</td>
+                        <td>{mail.endDate.slice(0, 10)}</td>
                         <td>{mail.MinVersion}</td>
                         <td> {StatusBigUpdate(mail.isBigUpdate)}</td>
                         <td>
@@ -478,7 +468,7 @@ class MailNotifyVersion extends PureComponent {
             </CardBody>
           </Card>
         </Row>
-        {this.state.isActiveAdd ? (
+        {this.state.isAddMail ? (
           <Row>
             <Card>
               <CardBody>
@@ -665,7 +655,7 @@ class MailNotifyVersion extends PureComponent {
                       type="button"
                       onClick={() => {
                         reset();
-                        this.setState({ isActiveAdd: false });
+                        this.setState({ isAddMail: false });
                       }}
                       disabled={pristine || submitting}
                     >
@@ -677,7 +667,7 @@ class MailNotifyVersion extends PureComponent {
             </Card>
           </Row>
         ) : null}
-        {this.state.isActiveUpdate ? (
+        {this.state.isAddLanguage ? (
           <Row>
             <Card>
               <CardBody>
@@ -750,7 +740,7 @@ class MailNotifyVersion extends PureComponent {
                       type="button"
                       onClick={() => {
                         reset();
-                        this.setState({ isActiveUpdate: false });
+                        this.setState({ isAddLanguage: false });
                       }}
                       disabled={pristine || submitting}
                     >
