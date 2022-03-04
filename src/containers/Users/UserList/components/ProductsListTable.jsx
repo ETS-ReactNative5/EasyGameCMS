@@ -53,7 +53,6 @@ class ProductsListTable extends PureComponent {
       UserId: '',
       DisplayName: '',
       isBanned: false,
-      UserCode: '',
       DeviceId: '',
       selectedIndexes: [],
       modal: false,
@@ -144,7 +143,6 @@ class ProductsListTable extends PureComponent {
       .post(config.base_url + config.url_FindUser, {
         UserId: this.state.UserId.trim(),
         DisplayName: this.state.DisplayName.trim(),
-        UserCode: this.state.UserCode.trim(),
         DeviceId: this.state.DeviceId.trim(),
         Coin: this.state.Coin,
         Gem: this.state.Gem,
@@ -182,7 +180,6 @@ class ProductsListTable extends PureComponent {
     this.setState({
       UserId: '',
       DisplayName: '',
-      UserCode: '',
       DeviceId: '',
     });
   };
@@ -254,7 +251,7 @@ class ProductsListTable extends PureComponent {
               <form className='form'>
                 <Container>
                   <Row>
-                    <Col md={6} xl={3}>
+                    <Col md={6} xl={4}>
                       <div className='form__form-group-field'>
                         <div className='form__form-group-icon'>
                           <KeyVariantIcon />
@@ -268,7 +265,7 @@ class ProductsListTable extends PureComponent {
                         />
                       </div>
                     </Col>
-                    <Col md={6} xl={3}>
+                    <Col md={6} xl={4}>
                       <div className='form__form-group-field'>
                         <div className='form__form-group-icon'>
                           <AccountOutlineIcon />
@@ -281,22 +278,8 @@ class ProductsListTable extends PureComponent {
                           onChange={this.onChangeValue}
                         />
                       </div>
-                    </Col>
-                    <Col md={6} xl={3}>
-                      <div className='form__form-group-field'>
-                        <div className='form__form-group-icon'>
-                          <AccountOutlineIcon />
-                        </div>
-                        <input
-                          name='UserCode'
-                          value={this.state.UserCode}
-                          onChange={this.onChangeValue}
-                          onKeyPress={this.OnkeyPress.bind(this)}
-                          placeholder='UserCode'
-                        />
-                      </div>
-                    </Col>
-                    <Col md={6} xl={3}>
+                    </Col>          
+                    <Col md={6} xl={4}>
                       <div className='form__form-group-field'>
                         <div className='form__form-group-icon'>
                           <CellphoneKeyIcon />
@@ -447,12 +430,10 @@ class ProductsListTable extends PureComponent {
                     <tr>
                       <th>#</th>
                       <th>_id</th>
-                      <th>UserCode</th>
                       <th>DataVersion</th>
                       <th>DisplayName</th>
                       <th>Version</th>
-                      <th>FirstVersion</th>
-                      <th>MaxStage</th>
+                      <th>LTVInApp</th>
                       <th>Cash</th>
                       <th>Coin</th>
                       <th>Titanium</th>
@@ -466,15 +447,13 @@ class ProductsListTable extends PureComponent {
                         <td>{index + 1}</td>
 
                         <td dir='ltr'>{crypto._id}</td>
-                        <td dir='ltr'>{crypto.UserCode}</td>
                         <td dir='ltr'>{crypto.DataVersion}</td>
                         <td dir='ltr'>{crypto.DisplayName}</td>
                         <td dir='ltr'>{crypto.Version}</td>
-                        <td dir='ltr'>{crypto.FirstVerSion}</td>
-                        <td dir='ltr'>{crypto.MaxStage}</td>
-                        <td>{crypto.Gem}</td>
+                        <td>{crypto.LTVInApp}</td>
+                        <td>{crypto.Cash}</td>
                         <td>{crypto.Coin}</td>
-                        <td>{crypto.Stone}</td>
+                        <td>{crypto.Titanium}</td>
                         <td>{StatusFormatter(crypto.isBanned)}</td>
                         <td>
                           <Field
