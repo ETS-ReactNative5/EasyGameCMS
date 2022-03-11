@@ -15,6 +15,7 @@ import UI from './UI';
 import Users from './Users';
 import GiftCode from './GiftCode';
 import GameRocket from './GameRocket';
+import MailRocket from './MailRocket';
 
 import Chat from '../../../Chat/index';
 import Todo from '../../../Todo/index';
@@ -23,8 +24,8 @@ import Todo from '../../../Todo/index';
 import DefaultDashboard from '../../../Dashboards/Default/index';
 import MobileAppDashboard from '../../../Dashboards/MobileApp/index';
 import BookingDashboard from '../../../Dashboards/Booking/index';
-
 import Mail from '../../../Mail/index';
+
 var checkAuth = () => {
   if (sessionStorage.getItem('userID') === null) {
     console.log('login redirect ');
@@ -47,7 +48,7 @@ export default () => (
       <Route path='/ui' component={UI} />
       <Route path='/users' component={Users} />
       <Route path='/giftcode' component={GiftCode} />
-      <Route path='/mail' component={Mail} />
+      <Route path='/mail' component={MailRocket} />
       <Route path='/chat' component={Chat} />
       <Route path='/todo' component={Todo} />
       <Route path='/forms' component={Forms} />

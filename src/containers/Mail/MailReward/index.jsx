@@ -2,8 +2,9 @@ import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import MailReward from './components/MailReward';
 
-const BasicForm = ({ t }) => (
+const MailRewardForm = ({ t }) => (
   <Container>
     <Row>
       <Col md={12}>
@@ -11,15 +12,18 @@ const BasicForm = ({ t }) => (
           Mail
         </h3>
         <h3 className="page-subhead subhead">
-          Add Mail System
+          Add Mail Reward Template
         </h3>
       </Col>
+    </Row>
+    <Row>
+      <MailReward/>
     </Row>
   </Container>
 );
 
-BasicForm.propTypes = {
+MailRewardForm.propTypes = {
   t: PropTypes.func.isRequired,
 };
 
-export default withTranslation('common')(BasicForm);
+export default withTranslation('common')(MailRewardForm);

@@ -4,9 +4,18 @@
    base_url_game: 'http://34.133.148.87:8088/game',
    base_url_user:'http://34.133.148.87:8088/user',
    cms_url: 'http://34.133.148.87:8088',
-
+   mail_url: 'http://104.198.198.246:3000/api/mailAdmin',
 
    test_url: 'http://localhost:8088/cms',
+  //  test_mail: 'http://192.168.1.187:3000/api/mailAdmin',
+
+   url_addMail: '/createMail',
+   url_addRewardMail: '/createMailReward',
+   url_updateMail: '/updateMail',
+   url_getMailSystem: '/getMailSystem',
+   url_getMailReward: '/getMailRewardTemplate',
+   url_disableMail: '/disableMail',
+   url_updateTemplateReward: '/templateReward',
 
    url_gameStats: '/GetGameStats',
    url_getSurvival: '/GetSurvivalLeaderboard',
