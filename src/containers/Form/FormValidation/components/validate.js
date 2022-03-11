@@ -10,6 +10,11 @@ const validate = (values) => {
   if (!values.sender) {
     errors.sender = "Sender field shouldn’t be empty";
   }
+  if (!values.expirydate) {
+    errors.expirydate = "Expiry date field shouldn’t be empty";
+  } else if (isNaN(values.expirydate)) {
+    errors.appversion = "Expiry date required number";
+  }
   if (!values.minversion) {
     errors.minversion = "Min Version shouldn’t be empty";
   } else if (isNaN(values.minversion)) {

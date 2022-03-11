@@ -13,12 +13,12 @@ import { Field, reduxForm } from "redux-form";
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import TimetableIcon from "mdi-react/TimetableIcon";
-import renderSelectField from "./../../../../shared/components/form/Select";
-import renderDateTimePickerField from "./../../../../shared/components/form/DateTimePicker";
-import validate from "./../../../Form/FormValidation/components/validate";
+import renderSelectField from "../../../../shared/components/form/Select";
+import renderDateTimePickerField from "../../../../shared/components/form/DateTimePicker";
+import validate from "../../../Form/FormValidation/components/validate";
 import axios from "axios";
-import Expand from "./../../../../shared/components/Expand";
-import config from "./../../../../config/appConfig";
+import Expand from "../../../../shared/components/Expand";
+import config from "../../../../config/appConfig";
 import TextareaAutosize from 'react-textarea-autosize';
 
 const renderField = ({
@@ -51,23 +51,11 @@ renderField.defaultProps = {
   type: "text",
 };
 
-const StatusFormatter = (isDeleted, startDate, endDate) => {
-  if (
-    isDeleted === false &&
-    new Date(startDate) < new Date() &&
-    new Date(endDate) > new Date()
-  ) {
+const StatusFormatter = (isDeleted) => {
+  if (isDeleted === false) {
     return <span className="badge badge-success">Active</span>;
-  } else if (isDeleted === false && new Date(startDate) > new Date()) {
-    return <span className="badge badge-warning">Coming soon</span>;
-  } else if (
-    isDeleted &&
-    new Date(startDate) < new Date() &&
-    new Date(endDate) > new Date()
-  ) {
-    return <span className="badge badge-danger">Delete</span>;
   } else {
-    return <span className="badge badge-danger">Expried</span>;
+    return <span className="badge badge-danger">Delete</span>;
   }
 };
 
@@ -75,7 +63,7 @@ StatusFormatter.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-class MailSystem extends PureComponent {
+class MailReward extends PureComponent {
   static propTypes = {
     t: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -96,8 +84,8 @@ class MailSystem extends PureComponent {
       link: "",
       content: "",
       gifts: "",
-      startDate: "",
-      endDate: "",
+      typeReward: "",
+      expiryDate: "",
       isAddMail: false,
       isAddLanguage: false,
       listMailSystem: [],
@@ -106,21 +94,21 @@ class MailSystem extends PureComponent {
   }
 
   componentDidMount() {
-    this.getMailSystem();
+    this.getMailReward();
   }
 
-  getMailSystem = async () => {
+  getMailReward = async () => {
     await axios
-      .post(config.mail_url + config.url_getMailSystem, {
+      .post(config.mail_url + config.url_getMailReward, {
         adminMail: sessionStorage.getItem("userID"),
         passWord: sessionStorage.getItem("passWord"),
         language: this.state.viewByLanguage,
-        isMailNotifyVerison: false,
       })
       .then((data) => {
         this.setState({
           listMailSystem: data.data.Body.data,
         });
+        console.log(data);
         console.log(this.state.listMailSystem);
       })
       .catch(function(error) {
@@ -158,6 +146,11 @@ class MailSystem extends PureComponent {
     });
   }
 
+  handleExpiryDateChange(event) {
+    this.setState({
+      expiryDate: event.target.value,
+    });
+  }
   handleGiftChange(event) {
     let giftList = event.target.value.split(",");
     let gift = {};
@@ -168,18 +161,6 @@ class MailSystem extends PureComponent {
     }
     this.setState({
       gifts: gift,
-    });
-  }
-
-  handleStartDateChange(event) {
-    this.setState({
-      startDate: event,
-    });
-  }
-
-  handleEndDateChange(event) {
-    this.setState({
-      endDate: event,
     });
   }
 
@@ -195,13 +176,19 @@ class MailSystem extends PureComponent {
     });
   }
 
+  handleTypeRewardChange(event) {
+    this.setState({
+      typeReward: event.value,
+    });
+  }
+
   handleViewByLanguageChange(event) {
     this.setState(
       {
         viewByLanguage: event.value,
       },
       () => {
-        this.getMailSystem();
+        this.getMailReward();
       }
     );
   }
@@ -210,23 +197,22 @@ class MailSystem extends PureComponent {
     var msg = "";
     e.preventDefault();
     axios
-      .post(config.mail_url + config.url_addMail, {
+      .post(config.mail_url + config.url_addRewardMail, {
         adminMail: sessionStorage.getItem("userID"),
         passWord: sessionStorage.getItem("passWord"),
-        title: this.state.title,
         sender: this.state.sender,
+        title: this.state.title,
+        content: this.state.content,
         bannerUrl: this.state.bannerUrl,
         link: this.state.link,
-        content: this.state.content,
+        type: this.state.typeReward,
         gifts: this.state.gifts,
-        startDate: this.state.startDate,
-        endDate: this.state.endDate,
-        isSystemMail: true,
+        expiryDate: this.state.expiryDate,
       })
       .then(function(response) {
         console.log(response.data.Body);
         if (response.data.Status === 1) {
-          msg = "Add Mail Success";
+          msg = "Add Mail Reward Success";
         } else {
           msg = `Add Mail Err: ${response.data.Body.Err}`;
         }
@@ -246,12 +232,8 @@ class MailSystem extends PureComponent {
         mailId: this.state.mailId,
         language: this.state.language,
         title: this.state.title,
-        sender: this.state.sender,
-        bannerUrl: this.state.bannerUrl,
-        link: this.state.link,
         content: this.state.content,
-        gifts: this.state.gifts,
-        isSystemMail: true,
+        isSystemMail: false,
       })
       .then(function(response) {
         console.log(response.data.Body);
@@ -270,10 +252,6 @@ class MailSystem extends PureComponent {
     const { pristine, reset, submitting } = this.props;
     const { listMailSystem } = this.state;
 
-    const textStyle = {
-      width: "100%",
-      maxHeight: "1000px",
-    };
     const LanguageOptions = [
       { value: "English", label: "English" },
       { value: "Vietnamese", label: "Vietnamese" },
@@ -291,6 +269,16 @@ class MailSystem extends PureComponent {
       { value: "Indonesian", label: "Indonesian" },
       { value: "Turkish", label: "Turkish" },
     ];
+
+    const TypeReward = [
+      { value: 1, label: "PVP" },
+      { value: 2, label: "Survival" },
+      { value: 3, label: "EscortMode" },
+      { value: 4, label: "UpdateVersion" },
+      { value: 5, label: "InAppMonthly" },
+      { value: 6, label: "Birthday" },
+    ];
+
     return (
       <Col md={12} lg={12} xl={12}>
         <Row>
@@ -301,7 +289,6 @@ class MailSystem extends PureComponent {
                 <h6 className="subhead">
                   Total Language Supports: {LanguageOptions.length}
                 </h6>
-
                 <div style={{ float: "right" }}>
                   <Field
                     name="language"
@@ -341,28 +328,33 @@ class MailSystem extends PureComponent {
                     <tr>
                       <th>#</th>
                       <th>_id</th>
+                      <th>Type</th>
                       <th>Title</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
+                      <th>Expiry Date</th>
+                      <th>Created At</th>
+                      <th>Updated At</th>
                       <th>Status</th>
                     </tr>
                   </thead>
+
                   <tbody>
                     {listMailSystem.map((mail, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
 
                         <td dir="ltr">{mail.id}</td>
-                        <td dir="ltr">{mail.title}</td>
-                        <td>{mail.startDate.slice(0, 16)}</td>
-                        <td>{mail.endDate.slice(0, 16)}</td>
-                        <td>
-                          {StatusFormatter(
-                            mail.isDeleted,
-                            mail.startDate,
-                            mail.endDate
-                          )}
+                        <td dir="ltr">
+                          {
+                            TypeReward.filter(
+                              (option) => option.value == mail.type
+                            )[0].label
+                          }
                         </td>
+                        <td dir="ltr">{mail.title}</td>
+                        <td dir="ltr">{mail.expiryDate}</td>
+                        <td>{mail.createdAt.slice(0, 16)}</td>
+                        <td>{mail.updatedAt.slice(0, 16)}</td>
+                        <td>{StatusFormatter(mail.isDeleted)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -376,7 +368,7 @@ class MailSystem extends PureComponent {
             <Card>
               <CardBody>
                 <div className="card__title">
-                  <h5 className="bold-text">Mail System</h5>
+                  <h5 className="bold-text">Mail Reward</h5>
                   <h3 className="page-subhead subhead">
                     New Mail Use Default English Language
                   </h3>
@@ -385,6 +377,18 @@ class MailSystem extends PureComponent {
                   className="form form--horizontal"
                   onSubmit={this.onSubmitClick}
                 >
+                  <div className="form__form-group">
+                    <span className="form__form-group-label">Type Reward</span>
+                    <div className="form__form-group-field">
+                      <Field
+                        name="typereward"
+                        component={renderSelectField}
+                        options={TypeReward}
+                        value={this.state.typeReward}
+                        onChange={this.handleTypeRewardChange.bind(this)}
+                      />
+                    </div>
+                  </div>
                   <div className="form__form-group">
                     <span className="form__form-group-label">Title</span>
                     <div className="form__form-group-field">
@@ -448,6 +452,18 @@ class MailSystem extends PureComponent {
                     </div>
                   </div>
                   <div className="form__form-group">
+                    <span className="form__form-group-label">Expiry Date</span>
+                    <div className="form__form-group-field">
+                      <Field
+                        name="expirydate"
+                        component={renderField}
+                        type="text"
+                        value={this.state.expiryDate}
+                        onChange={this.handleExpiryDateChange.bind(this)}
+                      />
+                    </div>
+                  </div>
+                  <div className="form__form-group">
                     <span className="form__form-group-label">Gifts</span>
                     <div className="form__form-group-field">
                       <Field
@@ -458,34 +474,6 @@ class MailSystem extends PureComponent {
                         value={this.state.gifts}
                         onChange={this.handleGiftChange.bind(this)}
                       />
-                    </div>
-                  </div>
-                  <div className="form__form-group">
-                    <span className="form__form-group-label">Start Date</span>
-                    <div className="form__form-group-field">
-                      <Field
-                        name="startdate"
-                        component={renderDateTimePickerField}
-                        value={this.state.startDate}
-                        onChange={this.handleStartDateChange.bind(this)}
-                      />
-                      <div className="form__form-group-icon">
-                        <TimetableIcon />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="form__form-group">
-                    <span className="form__form-group-label">End Date</span>
-                    <div className="form__form-group-field">
-                      <Field
-                        name="enddate"
-                        component={renderDateTimePickerField}
-                        value={this.state.endDate}
-                        onChange={this.handleEndDateChange.bind(this)}
-                      />
-                      <div className="form__form-group-icon">
-                        <TimetableIcon />
-                      </div>
                     </div>
                   </div>
                   <ButtonToolbar className="form__button-toolbar">
@@ -513,9 +501,9 @@ class MailSystem extends PureComponent {
             <Card>
               <CardBody>
                 <div className="card__title">
-                  <h5 className="bold-text">Mail System</h5>
+                  <h5 className="bold-text">Mail Reward</h5>
                   <h3 className="page-subhead subhead">
-                    Add Language for Mail System
+                    Add Language for Mail Reward
                   </h3>
                 </div>
                 <form
@@ -600,4 +588,4 @@ class MailSystem extends PureComponent {
 export default reduxForm({
   form: "horizontal_form_validation", // a unique identifier for this form
   validate,
-})(withTranslation("common")(MailSystem));
+})(withTranslation("common")(MailReward));

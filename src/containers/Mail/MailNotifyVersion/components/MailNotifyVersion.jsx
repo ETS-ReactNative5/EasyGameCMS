@@ -19,6 +19,8 @@ import validate from "./../../../Form/FormValidation/components/validate";
 import axios from "axios";
 import Expand from "./../../../../shared/components/Expand";
 import config from "./../../../../config/appConfig";
+import TextareaAutosize from 'react-textarea-autosize';
+
 
 const renderField = ({
   input,
@@ -124,7 +126,7 @@ class MailNotifyVersion extends PureComponent {
 
   getMailSystem = async () => {
     await axios
-      .post(config.test_mail + config.url_getMailSystem, {
+      .post(config.mail_url + config.url_getMailSystem, {
         adminMail: sessionStorage.getItem("userID"),
         passWord: sessionStorage.getItem("passWord"),
         language: this.state.viewByLanguage,
@@ -188,10 +190,10 @@ class MailNotifyVersion extends PureComponent {
     this.setState({
       content: event.target.value,
     });
-  }
+  } 
 
   handleGiftChange(event) {
-    let giftList = event.target.value.replace(/ /g, "").split(",");
+    let giftList = event.target.value.split(",");
     let gift = {};
     if (giftList.length % 2 === 0) {
       for (let i = 0; i < giftList.length - 1; i += 2) {
@@ -259,44 +261,42 @@ class MailNotifyVersion extends PureComponent {
     var msg = "";
     e.preventDefault();
 
-  axios
-  .post(config.test_mail + config.url_addMail, {
-    adminMail: sessionStorage.getItem("userID"),
-    passWord: sessionStorage.getItem("passWord"),
-    title: this.state.title,
-    sender: this.state.sender,
-    bannerUrl: this.state.bannerUrl,
-    link: this.state.link,
-    content: this.state.content,
-    gifts: this.state.gifts,
-    startDate: this.state.startDate,
-    endDate: this.state.endDate,
-    appVersion: this.state.appVersion,
-    minVersion: this.state.minVersion,
-    maxVersion: this.state.relativeVersion,
-    mailId: this.state.mailIdActive,
-    isSystemMail: true,
-  })
-  .then(function(response) {
-    console.log(response.data.Body);
-    if (response.data.Status === 1) {
-      msg = "Add Mail Success";
- 
-    } else {
-      msg = `Add Mail Err: ${response.data.Body.Err}`;
-    }
-  })
-  .then(() => {
-    window.alert(msg);
-  });
-
+    axios
+      .post(config.mail_url + config.url_addMail, {
+        adminMail: sessionStorage.getItem("userID"),
+        passWord: sessionStorage.getItem("passWord"),
+        title: this.state.title,
+        sender: this.state.sender,
+        bannerUrl: this.state.bannerUrl,
+        link: this.state.link,
+        content: this.state.content,
+        gifts: this.state.gifts,
+        startDate: this.state.startDate,
+        endDate: this.state.endDate,
+        appVersion: this.state.appVersion,
+        minVersion: this.state.minVersion,
+        maxVersion: this.state.relativeVersion,
+        mailId: this.state.mailIdActive,
+        isSystemMail: true,
+      })
+      .then(function(response) {
+        console.log(response.data.Body);
+        if (response.data.Status === 1) {
+          msg = "Add Mail Success";
+        } else {
+          msg = `Add Mail Err: ${response.data.Body.Err}`;
+        }
+      })
+      .then(() => {
+        window.alert(msg);
+      });
   };
 
   onUpdateClick = (e) => {
     var msg = "";
     e.preventDefault();
     axios
-      .post(config.test_mail + config.url_updateMail, {
+      .post(config.mail_url + config.url_updateMail, {
         adminMail: sessionStorage.getItem("userID"),
         passWord: sessionStorage.getItem("passWord"),
         mailId: this.state.mailId,
@@ -326,7 +326,7 @@ class MailNotifyVersion extends PureComponent {
     var msg = "";
     e.preventDefault();
     axios
-      .post(config.test_mail + config.url_updateTemplateReward, {
+      .post(config.mail_url + config.url_updateTemplateReward, {
         adminMail: sessionStorage.getItem("userID"),
         passWord: sessionStorage.getItem("passWord"),
         language: this.state.language,
@@ -372,7 +372,7 @@ class MailNotifyVersion extends PureComponent {
       <Col md={12} lg={12} xl={12}>
         <Row>
           <div style={{ float: "left" }}>
-             <Expand
+            <Expand
               title="Update Template"
               color="secondary"
               handleClick={() => {
@@ -391,6 +391,9 @@ class MailNotifyVersion extends PureComponent {
             <CardBody className="products-list">
               <div className="card__title">
                 <h5 className="bold-text">List Mail Notify Update Version</h5>
+                <h6 className="subhead">
+                  Total Language Supports: {LanguageOptions.length}
+                </h6>
                 <div style={{ float: "right" }}>
                   <Field
                     name="viewbylanguage"
@@ -449,8 +452,8 @@ class MailNotifyVersion extends PureComponent {
                         <td dir="ltr">{mail.id}</td>
                         <td dir="ltr">{mail.title}</td>
                         <td dir="ltr">{mail.Version}</td>
-                        <td>{mail.startDate.slice(0, 10)}</td>
-                        <td>{mail.endDate.slice(0, 10)}</td>
+                        <td>{mail.startDate.slice(0, 16)}</td>
+                        <td>{mail.endDate.slice(0, 16)}</td>
                         <td>{mail.MinVersion}</td>
                         <td> {StatusBigUpdate(mail.isBigUpdate)}</td>
                         <td>
@@ -555,10 +558,9 @@ class MailNotifyVersion extends PureComponent {
                   <div className="form__form-group">
                     <span className="form__form-group-label">Content</span>
                     <div className="form__form-group-field">
-                      <Field
+                      <TextareaAutosize
                         name="content"
                         component={renderField}
-                        component="textarea"
                         type="text"
                         value={this.state.content}
                         onChange={this.handleContentChange.bind(this)}
@@ -721,10 +723,9 @@ class MailNotifyVersion extends PureComponent {
                   <div className="form__form-group">
                     <span className="form__form-group-label">Content</span>
                     <div className="form__form-group-field">
-                      <Field
+                      <TextareaAutosize
                         name="content"
                         component={renderField}
-                        component="textarea"
                         type="text"
                         value={this.state.content}
                         onChange={this.handleContentChange.bind(this)}
@@ -794,10 +795,9 @@ class MailNotifyVersion extends PureComponent {
                   <div className="form__form-group">
                     <span className="form__form-group-label">Content</span>
                     <div className="form__form-group-field">
-                      <Field
+                      <TextareaAutosize
                         name="content"
                         component={renderField}
-                        component="textarea"
                         type="text"
                         value={this.state.content}
                         onChange={this.handleContentChange.bind(this)}

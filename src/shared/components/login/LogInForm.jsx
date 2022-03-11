@@ -59,7 +59,8 @@ class LogInForm extends PureComponent {
         sessionStorage.setItem('userID', this.state.username);
         sessionStorage.setItem('passWord', this.state.password);
         window.location.replace('http://jackal.rocketstudio.com.vn:3000/dashboard');
-       // window.location.replace('http://localhost:3000/dashboard');
+       // window.location.replace('http://localhost:5000/dashboard');
+       // window.location.replace('http://192.168.1.187:5000/dashboard');
         //return <Redirect to='/dashboard' />;
       }
     }
